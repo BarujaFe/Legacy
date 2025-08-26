@@ -16,7 +16,7 @@
   .link{display:flex;gap:8px;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px}
   .url{font-size:13px;color:var(--accent);word-break:break-all;text-decoration:none}
   .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:var(--white);cursor:pointer}
-  .text-block{background:#031424;border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;line-height:1.4;cursor:pointer;color:var(--muted);max-height:420px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+  .text-block{background:#031424;border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;line-height:1.4;cursor:pointer;color:var(--muted);max-height:520px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
   .hint{font-size:12px;color:var(--muted);margin-top:8px}
   .toast{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#042023;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.5);transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s ease}
   .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
@@ -24,6 +24,7 @@
   .top-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
   .copy-all{background:linear-gradient(90deg,var(--accent),#7c3aed);border:none;padding:8px 12px;border-radius:10px;color:#021;cursor:pointer}
   footer{margin-top:18px;font-size:13px;color:var(--muted)}
+  @media (max-width:420px){h1{font-size:18px}}
 </style>
 </head>
 <body>
@@ -81,25 +82,25 @@ Preciso que você faça o seguinte:
 
 Para cada ativo dos PDFs, me entregue um bloco de texto neste formato:
 
-Ativo: \[nome]
-Preço atual: \[se disponível no PDF]
-Preço estratégico de compra: \[usar como referência]
+Ativo: [nome]
+Preço atual: [se disponível no PDF]
+Preço estratégico de compra: [usar como referência]
 
-* ETH → US\$ 4.000
-* SOL → US\$ 165
-* LINK → US\$ 22
-* KAS → US\$ 0,08
-* AAPL34 → R\$ 59
-* MELI34 → R\$ 103
-* BABA34 → R\$ 22,50–23,50
+* ETH → US$ 4.000
+* SOL → US$ 165
+* LINK → US$ 22
+* KAS → US$ 0,08
+* AAPL34 → R$ 59
+* MELI34 → R$ 103
+* BABA34 → R$ 22,50–23,50
 
 Resumo técnico:
 
-* Diário (1D): \[sinal de compra/venda/manter + principais motivos]
-* Semanal (1S): \[idem]
-* Mensal (1M): \[idem]
+* Diário (1D): [sinal de compra/venda/manter + principais motivos]
+* Semanal (1S): [idem]
+* Mensal (1M): [idem]
 
-Observações: \[anotações relevantes, divergências entre indicadores, suporte/resistência]
+Observações: [anotações relevantes, divergências entre indicadores, suporte/resistência]
 
 ---
 
@@ -160,13 +161,13 @@ Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que
 
 📌 Minha estratégia base:
 
-* Apple (AAPL34) → seguro, comprar abaixo de R\$ 59.
-* Ethereum (ETH) → seguro, comprar perto de US\$ 4.000.
-* Solana (SOL) → relativamente seguro, comprar perto de US\$ 165.
-* Alibaba (BABA34) → relativamente seguro, comprar entre R\$ 22,50–23,50.
-* Chainlink (LINK) → alto potencial, comprar perto de US\$ 22.
-* Kaspa (KAS) → alto potencial/alto risco, comprar perto de US\$ 0,08.
-* Mercado Livre (MELI34) → grande potencial, comprar perto de R\$ 103.
+* Apple (AAPL34) → seguro, comprar abaixo de R$ 59.
+* Ethereum (ETH) → seguro, comprar perto de US$ 4.000.
+* Solana (SOL) → relativamente seguro, comprar perto de US$ 165.
+* Alibaba (BABA34) → relativamente seguro, comprar entre R$ 22,50–23,50.
+* Chainlink (LINK) → alto potencial, comprar perto de US$ 22.
+* Kaspa (KAS) → alto potencial/alto risco, comprar perto de US$ 0,08.
+* Mercado Livre (MELI34) → grande potencial, comprar perto de R$ 103.
 
 🎯 Resumo da estratégia geral:
 
@@ -196,39 +197,443 @@ abcdef
       </div>
       <p class="hint small">Clique no bloco acima para copiar o texto inteiro.</p>
     </section>
+
+    <!-- CARD: WebScraping Script -->
+    <section class="card" aria-labelledby="w-title">
+      <h2 id="w-title">3) WebScraping (Python) — script</h2>
+
+      <div class="links">
+        <div class="link">
+          <div class="url">Script Python (clique no bloco para copiar)</div>
+          <button class="btn" onclick="copyText(event, webScriptText)">Copiar</button>
+        </div>
+      </div>
+
+      <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+import os
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from fpdf import FPDF
+from PIL import Image
+from webdriver_manager.chrome import ChromeDriverManager
+
+# --- Pasta de saída ---
+output_folder = os.path.join(os.path.expanduser("~"), "Documents", "CriptoSonho")
+os.makedirs(output_folder, exist_ok=True)
+
+# --- Chrome options (gerenciador automático do chromedriver) ---
+chrome_options = Options()
+chrome_options.add_argument("--headless=new")
+chrome_options.add_argument("--hide-scrollbars")
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--no-sandbox")
+# Não definir window-size global aqui; vamos ajustar antes de cada captura
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+wait = WebDriverWait(driver, 15)
+
+# --- Helpers ---
+def safe_click(xpath, timeout=10):
+    try:
+        el = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.XPATH, xpath)))
+        driver.execute_script("arguments[0].click();", el)
+        time.sleep(1.2)
+        return True
+    except Exception as e:
+        print(f"[safe_click] Falha ao clicar em {xpath}: {e}")
+        return False
+
+def save_screenshot_and_crop(full_path, out_path, width, height):
+    """Abre full_path, corta (0,0,width,height) e salva em out_path."""
+    img = Image.open(full_path)
+    # Se imagem for menor que crop, ajusta para o tamanho disponível
+    img_w, img_h = img.size
+    crop_w = min(width, img_w)
+    crop_h = min(height, img_h)
+    cropped = img.crop((0, 0, crop_w, crop_h))
+    cropped.save(out_path)
+
+# --- Parte A: PDFs individuais para símbolos (TradingView) ---
+def capture_top_screenshot_for_timeframe(url, timeframe_xpath, filename, crop_width=1888, crop_height=2190):
+    """
+    Acessa url, clica no timeframe indicado por timeframe_xpath (se fornecido),
+    tira screenshot full page e corta top para crop_width x crop_height.
+    """
+    driver.get(url)
+    time.sleep(4)  # aguarda carregar a página e scripts
+    # tenta clicar o timeframe (caso xpath exista)
+    if timeframe_xpath:
+        try:
+            safe_click(timeframe_xpath, timeout=6)
+        except Exception:
+            pass
+
+    # Ajusta janela para o tamanho total do documento antes de salvar
+    scroll_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
+    scroll_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
+    # limitar height razoavelmente para evitar erros de plataforma; aqui permitimos até 10000
+    scroll_h = min(scroll_h, 10000)
+    driver.set_window_size(scroll_w, scroll_h)
+    time.sleep(0.8)
+    full_path = os.path.join(output_folder, "full_" + filename)
+    driver.save_screenshot(full_path)
+    out_path = os.path.join(output_folder, filename)
+    save_screenshot_and_crop(full_path, out_path, crop_width, crop_height)
+    print(f"[capture_top] Salvo: {out_path}")
+    return out_path
+
+def create_pdf_from_images(image_paths, pdf_name):
+    pdf_path = os.path.join(output_folder, pdf_name)
+    if os.path.exists(pdf_path):
+        os.remove(pdf_path)
+    pdf = FPDF(unit="pt", format="A4")
+    page_w, page_h = pdf.w_pt, pdf.h_pt
+    for img_path in image_paths:
+        img = Image.open(img_path)
+        img_w, img_h = img.size
+        ratio = min(page_w / img_w, page_h / img_h)
+        new_w, new_h = img_w * ratio, img_h * ratio
+        x = (page_w - new_w) / 2
+        y = (page_h - new_h) / 2
+        pdf.add_page()
+        pdf.image(img_path, x, y, new_w, new_h)
+    pdf.output(pdf_path)
+    print(f"[create_pdf] PDF gerado: {pdf_path}")
+    return pdf_path
+
+def generate_tradeview_symbol_pdfs(symbols):
+    """
+    symbols: lista de tuplas (symbol, url, pdf_name)
+    para cada símbolo gera 3 screenshots: 1D, 1W, 1M (usando xpaths de timeframe)
+    """
+    # XPaths de timeframe (usados no seu script original)
+    xpaths = {
+        "1D": '//*[@id="1D"]/span[1]/span',
+        "1W": '//*[@id="1W"]/span[1]/span',
+        "1M": '//*[@id="1M"]/span[1]/span'
+    }
+
+    for symbol, url, pdf_name in symbols:
+        print(f"\n[Symbols] Processando {symbol} -> {url}")
+        shots = []
+        # 1D
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths["1D"], f"{symbol}_1D.png", crop_width=1888, crop_height=2190))
+        # 1W
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths["1W"], f"{symbol}_1W.png", crop_width=1888, crop_height=2190))
+        # 1M
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths["1M"], f"{symbol}_1M.png", crop_width=1888, crop_height=2190))
+        # cria PDF com 3 imagens
+        create_pdf_from_images(shots, pdf_name)
+
+# --- Parte B: Capturas full-width 4950px (CoinMarketCap + TradingView Companies) ---
+def capture_full_width(url, filename, target_width=4950, max_height=12000):
+    """
+    Captura a página inteira definindo a largura target_width e altura baseada no scrollHeight.
+    Salva image em output_folder/filename e retorna caminho.
+    """
+    driver.get(url)
+    time.sleep(4)  # aguarda carregamento inicial
+    
+    # calcula scrollHeight e define janela
+    page_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
+    page_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
+    # queremos forçar largura = target_width, e altura = page_h (limitada)
+    use_w = max(target_width, page_w)
+    use_h = min(int(page_h), max_height)
+    driver.set_window_size(use_w, use_h)
+    time.sleep(1.0)
+    full_path = os.path.join(output_folder, filename)
+    driver.save_screenshot(full_path)
+    print(f"[capture_full_width] Salvo: {full_path} (window {use_w}x{use_h})")
+    return full_path
+
+def generate_market_overview_pdf(pages, pdf_name="Relatorio_Cripto_Mercado.pdf"):
+    """
+    pages: lista de tuples (url, filename)
+    captura cada url em largura 4950 e junta em um único PDF
+    """
+    images = []
+    for url, filename in pages:
+        img = capture_full_width(url, filename, target_width=4950, max_height=12000)
+        images.append(img)
+    create_pdf_from_images(images, pdf_name)
+
+# ----------------- Execução -----------------
+if __name__ == "__main__":
+    try:
+        # Lista de símbolos (mantive a sua lista original)
+        symbols = [
+            ("ETH", "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE", "ETH - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("SOL", "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE", "SOL - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("LINK", "https://br.tradingview.com/symbols/LINKUSDT/technicals/?exchange=BINANCE", "LINK - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("KAS", "https://br.tradingview.com/symbols/KASUSD/technicals/?exchange=CRYPTO", "KAS - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("AAPL34", "https://br.tradingview.com/symbols/BMFBOVESPA-AAPL34/technicals/", "AAPL34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("MELI34", "https://br.tradingview.com/symbols/BMFBOVESPA-MELI34/technicals/", "MELI34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf"),
+            ("BABA34", "https://br.tradingview.com/symbols/BMFBOVESPA-BABA34/technicals/", "BABA34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf")
+        ]
+
+        # Gera PDFs individuais para os símbolos
+        generate_tradeview_symbol_pdfs(symbols)
+
+        # Captura CoinMarketCap e TradingView World's Largest Companies em 4950px de largura
+        overview_pages = [
+            ("https://coinmarketcap.com/pt-br/", "CoinMarketCap_full_4950.png"),
+            ("https://br.tradingview.com/markets/world-stocks/worlds-largest-companies/", "TradingView_Companies_full_4950.png")
+        ]
+        generate_market_overview_pdf(overview_pages, pdf_name="Relatorio_Cripto_Mercado.pdf")
+
+    finally:
+        driver.quit()
+        print("Concluído. Driver encerrado.")
+      </div>
+      <p class="hint small">Clique no bloco acima para copiar todo o script Python.</p>
+    </section>
+
   </div>
 
   <footer>
-    <div class="small">Agora os links abrem em nova aba. 🚀</div>
+    <div class="small">Agora os links abrem em nova aba e o script Python está disponível para copiar. 🚀</div>
   </footer>
 </div>
 
 <div id="toast" class="toast">Copiado!</div>
 
 <script>
+  // guarda o script completo em uma variável pra uso no botão
+  const webScriptText = `import os
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from fpdf import FPDF
+from PIL import Image
+from webdriver_manager.chrome import ChromeDriverManager
+
+# --- Pasta de saída ---
+output_folder = os.path.join(os.path.expanduser("~"), "Documents", "CriptoSonho")
+os.makedirs(output_folder, exist_ok=True)
+
+# --- Chrome options (gerenciador automático do chromedriver) ---
+chrome_options = Options()
+chrome_options.add_argument("--headless=new")
+chrome_options.add_argument("--hide-scrollbars")
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--no-sandbox")
+# Não definir window-size global aqui; vamos ajustar antes de cada captura
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+wait = WebDriverWait(driver, 15)
+
+# --- Helpers ---
+def safe_click(xpath, timeout=10):
+    try:
+        el = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.XPATH, xpath)))
+        driver.execute_script("arguments[0].click();", el)
+        time.sleep(1.2)
+        return True
+    except Exception as e:
+        print(f"[safe_click] Falha ao clicar em {xpath}: {e}")
+        return False
+
+def save_screenshot_and_crop(full_path, out_path, width, height):
+    \"\"\"Abre full_path, corta (0,0,width,height) e salva em out_path.\"\"\"
+    img = Image.open(full_path)
+    # Se imagem for menor que crop, ajusta para o tamanho disponível
+    img_w, img_h = img.size
+    crop_w = min(width, img_w)
+    crop_h = min(height, img_h)
+    cropped = img.crop((0, 0, crop_w, crop_h))
+    cropped.save(out_path)
+
+# --- Parte A: PDFs individuais para símbolos (TradingView) ---
+def capture_top_screenshot_for_timeframe(url, timeframe_xpath, filename, crop_width=1888, crop_height=2190):
+    \"\"\"
+    Acessa url, clica no timeframe indicado por timeframe_xpath (se fornecido),
+    tira screenshot full page e corta top para crop_width x crop_height.
+    \"\"\"
+    driver.get(url)
+    time.sleep(4)  # aguarda carregar a página e scripts
+    # tenta clicar o timeframe (caso xpath exista)
+    if timeframe_xpath:
+        try:
+            safe_click(timeframe_xpath, timeout=6)
+        except Exception:
+            pass
+
+    # Ajusta janela para o tamanho total do documento antes de salvar
+    scroll_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
+    scroll_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
+    # limitar height razoavelmente para evitar erros de plataforma; aqui permitimos até 10000
+    scroll_h = min(scroll_h, 10000)
+    driver.set_window_size(scroll_w, scroll_h)
+    time.sleep(0.8)
+    full_path = os.path.join(output_folder, "full_" + filename)
+    driver.save_screenshot(full_path)
+    out_path = os.path.join(output_folder, filename)
+    save_screenshot_and_crop(full_path, out_path, crop_width, crop_height)
+    print(f"[capture_top] Salvo: {out_path}")
+    return out_path
+
+def create_pdf_from_images(image_paths, pdf_name):
+    pdf_path = os.path.join(output_folder, pdf_name)
+    if os.path.exists(pdf_path):
+        os.remove(pdf_path)
+    pdf = FPDF(unit="pt", format="A4")
+    page_w, page_h = pdf.w_pt, pdf.h_pt
+    for img_path in image_paths:
+        img = Image.open(img_path)
+        img_w, img_h = img.size
+        ratio = min(page_w / img_w, page_h / img_h)
+        new_w, new_h = img_w * ratio, img_h * ratio
+        x = (page_w - new_w) / 2
+        y = (page_h - new_h) / 2
+        pdf.add_page()
+        pdf.image(img_path, x, y, new_w, new_h)
+    pdf.output(pdf_path)
+    print(f"[create_pdf] PDF gerado: {pdf_path}")
+    return pdf_path
+
+def generate_tradeview_symbol_pdfs(symbols):
+    \"\"\"
+    symbols: lista de tuplas (symbol, url, pdf_name)
+    para cada símbolo gera 3 screenshots: 1D, 1W, 1M (usando xpaths de timeframe)
+    \"\"\"
+    # XPaths de timeframe (usados no seu script original)
+    xpaths = {
+        "1D": '//*[@id=\"1D\"]/span[1]/span',
+        "1W": '//*[@id=\"1W\"]/span[1]/span',
+        "1M": '//*[@id=\"1M\"]/span[1]/span'
+    }
+
+    for symbol, url, pdf_name in symbols:
+        print(f\"\\n[Symbols] Processando {symbol} -> {url}\")
+        shots = []
+        # 1D
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths[\"1D\"], f\"{symbol}_1D.png\", crop_width=1888, crop_height=2190))
+        # 1W
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths[\"1W\"], f\"{symbol}_1W.png\", crop_width=1888, crop_height=2190))
+        # 1M
+        shots.append(capture_top_screenshot_for_timeframe(url, xpaths[\"1M\"], f\"{symbol}_1M.png\", crop_width=1888, crop_height=2190))
+        # cria PDF com 3 imagens
+        create_pdf_from_images(shots, pdf_name)
+
+# --- Parte B: Capturas full-width 4950px (CoinMarketCap + TradingView Companies) ---
+def capture_full_width(url, filename, target_width=4950, max_height=12000):
+    \"\"\"
+    Captura a página inteira definindo a largura target_width e altura baseada no scrollHeight.
+    Salva image em output_folder/filename e retorna caminho.
+    \"\"\"
+    driver.get(url)
+    time.sleep(4)  # aguarda carregamento inicial
+    
+    # calcula scrollHeight e define janela
+    page_w = driver.execute_script(\"return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);\")
+    page_h = driver.execute_script(\"return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);\")
+    # queremos forçar largura = target_width, e altura = page_h (limitada)
+    use_w = max(target_width, page_w)
+    use_h = min(int(page_h), max_height)
+    driver.set_window_size(use_w, use_h)
+    time.sleep(1.0)
+    full_path = os.path.join(output_folder, filename)
+    driver.save_screenshot(full_path)
+    print(f\"[capture_full_width] Salvo: {full_path} (window {use_w}x{use_h})\")
+    return full_path
+
+def generate_market_overview_pdf(pages, pdf_name=\"Relatorio_Cripto_Mercado.pdf\"):
+    \"\"\"
+    pages: lista de tuples (url, filename)
+    captura cada url em largura 4950 e junta em um único PDF
+    \"\"\"
+    images = []
+    for url, filename in pages:
+        img = capture_full_width(url, filename, target_width=4950, max_height=12000)
+        images.append(img)
+    create_pdf_from_images(images, pdf_name)
+
+# ----------------- Execução -----------------
+if __name__ == \"__main__\":
+    try:
+        # Lista de símbolos (mantive a sua lista original)
+        symbols = [
+            (\"ETH\", \"https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE\", \"ETH - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"SOL\", \"https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE\", \"SOL - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"LINK\", \"https://br.tradingview.com/symbols/LINKUSDT/technicals/?exchange=BINANCE\", \"LINK - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"KAS\", \"https://br.tradingview.com/symbols/KASUSD/technicals/?exchange=CRYPTO\", \"KAS - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"AAPL34\", \"https://br.tradingview.com/symbols/BMFBOVESPA-AAPL34/technicals/\", \"AAPL34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"MELI34\", \"https://br.tradingview.com/symbols/BMFBOVESPA-MELI34/technicals/\", \"MELI34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\"),
+            (\"BABA34\", \"https://br.tradingview.com/symbols/BMFBOVESPA-BABA34/technicals/\", \"BABA34 - Sinais Técnicos (1 Dia, 1 Semana, 1 Mês).pdf\")
+        ]
+
+        # Gera PDFs individuais para os símbolos
+        generate_tradeview_symbol_pdfs(symbols)
+
+        # Captura CoinMarketCap e TradingView World's Largest Companies em 4950px de largura
+        overview_pages = [
+            (\"https://coinmarketcap.com/pt-br/\", \"CoinMarketCap_full_4950.png\"),
+            (\"https://br.tradingview.com/markets/world-stocks/worlds-largest-companies/\", \"TradingView_Companies_full_4950.png\")
+        ]
+        generate_market_overview_pdf(overview_pages, pdf_name=\"Relatorio_Cripto_Mercado.pdf\")
+
+    finally:
+        driver.quit()
+        print(\"Concluído. Driver encerrado.\")
+`;
+
   function copyText(ev, text) {
     if (ev) ev.stopPropagation();
     _copyString(text);
   }
+
+  // copiar ao clicar nos blocos
   document.querySelectorAll('[data-copy]').forEach(el=>{
     el.addEventListener('click', ()=>_copyString(el.innerText.trim()));
   });
+
   document.getElementById('copyAll').addEventListener('click', function(){
     const parts = [];
     document.querySelectorAll('.url').forEach(u => parts.push(u.innerText.trim()));
     document.querySelectorAll('.text-block').forEach(tb => parts.push('\n---\n', tb.innerText.trim()));
     _copyString(parts.join('\n'));
   });
+
   function _copyString(text){
-    if(navigator.clipboard){
-      navigator.clipboard.writeText(text).then(()=>_showToast('Copiado!'));
+    if(!text) return _showToast('Nada pra copiar');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=>_showToast('Copiado!'), ()=>_fallbackCopy(text));
+    } else {
+      _fallbackCopy(text);
     }
   }
+
+  function _fallbackCopy(text){
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      _showToast(ok ? 'Copiado!' : 'Falha ao copiar');
+    } catch (e){
+      _showToast('Falha ao copiar');
+    }
+  }
+
   function _showToast(msg){
-    const t=document.getElementById('toast');
-    t.textContent=msg;
+    const t = document.getElementById('toast');
+    t.textContent = msg;
     t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),1600);
+    setTimeout(()=>t.classList.remove('show'), 1600);
   }
 </script>
 </body>
