@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Copiar Rápido — Gemini & ChatGPT</title>
+<style>
+  :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--white:#e6eef8}
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:16px;background:linear-gradient(180deg,#071127 0%, #071a2a 100%);color:var(--white);}
+  .wrap{max-width:980px;margin:0 auto;}
+  h1{font-size:20px;margin:6px 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+  .card{background:rgba(255,255,255,0.03);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(2,6,23,0.6);position:relative}
+  .card h2{font-size:16px;margin:0 0 8px}
+  .links{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .link{display:flex;gap:8px;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);padding:8px;border-radius:8px}
+  .url{font-size:13px;color:var(--accent);word-break:break-all;text-decoration:none}
+  .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:var(--white);cursor:pointer}
+  .text-block{background:#031424;border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;line-height:1.4;cursor:pointer;color:var(--muted);max-height:420px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+  .hint{font-size:12px;color:var(--muted);margin-top:8px}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#042023;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.5);transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s ease}
+  .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+  .small{font-size:13px;color:var(--muted)}
+  .top-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .copy-all{background:linear-gradient(90deg,var(--accent),#7c3aed);border:none;padding:8px 12px;border-radius:10px;color:#021;cursor:pointer}
+  footer{margin-top:18px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ferramenta rápida — clique no texto pra copiar ao clipboard</h1>
+
+  <div class="top-actions">
+    <button class="copy-all btn" id="copyAll">📋 Copiar tudo</button>
+    <div class="small">Clique em qualquer bloco de texto ou botão de copiar. Links abrem em nova guia.</div>
+  </div>
+
+  <div class="grid">
+    <!-- CARD: Gemini -->
+    <section class="card" aria-labelledby="g-title">
+      <h2 id="g-title">1) Gemini — links + instrução</h2>
+
+      <div class="links">
+        <div class="link">
+          <a class="url" href="https://gemini.google.com/app?hl=pt-BR" target="_blank">https://gemini.google.com/app?hl=pt-BR</a>
+          <button class="btn" onclick="copyText(event,'https://gemini.google.com/app?hl=pt-BR')">Copiar</button>
+        </div>
+        <div class="link">
+          <a class="url" href="https://www.invertexto.com/localizar-e-substituir" target="_blank">https://www.invertexto.com/localizar-e-substituir</a>
+          <button class="btn" onclick="copyText(event,'https://www.invertexto.com/localizar-e-substituir')">Copiar</button>
+        </div>
+      </div>
+
+      <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+💬 Instruções para o Gemini – Processamento de Relatório Técnico (1D, 1S, 1M)
+
+Oi Gemini, estou te enviando os PDFs com relatórios técnicos do TradingView para os seguintes ativos:
+
+* Ethereum (ETH)
+* Kaspa (KAS)
+* ChainLink (LINK)
+* Mercado Livre (MELI34)
+* Solana (SOL)
+* Apple (AAPL34)
+* Alibaba (BABA34)
+
+Preciso que você faça o seguinte:
+
+### 🔹 1. Estruture a saída de forma clara e organizada
+
+Para cada ativo, me entregue um bloco de texto neste formato:
+
+Ativo: [nome]
+Preço atual: [se disponível no PDF]
+Preço estratégico de compra: [usar como referência]
+  - ETH → US$ 4.000
+  - SOL → US$ 165
+  - LINK → US$ 22
+  - KAS → US$ 0,08
+  - AAPL34 → R$ 59
+  - MELI34 → R$ 103
+  - BABA34 → R$ 22,50–23,50
+Resumo técnico:
+  - Diário (1D): [sinal de compra/venda/manter + principais motivos]
+  - Semanal (1S): [idem]
+  - Mensal (1M): [idem]
+Observações: [anotações relevantes, divergências entre indicadores, suporte/resistência]
+
+### 🔹 2. Foque no essencial
+
+* Resuma os Osciladores, Médias Móveis e Pontos de Pivô em insights curtos (não copie tabela inteira).
+* Destaque contradições relevantes (ex.: tendência geral de baixa, mas médias móveis fortes em alta).
+* Aponte sinais de risco (ex.: sobrecompra, perda de força no curto prazo).
+
+### 🔹 3. Adapte para a estratégia já definida
+
+Use os preços estratégicos de compra como referência.
+
+* Se o ativo está próximo ou abaixo do preço estratégico, marque como “🚨 oportunidade próxima”.
+* Se está longe, marque como “ainda distante do ponto de entrada”.
+
+### 🔹 4. Entregue em texto corrido e claro
+
+O objetivo é eu poder copiar sua resposta e mandar direto para o ChatGPT, para que ele avalie minha situação de investimento. Não preciso de introduções longas nem explicações genéricas.
+
+---
+
+👉 Em resumo: preciso que você transforme os PDFs em um relatório condensado, padronizado e interpretável, alinhado com meus preços estratégicos, pronto para eu mandar ao ChatGPT para análise.
+      </div>
+      <p class="hint small">Clique no bloco acima para copiar o texto inteiro.</p>
+    </section>
+
+    <!-- CARD: ChatGPT -->
+    <section class="card" aria-labelledby="c-title">
+      <h2 id="c-title">2) ChatGPT — links + mensagem inicial</h2>
+
+      <div class="links">
+        <div class="link">
+          <a class="url" href="https://chatgpt.com/" target="_blank">https://chatgpt.com/</a>
+          <button class="btn" onclick="copyText(event,'https://chatgpt.com/')">Copiar</button>
+        </div>
+        <div class="link">
+          <a class="url" href="https://www.invertexto.com/localizar-e-substituir" target="_blank">https://www.invertexto.com/localizar-e-substituir</a>
+          <button class="btn" onclick="copyText(event,'https://www.invertexto.com/localizar-e-substituir')">Copiar</button>
+        </div>
+      </div>
+
+      <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+💬 Mensagem de início de conversa para o ChatGPT
+
+Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que você use o contexto da minha estratégia já definida e o resumo técnico que o Gemini me entregou (logo abaixo) para avaliar minha situação atual.
+
+📌 Minha estratégia base:
+
+* Apple (AAPL34) → seguro, comprar abaixo de R$ 59.
+* Ethereum (ETH) → seguro, comprar perto de US$ 4.000.
+* Solana (SOL) → relativamente seguro, comprar perto de US$ 165.
+* Alibaba (BABA34) → relativamente seguro, comprar entre R$ 22,50–23,50.
+* Chainlink (LINK) → alto potencial, comprar perto de US$ 22.
+* Kaspa (KAS) → alto potencial/alto risco, comprar perto de US$ 0,08.
+* Mercado Livre (MELI34) → grande potencial, comprar perto de R$ 103.
+
+🎯 Resumo da estratégia geral:
+
+* Apple + Ethereum → pilares de segurança.
+* Solana + Alibaba → meio-termo (risco controlado, potencial bom).
+* Chainlink + Kaspa + MELI → alto potencial, risco maior.
+
+⚡ Sua tarefa com o resumo técnico do Gemini:
+
+1. Dizer quais ativos já estão no ponto de compra.
+2. Quais estão próximos.
+3. Quais estão longe.
+4. Se algum cenário mudou em relação à minha estratégia base.
+5. Me dar um parecer prático: se devo comprar, esperar, ou só monitorar.
+
+---
+
+📄 Resumo técnico (do Gemini):
+abcdef
+
+---
+
+👉 A partir disso, quero que você me dê uma análise direta, consistente e alinhada com a estratégia que já definimos juntos.
+      </div>
+      <p class="hint small">Clique no bloco acima para copiar o texto inteiro.</p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="small">Agora os links abrem em nova aba. 🚀</div>
+  </footer>
+</div>
+
+<div id="toast" class="toast">Copiado!</div>
+
+<script>
+  function copyText(ev, text) {
+    if (ev) ev.stopPropagation();
+    _copyString(text);
+  }
+  document.querySelectorAll('[data-copy]').forEach(el=>{
+    el.addEventListener('click', ()=>_copyString(el.innerText.trim()));
+  });
+  document.getElementById('copyAll').addEventListener('click', function(){
+    const parts = [];
+    document.querySelectorAll('.url').forEach(u => parts.push(u.innerText.trim()));
+    document.querySelectorAll('.text-block').forEach(tb => parts.push('\n---\n', tb.innerText.trim()));
+    _copyString(parts.join('\n'));
+  });
+  function _copyString(text){
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(()=>_showToast('Copiado!'));
+    }
+  }
+  function _showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1600);
+  }
+</script>
+</body>
+</html>
