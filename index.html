@@ -52,7 +52,8 @@
       </div>
 
       <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
-💬 Instruções para o Gemini – Processamento de Relatório Técnico (1D, 1S, 1M)
+
+💬 Instruções para o Gemini – Processamento de Relatório Técnico (1D, 1S, 1M + Avaliação de mercado)
 
 Oi Gemini, estou te enviando os PDFs com relatórios técnicos do TradingView para os seguintes ativos:
 
@@ -64,48 +65,74 @@ Oi Gemini, estou te enviando os PDFs com relatórios técnicos do TradingView pa
 * Apple (AAPL34)
 * Alibaba (BABA34)
 
+Além disso, tenho dados recentes do top 65 criptomoedas e do top 100 ações por valor de mercado, incluindo:
+
+Criptomoedas:
+
+* Nome, Preço, 1h %, 24h %, 7d %, Cap. de Mercado, Volume(24h), Fornecimento Circulante, Últimos 7 Dias
+
+Ações:
+
+* País/Região, Valor de Mercado, Preço, Variação %, Volume Rel., P/L, EPS dil TTM, Crescimento EPS dil. 12M Ano a Ano, Div. Yield %, Setor, Classificação dos Analistas
+
 Preciso que você faça o seguinte:
 
 ### 🔹 1. Estruture a saída de forma clara e organizada
 
-Para cada ativo, me entregue um bloco de texto neste formato:
+Para cada ativo dos PDFs, me entregue um bloco de texto neste formato:
 
-Ativo: [nome]
-Preço atual: [se disponível no PDF]
-Preço estratégico de compra: [usar como referência]
-  - ETH → US$ 4.000
-  - SOL → US$ 165
-  - LINK → US$ 22
-  - KAS → US$ 0,08
-  - AAPL34 → R$ 59
-  - MELI34 → R$ 103
-  - BABA34 → R$ 22,50–23,50
+Ativo: \[nome]
+Preço atual: \[se disponível no PDF]
+Preço estratégico de compra: \[usar como referência]
+
+* ETH → US\$ 4.000
+* SOL → US\$ 165
+* LINK → US\$ 22
+* KAS → US\$ 0,08
+* AAPL34 → R\$ 59
+* MELI34 → R\$ 103
+* BABA34 → R\$ 22,50–23,50
+
 Resumo técnico:
-  - Diário (1D): [sinal de compra/venda/manter + principais motivos]
-  - Semanal (1S): [idem]
-  - Mensal (1M): [idem]
-Observações: [anotações relevantes, divergências entre indicadores, suporte/resistência]
 
-### 🔹 2. Foque no essencial
+* Diário (1D): \[sinal de compra/venda/manter + principais motivos]
+* Semanal (1S): \[idem]
+* Mensal (1M): \[idem]
 
-* Resuma os Osciladores, Médias Móveis e Pontos de Pivô em insights curtos (não copie tabela inteira).
-* Destaque contradições relevantes (ex.: tendência geral de baixa, mas médias móveis fortes em alta).
-* Aponte sinais de risco (ex.: sobrecompra, perda de força no curto prazo).
-
-### 🔹 3. Adapte para a estratégia já definida
-
-Use os preços estratégicos de compra como referência.
-
-* Se o ativo está próximo ou abaixo do preço estratégico, marque como “🚨 oportunidade próxima”.
-* Se está longe, marque como “ainda distante do ponto de entrada”.
-
-### 🔹 4. Entregue em texto corrido e claro
-
-O objetivo é eu poder copiar sua resposta e mandar direto para o ChatGPT, para que ele avalie minha situação de investimento. Não preciso de introduções longas nem explicações genéricas.
+Observações: \[anotações relevantes, divergências entre indicadores, suporte/resistência]
 
 ---
 
-👉 Em resumo: preciso que você transforme os PDFs em um relatório condensado, padronizado e interpretável, alinhado com meus preços estratégicos, pronto para eu mandar ao ChatGPT para análise.
+### 🔹 2. Foque no essencial
+
+* Resuma Osciladores, Médias Móveis e Pontos de Pivô em insights curtos (não copie tabela inteira).
+* Destaque contradições relevantes (ex.: tendência geral de baixa, mas médias móveis fortes em alta).
+* Aponte sinais de risco (ex.: sobrecompra, perda de força no curto prazo).
+
+---
+
+### 🔹 3. Adapte para a estratégia já definida
+
+* Use os preços estratégicos de compra como referência.
+
+  * Se o ativo está próximo ou abaixo do preço estratégico, marque como “🚨 oportunidade próxima”.
+  * Se está longe, marque como “ainda distante do ponto de entrada”.
+
+* Para os top 65 criptos e top 100 ações, avalie:
+
+  * Existe algum ativo com melhor ponto de entrada ou maior potencial de valorização do que os que já monitoramos?
+  * Se sim, indique nome, preço atual, preço estratégico recomendado e justificativa técnica resumida.
+  * Classifique como “🚨 oportunidade potencial” ou “📌 monitorar”.
+
+---
+
+### 🔹 4. Entregue em texto corrido e claro
+
+* O objetivo é eu poder copiar sua resposta e mandar direto para o ChatGPT, para que ele avalie minha situação de investimento.
+* Sem introduções longas ou explicações genéricas. Apenas análise condensada, padronizada e interpretável, pronta para uso.
+
+
+
       </div>
       <p class="hint small">Clique no bloco acima para copiar o texto inteiro.</p>
     </section>
@@ -126,19 +153,20 @@ O objetivo é eu poder copiar sua resposta e mandar direto para o ChatGPT, para 
       </div>
 
       <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+
 💬 Mensagem de início de conversa para o ChatGPT
 
-Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que você use o contexto da minha estratégia já definida e o resumo técnico que o Gemini me entregou (logo abaixo) para avaliar minha situação atual.
+Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que você use o contexto da minha estratégia já definida e o resumo técnico que o Gemini me entregou (logo abaixo), incluindo também a avaliação do top 65 criptomoedas e top 100 ações, para avaliar minha situação atual e possíveis alternativas melhores.
 
 📌 Minha estratégia base:
 
-* Apple (AAPL34) → seguro, comprar abaixo de R$ 59.
-* Ethereum (ETH) → seguro, comprar perto de US$ 4.000.
-* Solana (SOL) → relativamente seguro, comprar perto de US$ 165.
-* Alibaba (BABA34) → relativamente seguro, comprar entre R$ 22,50–23,50.
-* Chainlink (LINK) → alto potencial, comprar perto de US$ 22.
-* Kaspa (KAS) → alto potencial/alto risco, comprar perto de US$ 0,08.
-* Mercado Livre (MELI34) → grande potencial, comprar perto de R$ 103.
+* Apple (AAPL34) → seguro, comprar abaixo de R\$ 59.
+* Ethereum (ETH) → seguro, comprar perto de US\$ 4.000.
+* Solana (SOL) → relativamente seguro, comprar perto de US\$ 165.
+* Alibaba (BABA34) → relativamente seguro, comprar entre R\$ 22,50–23,50.
+* Chainlink (LINK) → alto potencial, comprar perto de US\$ 22.
+* Kaspa (KAS) → alto potencial/alto risco, comprar perto de US\$ 0,08.
+* Mercado Livre (MELI34) → grande potencial, comprar perto de R\$ 103.
 
 🎯 Resumo da estratégia geral:
 
@@ -146,22 +174,25 @@ Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que
 * Solana + Alibaba → meio-termo (risco controlado, potencial bom).
 * Chainlink + Kaspa + MELI → alto potencial, risco maior.
 
-⚡ Sua tarefa com o resumo técnico do Gemini:
+⚡ Sua tarefa com o resumo técnico do Gemini e dados adicionais:
 
 1. Dizer quais ativos já estão no ponto de compra.
-2. Quais estão próximos.
-3. Quais estão longe.
-4. Se algum cenário mudou em relação à minha estratégia base.
-5. Me dar um parecer prático: se devo comprar, esperar, ou só monitorar.
+2. Quais estão próximos do ponto de entrada estratégico.
+3. Quais estão longe do ponto de entrada.
+4. Indicar se algum cenário mudou em relação à minha estratégia base.
+5. Avaliar o top 65 criptos e top 100 ações: se há ativos com melhor potencial ou ponto de entrada mais interessante que os ativos já monitorados.
+6. Me dar um parecer prático: comprar, esperar, ou apenas monitorar.
+7. Destacar sinais de risco ou oportunidades excepcionais.
 
 ---
 
-📄 Resumo técnico (do Gemini):
+📄 Resumo técnico (do Gemini + dados de mercado):
 abcdef
 
 ---
 
-👉 A partir disso, quero que você me dê uma análise direta, consistente e alinhada com a estratégia que já definimos juntos.
+👉 A partir disso, quero que você me dê uma análise direta, condensada, prática e alinhada com a estratégia que já definimos.
+
       </div>
       <p class="hint small">Clique no bloco acima para copiar o texto inteiro.</p>
     </section>
