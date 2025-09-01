@@ -4,44 +4,83 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Bom dia, Felipe! — Painel</title>
+
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root{--white:#e6eef8;--muted:#94a3b8}
-  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:16px;background:#000;color:var(--white);}
-  .wrap{max-width:1900px;margin:0 auto}
+  :root{
+    --white:#e6eef8;
+    --muted:#94a3b8;
+    --bg:#000;
+    --card:#031424;
+  }
+  body{
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    margin:16px;
+    background:var(--bg);
+    color:var(--white);
+  }
+  .wrap{max-width:1200px;margin:0 auto}
   .top-actions{display:flex;flex-direction:column;gap:8px;align-items:center;margin-bottom:18px;text-align:center}
-  .greeting{font-family:Inter,system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; font-size:32px; font-weight:700;}
+  .greeting{font-size:32px;font-weight:700;}
   .links{display:flex;justify-content:center;gap:8px}
   .link{display:flex;gap:8px;align-items:center;background:transparent;padding:6px;border-radius:8px}
   .url{color:var(--white);text-decoration:underline}
   .btn{padding:6px 10px;background:#111;border:1px solid #222;color:var(--white);border-radius:8px;cursor:pointer}
   .small{font-size:14px;color:var(--muted)}
 
-  /* grid */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  /* charts - responsive */
+  .chart-row{display:flex;gap:16px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+  .chart-card{
+    flex:1 1 520px;
+    min-width:600px;
+    height:600px;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.06);
+    background:#041826;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .chart-card h2{margin:8px 0;color:var(--white);text-align:center;font-size:18px}
+  .chart-iframe{width:100%;height:100%;border:0}
+
+  /* assets selector */
   .card{background:transparent;border-radius:12px;padding:8px}
-  h2{font-size:20px;margin:8px 0 10px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;justify-content:center}
+  .assets{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center}
+  .asset-item{background:#061821;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);min-width:240px;box-sizing:border-box}
+  .asset-item label{display:flex;gap:8px;align-items:center;cursor:pointer}
+  .smallbtn{padding:6px 10px;background:#111;border:1px solid #222;color:var(--white);border-radius:6px;cursor:pointer;font-size:13px}
 
-  /* chart box */
-  .chart-box{width:1005px;height:550px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:#041826}
-  .chart-wrap{display:flex;justify-content:center;gap:20px;flex-wrap:nowrap}
+  /* priority section */
+  .priority-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
+  .priority-item{background:#08303a;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);min-width:180px;display:flex;align-items:center;gap:8px}
 
-  /* text blocks (not large) */
-  .text-block{background:#031424;border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;line-height:1.4;cursor:pointer;color:var(--muted);max-height:420px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
-  .hint{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
+  /* blocks */
+  .side-by-side{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+  .block{flex:1;min-width:300px}
+  .text-block{background:var(--card);border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;line-height:1.4;cursor:pointer;color:var(--muted);max-height:420px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+  textarea.template{width:100%;height:140px;background:#021319;color:var(--white);border-radius:8px;padding:8px;border:1px solid #10323a;resize:vertical}
 
   footer{margin-top:18px;font-size:20px;color:var(--muted);text-align:center;font-weight:600}
 
-  @media (max-width:1900px){
-    .chart-wrap{flex-wrap:wrap}
-    .chart-box{max-width:92vw;height:auto}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
+
+  @media (max-width:980px){
+    .chart-card{width:92vw;height:46vw}
+    .asset-item{min-width:48%}
+    .side-by-side{flex-direction:column}
+    .priority-item{min-width:45%}
   }
 </style>
 </head>
 <body>
   <div class="wrap">
-
     <div class="top-actions">
-      <div class="greeting">Bom dia, Felipe! Tenha um ótimo dia!🙏</div>
+      <div class="greeting">Bom dia, Felipe! Tenha um ótimo dia! 🙏</div>
       <div class="links">
         <div class="link">
           <a class="url" href="https://www.invertexto.com/localizar-e-substituir" target="_blank" rel="noopener noreferrer">Invertexto — localizar e substituir</a>
@@ -51,163 +90,616 @@
       <div class="small">Clique em qualquer bloco de texto ou botão de copiar. Links abrem em nova guia.</div>
     </div>
 
-    <div class="chart-wrap">
-      <div class="card">
-        <h2>Gráfico 1</h2>
-        <div class="chart-box">
-          <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=2083055028&format=interactive" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
-        </div>
-        <div class="hint"><a class="url" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=2083055028&format=interactive" target="_blank" rel="noopener noreferrer">Abrir Gráfico 1 em nova aba</a> — <button class="btn" onclick="copyText(event,'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=2083055028&format=interactive')">Copiar link</button></div>
+    <!-- Charts (top) -->
+    <div class="chart-row" aria-hidden="false">
+      <div class="chart-card" role="region" aria-label="Conta Corrente">
+        <h2>Conta Corrente</h2>
+        <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=2083055028&format=interactive" loading="lazy"></iframe>
       </div>
 
-      <div class="card">
-        <h2>Gráfico 2</h2>
-        <div class="chart-box">
-          <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
-        </div>
-        <div class="hint"><a class="url" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive" target="_blank" rel="noopener noreferrer">Abrir Gráfico 2 em nova aba</a> — <button class="btn" onclick="copyText(event,'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive')">Copiar link</button></div>
+      <div class="chart-card" role="region" aria-label="Investimentos">
+        <h2>Investimentos</h2>
+        <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive" loading="lazy"></iframe>
       </div>
     </div>
 
-    <div style="margin-top:18px; display:flex; gap:16px; flex-wrap:wrap;">
-      <div class="card" style="flex:1; min-width:300px;">
-        <h2>1. Ao Gemini</h2>
-        <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
-💬 Instruções para o Gemini – Processamento de Relatório Técnico (1D, 1S, 1M + Avaliação de mercado)
-
-Oi Gemini, estou te enviando os PDFs com relatórios técnicos do TradingView para os seguintes ativos:
-
-* Ethereum (ETH)
-* Aptos (APT)
-* ChainLink (LINK)
-* Mercado Livre (MELI34)
-* Solana (SOL)
-* Apple (AAPL34)
-* Alibaba (BABA34)
-
-Além disso, tenho dados recentes do top 65 criptomoedas e do top 100 ações por valor de mercado, incluindo:
-
-Criptomoedas:
-
-* Nome, Preço, 1h %, 24h %, 7d %, Cap. de Mercado, Volume(24h), Fornecimento Circulante, Últimos 7 Dias
-
-Ações:
-
-* País/Região, Valor de Mercado, Preço, Variação %, Volume Rel., P/L, EPS dil TTM, Crescimento EPS dil. 12M Ano a Ano, Div. Yield %, Setor, Classificação dos Analistas
-
-Preciso que você faça o seguinte:
-
-### 🔹 1. Estruture a saída de forma clara e organizada
-
-Para cada ativo dos PDFs, me entregue um bloco de texto neste formato:
-
-Ativo: \[nome]
-Preço atual: \[se disponível no PDF]
-Preço estratégico de compra: \[usar como referência]
-
-* ETH → US$ 4.000
-* SOL → US$ 165
-* LINK → US$ 22
-* APT → US$ 4,00
-* AAPL34 → R\$ 59
-* MELI34 → R\$ 103
-* BABA34 → R\$ 22,50–23,50
-
-Resumo técnico:
-
-* Diário (1D): \[sinal de compra/venda/manter + principais motivos]
-* Semanal (1S): \[idem]
-* Mensal (1M): \[idem]
-
-Observações: \[anotações relevantes, divergências entre indicadores, suporte/resistência]
-
----
-
-### 🔹 2. Foque no essencial
-
-* Resuma Osciladores, Médias Móveis e Pontos de Pivô em insights curtos (não copie tabela inteira).
-* Destaque contradições relevantes (ex.: tendência geral de baixa, mas médias móveis fortes em alta).
-* Aponte sinais de risco (ex.: sobrecompra, perda de força no curto prazo).
-
----
-
-### 🔹 3. Adapte para a estratégia já definida
-
-* Use os preços estratégicos de compra como referência.
-
-  * Se o ativo está próximo ou abaixo do preço estratégico, marque como “🚨 oportunidade próxima”.
-  * Se está longe, marque como “ainda distante do ponto de entrada”.
-
-* Para os top 65 criptos e top 100 ações, avalie:
-
-  * Existe algum ativo com melhor ponto de entrada ou maior potencial de valorização do que os que já monitoramos?
-  * Se sim, indique nome, preço atual, preço estratégico recomendado e justificativa técnica resumida.
-  * Classifique como “🚨 oportunidade potencial” ou “📌 monitorar”.
-
----
-
-### 🔹 4. Entregue em texto corrido e claro
-
-* O objetivo é eu poder copiar sua resposta e mandar direto para o ChatGPT, para que ele avalie minha situação de investimento.
-* Sem introduções longas ou explicações genéricas. Apenas análise condensada, padronizada e interpretável, pronta para uso.
-
---- 
-        </div>
-        <p class="hint">Clique no bloco acima para copiar o texto inteiro.</p>
+    <!-- Assets selector -->
+    <div class="card" style="margin-bottom:18px;">
+      <h2 style="text-align:center">Selecionar ativos para análise</h2>
+      <div class="controls">
+        <button class="smallbtn" id="selectAll">Selecionar todos</button>
+        <button class="smallbtn" id="clearAll">Limpar tudo</button>
+        <button class="smallbtn" id="saveBtn">Salvar seleção</button>
       </div>
 
-      <div class="card" style="flex:1; min-width:300px;">
+      <!-- PRIORITY: user-requested assets (rendered first) -->
+      <div id="priorityContainer" class="priority-list" aria-live="polite"></div>
+
+      <!-- remaining assets -->
+      <div id="assetsContainer" class="assets" aria-live="polite"></div>
+      <p class="hint">Ao alterar seleção, os blocos do Gemini, ChatGPT e o script serão atualizados automaticamente. A última seleção é salva no navegador.</p>
+    </div>
+
+    <!-- Gemini and ChatGPT side-by-side -->
+    <div class="side-by-side" style="margin-bottom:12px;">
+      <div class="block card">
+        <h2>1. Ao Gemini</h2>
+        <div style="margin-bottom:6px"><a class="url" href="https://gemini.google.com/app?hl=pt-BR" target="_blank" rel="noopener noreferrer">Abrir Gemini</a></div>
+        <div id="geminiBlock" class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+💬 Instruções para o Gemini – (cole o template ao editar)
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="smallbtn" id="copyGemini">Copiar Gemini (gerado)</button>
+          <button class="smallbtn" id="toggleGeminiTemplate">Editar template</button>
+        </div>
+        <textarea id="geminiTemplate" class="template" placeholder="Cole aqui o template do Gemini com {{ASSETS}} onde quer a lista" style="display:none"></textarea>
+        <p class="hint">Edite o template e salve. O botão 'Copiar Gemini' pega o prompt já preenchido com os ativos selecionados.</p>
+      </div>
+
+      <div class="block card">
         <h2>2. Ao ChatGPT</h2>
-        <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
-💬 Mensagem de início de conversa para o ChatGPT
+        <div style="margin-bottom:6px"><a class="url" href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer">Abrir ChatGPT</a></div>
+        <div id="chatgptBlock" class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+💬 Mensagem de início de conversa para o ChatGPT — (cole o template ao editar)
+        </div>
 
-Oi ChatGPT! Vamos dar continuidade à nossa análise de investimentos. Quero que você use o contexto da minha estratégia já definida e o resumo técnico que o Gemini me entregou (logo abaixo), incluindo também a avaliação do top 65 criptomoedas e top 100 ações, para avaliar minha situação atual e possíveis alternativas melhores.
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="smallbtn" id="copyChat">Copiar ChatGPT (gerado)</button>
+          <button class="smallbtn" id="toggleChatTemplate">Editar template</button>
+        </div>
+        <textarea id="chatTemplate" class="template" placeholder="Cole aqui o template do ChatGPT com {{ASSETS}} onde quer a lista" style="display:none"></textarea>
+        <p class="hint">Edite o template e salve. O botão 'Copiar ChatGPT' pega o prompt já preenchido com os ativos selecionados.</p>
+      </div>
+    </div>
 
-📌 Minha estratégia base:
+    <!-- WebScraping block -->
+    <div class="card" style="margin-top:6px;">
+      <h2 style="text-align:center">3. WebScraping (Python)</h2>
+      <div id="scriptBlock" class="text-block" tabindex="0" title="Clique para copiar" data-copy>
+# Placeholder — o script será atualizado com a lista de símbolos selecionados
+      </div>
+      <div style="margin-top:8px;text-align:center"><button class="btn" id="copyScriptBtn">Copiar script Python</button></div>
+    </div>
 
-* Apple (AAPL34) → seguro, comprar abaixo de R\$ 59.
-* Ethereum (ETH) → seguro, comprar perto de US$ 4.000.
-* Solana (SOL) → relativamente seguro, comprar perto de US$ 165.
-* Alibaba (BABA34) → relativamente seguro, comprar entre R\$ 22,50–23,50.
-* Chainlink (LINK) → alto potencial, comprar perto de US$ 22.
-* Aptos (APT) → alto potencial/alto risco, comprar perto de US$ 4,00.
-* Mercado Livre (MELI34) → grande potencial, comprar perto de R\$ 103.
+    <footer>
+      <p style="font-family:Garamond,serif;margin-top:8px;text-align:center">O sucesso não é um acidente. É uma escolha que você faz, todos os dias.</p>
+    </footer>
+  </div>
 
-🎯 Resumo da estratégia geral:
+  <div id="toast" style="position:fixed;right:18px;bottom:18px;background:#06b6d4;color:#042023;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.5);transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s ease">Copiado!</div>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== config / data =====
+  // PRIORITY assets (user requested) - shown ABOVE the main list
+  const PRIORITY_URLS = [
+    { sym: "AAPL34", name: "Apple 🍎", url: "https://br.tradingview.com/symbols/NASDAQ-AAPL/technicals/" },
+    { sym: "ETH", name: "Ethereum ✨", url: "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE" },
+    { sym: "SOL", name: "Solana ☀️", url: "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE" },
+    { sym: "BABA34", name: "Alibaba 🛍️", url: "https://br.tradingview.com/symbols/NYSE-BABA/technicals/" },
+    { sym: "LINK", name: "Chainlink ⛓️", url: "https://br.tradingview.com/symbols/LINKUSD/technicals/?exchange=BINANCE" },
+    { sym: "SUI", name: "Sui 🌊", url: "https://br.tradingview.com/symbols/SUIUSD/technicals/?exchange=BINANCE" },
+    { sym: "RENDER", name: "Render 🎨", url: "https://br.tradingview.com/symbols/RENDERUSD/technicals/?exchange=BINANCE" },
+    { sym: "MELI34", name: "MercadoLibre 🛒", url: "https://br.tradingview.com/symbols/NASDAQ-MELI/technicals/" }
+  ];
+
+  // Main (long) list copied from your provided list (subset included here; you can paste entire list if desired)
+  const URL_LIST = [
+    "https://br.tradingview.com/symbols/BTCUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/XRPUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/TUSDUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/BNBUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/USDCUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/STETHUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/DOGEUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ADAUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/TRXUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/HBARUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/SUIUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/BCHUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/AVAXUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/LTCUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/LINKUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/DOTUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/UNIUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/AAVEUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ENAUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ETCUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/TAOUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/NEARUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/APTUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ONDOUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ARBUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ICPUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/POLUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ALGOUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/VETUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/ATOMUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/SHIBUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/PEPEUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/CROUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/TONUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/HYPERUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/WBTCUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/WSTETHUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/WBEETHUSD/technicals/?exchange=BINANCE",
+    "https://br.tradingview.com/symbols/NASDAQ-NVDA/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-MSFT/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-AAPL/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-GOOGL/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-AMZN/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-META/technicals/",
+    "https://br.tradingview.com/symbols/TADAWUL-2222/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-AVGO/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-TSLA/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-TSM/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-JPM/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-WMT/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-TMO/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-LLY/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-PG/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-ORCL/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-MA/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-NFLX/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-BABA/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-DIS/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-XOM/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-HD/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-PFE/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-BAC/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-KO/technicals/",
+    "https://br.tradingview.com/symbols/SSE-601398/technicals/",
+    "https://br.tradingview.com/symbols/SSE-601288/technicals/",
+    "https://br.tradingview.com/symbols/KRX-005930/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-CVX/technicals/",
+    "https://br.tradingview.com/symbols/XETR-SAP/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-BHP/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-HSBC/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-ASML/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-GE/technicals/",
+    "https://br.tradingview.com/symbols/USOTC-LVMUY/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-SMCI/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-CRM/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-CSCO/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-AMD/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-WFC/technicals/",
+    "https://br.tradingview.com/symbols/HKEX-0268/technicals/",
+    "https://br.tradingview.com/symbols/SSE-600519/technicals/",
+    "https://br.tradingview.com/symbols/SSE-601997/technicals/",
+    "https://br.tradingview.com/symbols/HKEX-1810/technicals/",
+    "https://br.tradingview.com/symbols/HKEX-1299/technicals/",
+    "https://br.tradingview.com/symbols/HKEX-0001/technicals/",
+    "https://br.tradingview.com/symbols/TSE-7203/technicals/",
+    "https://br.tradingview.com/symbols/SSE-600000/technicals/",
+    "https://br.tradingview.com/symbols/EURONEXT-KER/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-AZN/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-UL/technicals/",
+    "https://br.tradingview.com/symbols/TSE-7267/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-RY/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-BIDU/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-MS/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-KMB/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-ABT/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-AXP/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-VIV/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-CGC/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-BA/technicals/",
+    "https://br.tradingview.com/symbols/NYSE-CVS/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-ADBE/technicals/",
+    "https://br.tradingview.com/symbols/NASDAQ-CMCSA/technicals/"
+  ];
+
+  const STORAGE_KEY = 'ativosSelecionados_v2';
+  const TEMPLATE_KEY_G = 'template_gemini_v1';
+  const TEMPLATE_KEY_C = 'template_chat_v1';
+  const assetsContainer = document.getElementById('assetsContainer');
+  const priorityContainer = document.getElementById('priorityContainer');
+
+  // friendly name maps (complete enough for common symbols)
+  const NAME_MAP = {
+    BTC: 'Bitcoin 🟠', ETH: 'Ethereum ✨', XRP: 'XRP 💧', TUSD: 'TrueUSD ✅', BNB: 'BNB 💰', SOL: 'Solana ☀️',
+    CUSD: 'Celo Dollar 🌳', STETH: 'Lido Staked ETH 🧊', DOGE: 'Dogecoin 🐕', ADA: 'Cardano ₳', TRX: 'TRON 🌐',
+    HBAR: 'Hedera 🌿', SUI: 'Sui 🌊', BCH: 'Bitcoin Cash 💚', AVAX: 'Avalanche 🏔️', LTC: 'Litecoin ⚪',
+    LINK: 'Chainlink ⛓️', DOT: 'Polkadot 🔴', UNI: 'Uniswap 🦄', AAVE: 'Aave 👻', ENA: 'Ethena 💲',
+    ETC: 'Ethereum Classic 🗿', TAO: 'Bittensor 🧠', NEAR: 'NEAR Protocol 🇳', APT: 'Aptos ⚛️', ONDO: 'Ondo 🏦',
+    AR: 'Arweave 💾', ICP: 'Internet Computer 🖥️', POL: 'Polygon 🔺', ALGO: 'Algorand ♾️', VET: 'VeChain ⛓️',
+    ATOM: 'Cosmos ⚛️', SHIB: 'Shiba Inu 🐕', PEPE: 'Pepe 🐸', CRO: 'Cronos ⚛️', TON: 'The Open Network 💎',
+    HYPER: 'Hyper ⚡', WBTC: 'Wrapped Bitcoin 🌯', WSTETH: 'Wrapped Staked ETH 🎁', WBEETH: 'Wrapped BETH 🎀',
+    USDT: 'Tether ₮', USDC: 'USD Coin 💲'
+  };
+
+  const NAME_MAP_STOCKS = {
+    NVDA: 'NVIDIA 🟩', MSFT: 'Microsoft 🪟', AAPL: 'Apple 🍎', AAPL34: 'Apple BDR 🍎', GOOGL: 'Alphabet 🔍',
+    AMZN: 'Amazon 📦', META: 'Meta Platforms ♾️', '2222': 'Aramco 🇸🇦', AVGO: 'Broadcom 📡', TSLA: 'Tesla 🚘',
+    TSM: 'Taiwan Semiconductor 🇹🇼', JPM: 'JPMorgan 🏦', WMT: 'Walmart 🛒', TMO: 'Thermo Fisher 🔬',
+    LLY: 'Eli Lilly 💊', PG: 'Procter & Gamble ✨', ORCL: 'Oracle 💻', MA: 'Mastercard 💳', NFLX: 'Netflix 🍿',
+    BABA: 'Alibaba 🛍️', BABA34: 'Alibaba BDR 🛍️', MELI: 'MercadoLibre 🛒', MELI34: 'MercadoLibre BDR 🛒'
+  };
+
+  // helper: extract symbol from tradingview url
+  function extractSymbol(url){
+    try {
+      const m = url.match(/symbols\/([^\/]+)/i);
+      if(!m) return url;
+      let raw = m[1];
+      // If contains exchange prefix like NASDAQ-NVDA -> take latter part
+      if(raw.includes('-')) raw = raw.split('-').pop();
+      // remove common fiat/ticker suffixes
+      raw = raw.replace(/(USD|USDT|BUSD|USDC|BTC|ETH)$/i,'');
+      return raw.toUpperCase();
+    } catch (e){
+      return url;
+    }
+  }
+
+  function detectType(url){
+    const stockMarkers = ['NASDAQ','NYSE','TSE','SSE','HKEX','KRX','TADAWUL','EURONEXT','USOTC','XETR'];
+    const U = url.toUpperCase();
+    for(const m of stockMarkers) if(U.includes(m)) return 'Ação';
+    return 'Cripto';
+  }
+
+  // render a single asset checkbox element
+  function makeAssetElement(sym, name, url, indexPrefix){
+    const id = `${indexPrefix}_${sym}`;
+    const div = document.createElement('div');
+    div.className = 'asset-item';
+    div.innerHTML = `<label for="${id}"><input id="${id}" type="checkbox" data-url="${url}" data-sym="${sym}"> <div><div style="font-weight:700">${sym}: ${name}</div><div style="opacity:.7;font-size:12px;margin-top:4px">(${detectType(url)})</div></div></label>`;
+    return div;
+  }
+
+  // render assets checkboxes: priority first, then main list
+  function renderAssets(){
+    priorityContainer.innerHTML = '';
+    assetsContainer.innerHTML = '';
+
+    // render priority list
+    PRIORITY_URLS.forEach((o,i)=>{
+      const prettyName = o.name || (NAME_MAP[o.sym] || NAME_MAP_STOCKS[o.sym] || o.sym);
+      const item = document.createElement('div');
+      item.className = 'priority-item';
+      item.innerHTML = `<label style="cursor:pointer"><input type="checkbox" data-url="${o.url}" data-sym="${o.sym}"> <div style="font-weight:700">${o.sym}: ${prettyName}</div></label>`;
+      priorityContainer.appendChild(item);
+    });
+
+    // render main list (skipping duplicates based on sym)
+    const seen = new Set(PRIORITY_URLS.map(x=>x.sym));
+    URL_LIST.forEach((u,i)=>{
+      const sym = extractSymbol(u);
+      if(seen.has(sym)) return; // skip if already in priority
+      const type = detectType(u);
+      const name = (type==='Cripto' ? (NAME_MAP[sym] || sym) : (NAME_MAP_STOCKS[sym] || sym));
+      const el = makeAssetElement(sym, name, u, 'asset');
+      assetsContainer.appendChild(el);
+    });
+  }
+
+  // load saved selection + templates
+  function loadSelection(){
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    // attach listeners to priority items and main list after render
+    document.querySelectorAll('#priorityContainer input[type=checkbox]').forEach(chk=>{
+      chk.checked = saved.includes(chk.dataset.sym);
+      chk.addEventListener('change', onSelectionChange);
+    });
+    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(chk=>{
+      chk.checked = saved.includes(chk.dataset.sym);
+      chk.addEventListener('change', onSelectionChange);
+    });
+
+    const gtpl = localStorage.getItem(TEMPLATE_KEY_G) || '';
+    const ctpl = localStorage.getItem(TEMPLATE_KEY_C) || '';
+    document.getElementById('geminiTemplate').value = gtpl;
+    document.getElementById('chatTemplate').value = ctpl;
+
+    updateAllBlocks();
+  }
+
+  function saveSelection(vals){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(vals));
+  }
+
+  function onSelectionChange(){ updateAllBlocks(); }
+
+  function getSelected(){
+    const selects = Array.from(document.querySelectorAll('#priorityContainer input:checked, #assetsContainer input:checked'));
+    return selects.map(c=>({
+      sym:c.dataset.sym,
+      url:c.dataset.url,
+      type: detectType(c.dataset.url),
+      name: getPrettyName(c.dataset.sym, c.dataset.url)
+    }));
+  }
+
+  function getPrettyName(sym,url){
+    const type = detectType(url);
+    return (NAME_MAP[sym] || NAME_MAP_STOCKS[sym] || sym);
+  }
+
+  // build outputs
+  function updateAllBlocks(){
+    const selected = getSelected();
+
+    // --- header + common functions for templates ---
+    function getCurrentDateTime() {
+        const now = new Date();
+        const pad = (n) => n.toString().padStart(2, '0');
+        return `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
+
+    const header = `========================================
+📊 INÍCIO DE ANÁLISE DIÁRIA — NOVO DIA
+Data/Hora: ${getCurrentDateTime()}
+========================================\n\n`;
+
+    const assetsForPrompt = selected.length > 0 ? selected.map(s => `${s.sym}: ${s.name} — ${s.url}`).join('\n') : '(nenhum ativo selecionado)';
+
+    // Gemini template (uses current selection)
+    const gemTpl = `
+INSTRUÇÕES DIÁRIAS — BRIEFING MATINAL (PDFs/imagens + top lists) — RESPOSTA EM PORTUGUÊS
+Ativos para análise:
+${assetsForPrompt}
+
+INSTRUÇÕES DIÁRIAS — BRIEFING MATINAL (PDFs/imagens + top lists) — RESPOSTA EM PORTUGUÊS
+Olá Gemini — vou anexar PDFs (prints/imagens) com relatórios técnicos (TradingView e similares) e um PDF com a lista “top” (vários ativos). Use OCR para extrair todo o conteúdo textual e técnico das imagens. Os PDFs são fonte prioritária para sinais 1D/1S/1M — confirme sempre com dados de mercado em tempo real (preço, volume, book depth).
+Objetivo: entregar um briefing matinal diário com panorama acionável e muito detalhado (técnico + on-chain/dev + notícias) para eu gerenciar os ativos. Eu vou reenviar a sua saída para um assistente (ChatGPT) para revisão; portanto produza (A) um texto humano direto e (B) um JSON padronizado. O nível de detalhe deve ser o mesmo todos os dias, mesmo se eu mudar os ativos.
+
+0) Alocação de referência (estado atual — mutável)
+Cripto (total da camada cripto):
+ETH — 45%
+SOL — 30%
+LINK — 15%
+SUI — 5%
+RNDR — 5%
+
+Ações/BDR (total da camada ações):
+BABA34 — 35%
+AAPL34 — 35%
+MELI34 — 30%
+Nota: esses % são referência da “visão atual” e podem ser ajustados — não trate como ordem fixa.
+
+1) Prioridades / fontes (ordem de importância)
+PDFs (OCR) — extraia RSI, MACD, STOCHRSI, SMA20/50/200, pivôs S/R, comentários do analista e anotações. Cite página/arquivo.
+Notícias (últimos 30 dias) — CoinDesk, The Block, Cointelegraph, Reuters, Bloomberg, sites oficiais, X/Twitter oficial do projeto. Link + data.
+On-chain & dev (últimos 90 dias) — commits GitHub, TVL (DefiLlama), active addresses, grandes transfers, vesting schedules.
+Dados de mercado realtime — preço, marketcap, volume24h, book depth nas exchanges principais (estimate slippage).
+
+2) Ativos fixos (sempre priorizar nos blocos)
+Os que sempre quero no briefing — mesmo que eu troque depois: ETH, SOL, LINK, SUI, RNDR, BABA34, AAPL34, MELI34.
+Além disso, faça varredura automática do PDF “top lists” e destaque até 5 ativos novos que mereçam atenção hoje.
+
+3) Saída HUMANA (texto curto, prático — formato obrigatório)
+Comece por HEADLINE (1 linha) — tema do dia, com a mensagem crucial (ex.: “Cripto em correção; BABA testando suporte; atenção a unlocks em X/X/2025”).
+Em seguida, entregue exatamente estes blocos em ordem:
+A) Market Snapshot (3 bullets)
+Movimento IP (ex.: “cap. cripto -1.7% 24h; S&P futures +0.5; dólar +0.3%”)
+Macro / evento do dia (juros, CPI, FED, earnings relevantes)
+Top 3 riscos do dia (ex.: unlocks, decisão regulatória, earnings)
+
+B) Top Movers (Cripto) — 5 maiores variações 24h
+Linha por ativo: Ticker — %24h — motivo curto — ação sugerida (Buy / Wait / Monitor) — link
+C) Top Movers (Ações/BDR) — 5 maiores variações 24h
+Mesmo formato.
+D) Blocos monitorados (um por ativo prioritário — template AUTOFILL; repetir para cada ativo listado em §2)
+Ativo: [NOME] — [TICKER]
+Preço atual (valor — fonte — timestamp)
+Preço estratégico de referência (do usuário)
+Distância até o alvo (%)
+Resumo técnico (PRIORIDADE: PDF → realtime):
+  - 1D: [Compra / Venda / Neutro] — 1 frase com o sinal principal extraído do PDF
+  - 1S: [Compra / Venda / Neutro] — 1 frase
+  - 1M: [Compra / Venda / Neutro] — 1 frase
+Observações críticas:
+  - Divergências (PDF vs realtime)
+  - Suportes / Resistências chave (preços)
+  - Eventos on-chain / unlocks (datas + %)
+  - Notas do PDF (arquivo e página)
+Ação recomendada (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop % sugerido
+Confiança: [Alta / Média / Baixa]
+Principais fontes (máx 4): [PDF_nome_página, CoinGecko link, DefiLlama, GitHub]
+Regra de proximidade (automatizada):
+Dentro do range user (ex.: BABA 22,50–23,50) → “🚨 oportunidade próxima”
+Até 10% acima → “Próximo”
+10% acima → “Ainda distante”
+
+E) Panorama do top-list (varredura rápida)
+Até 5 ativos do PDF top-list que merecem atenção HOJE (1 linha por ativo: símbolo — motivo — ação sugerida).
+
+F) Riscos / Alerts Imediatos
+Lista com eventos críticos (unlock % + data; earnings/regulatory; hard forks) e sugestão de alert (30/7/1 dias).
+
+G) Execução prática (3 ações imediatas)
+Três ações de 1 linha (ex.: ordens-limit sugeridas, alerts, venda parcial).
+
+H) Confidence & fontes
+Confidence geral do briefing (Alta/Média/Baixa) + links (2–4) com timestamps.
+
+4) Saída MÁQUINA (JSON) — OBRIGATÓRIO
+... (JSON schema mantido como no prompt original)
+
+5) Extrações obrigatórias dos PDFs
+RSI14, MACD hist, STOCHRSI, SMA20/50/200 (valores), Pivot S/R, e todo comentário textual do analista (transcrever). Se não legível, escreva “não disponível (PDF: nome, p.X)”.
+
+6) Verificações on-chain / dev (se aplicável)
+Próximos unlocks / vesting: datas + % por evento (90/180/365d).
+TVL changes (>10% dia) e active addresses (90d).
+GitHub commits 90d (variação %).
+Grandes transfers (> US$1M) nas últimas 72h (se token cripto).
+
+7) Liquidez e execução
+Para cada sugestão de compra, estimate slippage: calcule book depth nas 2 maiores exchanges e estime preço de execução para ordem equivalente a 0.5% do marketcap. Informe spread aproximado.
+
+8) Follow-ups automáticos (pré-criados)
+Se o briefing identificar eventos críticos (unlock >3% nos próximos 30 dias; falha de rede; investigação regulatória), gere automaticamente estes 3 arquivos:
+ A) CSV com symbol,date,pct_unlock,source (High Risk)
+ B) Orderbook snapshot (Binance/Coinbase) para calibração de slippage
+ C) Feed de notícias + tweets oficiais (últimos 30 dias) — links + datas
+
+9) Regras / limitações do usuário
+Não proponha mudanças permanentes de tese no briefing diário. Sinalize opções/alternativas apenas; decisões estratégicas principais serão pedidas em relatórios separados.
+Mantenha linguagem curta, bulletizada e prática — sempre cite fontes com timestamps.
+
+10) Entregáveis diários mínimos
+Texto humano (1 página) com os blocos A→H.
+JSON completo (schema acima).
+Lista de alerts prontos (datas + ação).
+Links e timestamps das 3 principais fontes usadas.
+Indicação “PRIORIDADE” se houver evento que exija ação IMEDIATA.
+`;
+
+    const gemText = header + gemTpl;
+
+    // ChatGPT template
+    const chatTpl = `
+PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)
+Ativos:
+${assetsForPrompt}
+
+**PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)**
+Olá — vou colar abaixo dois blocos: (1) saída/relatório do Gemini (análise feita pelo Gemini) e (2) meu Resumo do Investimento com posições atuais. Use ambos como insumos principais. Além disso, integre notícias e dados atuais (últimas 48–72 horas) e checks on-chain/dev (últimos 90 dias) quando relevante. Cite todas as fontes com link + data.
+**IMPORTANTE — regras de conduta:**
+Trate tudo como tático/operacional; não proponha mudanças estratégicas permanentes sem pedido explícito.
+
+Se faltar dado crítico (preço, unlock %), diga “DADO FALTANTE — pedir ao Gemini” e liste o que pedir.
+
+Seja direto, objetivo e claro — pronto para eu executar ordens. Use humor leve e sagaz só se couber (uma linha no máximo).
+
+---
+
+### 1) Dados que vou colar agora (COLAR AQUI)
+
+**A. Saída do Gemini (análise feita pelo Gemini):**
+[COLE AQUI A SAÍDA DO GEMINI]
+
+**B. Meu Resumo do Investimento (cole abaixo):**
+[COLE AQUI O RESUMO DO INVESTIMENTO — exemplo abaixo para formato padrão]
+
+---
+
+### 2) Estratégia base (sempre considerar)
+
+Use estes alvos e tese como referência — a alocação atual aproximada (mutável) serve só para análise de risco/aloc:
+
+**Preços estratégicos de referência:**
+* AAPL34 R$59
+* ETH US$4.000
+* SOL US$165
+* BABA34 R$22,50–23,50
+* LINK US$22
+* SUI US$2.616
+* RENDER U$2,76
+* MELI34 R$103
+
+**Alocação/visão atual (referência):**
+* Cripto: ETH 45% / SOL 30% / LINK 15% / SUI 5% / RNDR 5%
+* Ações: BABA34 35% / AAPL34 35% / MELI34 30%
+
+**Tese curta (mantenha):**
 * Apple + Ethereum → pilares de segurança.
 * Solana + Alibaba → meio-termo (risco controlado, potencial bom).
-* Chainlink + Aptos + MELI → alto potencial, risco maior.
-
-⚡ Sua tarefa com o resumo técnico do Gemini e dados adicionais:
-
-1. Dizer quais ativos já estão no ponto de compra.
-2. Quais estão próximos do ponto de entrada estratégico.
-3. Quais estão longe do ponto de entrada.
-4. Indicar se algum cenário mudou em relação à minha estratégia base.
-5. Avaliar o top 65 criptos e top 100 ações: se há ativos com melhor potencial ou ponto de entrada mais interessante que os ativos já monitorados.
-6. Me dar um parecer prático: comprar, esperar, ou apenas monitorar.
-7. Destacar sinais de risco ou oportunidades excepcionais.
-
---- 
-
-📄 Resumo técnico (do Gemini + dados de mercado):
-abcdef
-
---- 
-
-👉 A partir disso, quero que você me dê uma análise direta, condensada, prática e alinhada com a estratégia que já definimos.
+* Chainlink + Sui + Render + MELI → alto potencial, risco maior.
 
 ---
-        </div>
-        <p class="hint">Clique no bloco acima para copiar o texto inteiro.</p>
-      </div>
-    </div>
 
-    <div class="card" style="margin-top:12px;">
-      <h2>3. WebScraping (Python)</h2>
-      <div class="text-block" tabindex="0" title="Clique para copiar" data-copy>
-import os
+### 3) Entregáveis (formato obrigatório — responda em português)
+
+**A. HEADLINE (1 linha)** — tema do dia (ex.: “Cripto corrigindo; BABA testando suporte; olhar unlocks em X”).
+
+**B. MARKET SNAPSHOT (3 bullets)**
+* Movimentos macro/mercado (cap. cripto 24h, US futures, dólar/juros).
+* Evento macro do dia (CPI, FED, earnings relevantes).
+* Top 3 riscos que afetam meu portfólio hoje.
+
+**C. TOP MOVERS (Cripto e Ações)** — 5 maiores variações 24h (uma linha cada): Ticker — %24h — motivo curto — ação sugerida — link.
+
+**D. BLOCOS DOS ATIVOS MONITORADOS** — para cada ativo que monitoro hoje (padrão: ETH, SOL, LINK, SUI, RNDR, BABA34, AAPL34, MELI34 — adapte se eu mudar). Para cada ativo entregue exatamente este bloco:
+
+Ativo: [NOME] — [TICKER]
+Preço atual (fonte + timestamp): [valor]
+Preço-alvo do usuário: [valor]
+% em relação ao alvo: [+X% / -Y%]  <-- calcule automaticamente
+Status: [🚨 oportunidade próxima / Próximo / Ainda distante]  <-- regras abaixo
+Resumo técnico (PRIORIDADE: Gemini → realtime):
+* 1D: [Compra / Venda / Neutro] — 1 frase (indicador-chave da análise)
+* 1S: [Compra / Venda / Neutro] — 1 frase
+* 1M: [Compra / Venda / Neutro] — 1 frase
+Observações críticas (1–2 bullets):
+* divergências (Gemini vs realtime), unlocks (datas + %), falhas de rede, earnings/regulação
+Ação prática (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop% sugerido
+Confiança: [Alta / Média / Baixa]
+Fonte(s) (máx 3): [link / “Gemini análise”]
+
+**Regras para Status (automático):**
+* Dentro do range-alvo (p.ex. BABA entre R$22,50–23,50) → “🚨 oportunidade próxima”
+* Até 10% acima do alvo → “Próximo”
+* 10% acima do alvo → “Ainda distante”
+
+---
+
+**E. SUBSTITUIÇÃO/ALTERNATIVAS (tático)**
+* Indique alternativas táticas SUGERIDAS (SUI, RNDR) com:
+* Range de entrada sugerido (USD) — justificativa técnica curta
+* Stop % sugerido e TPs (curto/médio)
+* 3 opções de alocação caso eu queira substituir um ativo de alto risco (Conservadora / Balanceada / Agressiva) mantendo natureza tática.
+
+**F. INSIGHTS & NOTÍCIAS (últimas 48–72h)**
+* Resuma 3 notícias mais relevantes que afetam meus ativos com link + data e rápido impacto (positivo/negativo/neutro).
+* Se não houver notícias relevantes, escreva “sem notícias fundamentais nas últimas 72h”.
+
+**G. ON-CHAIN / DEV CHECKS (quando aplicável)**
+* Próximos unlocks relevantes (datas + %), TVL movimentos relevantes, dev_commits_90d (variação %), grandes transfers >US$1M (últimas 72h). Cite fonte.
+
+**H. LIQUIDEZ / EXECUÇÃO (quando sugerir compra)**
+* Para cada ordem sugerida, estime slippage para ordem de ~0.5% do marketcap nas 2 maiores exchanges (bid/ask depth) e proponha ordem-limit em vez de market se slippage >0.5%.
+
+**I. RISCOS & ALERTS (listagem pronta)**
+* Lista dos eventos que precisam de alert (unlocks >1% nos próximos 90 dias; auditoria falha; investigação regulatória) com flags Notify 30/7/1 dias.
+
+**J. AÇÕES IMEDIATAS (3 linhas — para eu executar agora)**
+* Ex.: “1) Colocar limit BABA34 R$XX; 2) DCA ETH 25% agora, 75% abaixo de US$X; 3) Colocar stop móvel 7% em BABA restante.”
+
+**K. CONFIDENCE & JSON**
+* Confidence geral (Alta/Média/Baixa) + JSON com schema mínimo (symbol, price, target, pct_vs_target, action, stop, confidence). Inclua o JSON ao final da resposta.
+
+`;
+
+    const chatText = header + chatTpl;
+
+    // update visible blocks (title/content placeholder as requested)
+    document.getElementById('geminiBlock').textContent = gemText || "💬 Instruções para o Gemini – (cole o template ao editar)";
+    document.getElementById('chatgptBlock').textContent = chatText || "💬 Mensagem de início de conversa para o ChatGPT — (cole o template ao editar)";
+
+    // build Python script dynamic part: symbols list (use selection)
+    const scriptEl = document.getElementById('scriptBlock');
+    let pythonScript = getPythonHeader();
+
+    if(selected.length === 0){
+      pythonScript += '\n# Nenhum ativo selecionado\nsymbols = []\n';
+    } else {
+      const lines = selected.map(s=>`    ("${s.sym}", "${s.url}", "${s.sym} - Sinais 1D-1W-1M.pdf")`);
+      pythonScript += '\n# --- Símbolos gerados automaticamente a partir da seleção ---\n';
+      pythonScript += 'symbols = [\n' + lines.join(',\n') + '\n]\n';
+    }
+
+    pythonScript += getPythonMainBlock();
+    scriptEl.textContent = pythonScript;
+
+    // store generated payload for copy
+    window._generatedGemini = gemText;
+    window._generatedChat = chatText;
+    window.webScriptText = pythonScript;
+
+    // save selection automatically (store symbols only)
+    saveSelection(selected.map(s=>s.sym));
+  }
+
+  // === helper returning Python header (imports + helpers) ===
+  function getPythonHeader(){
+    return `import os
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -229,6 +721,8 @@ chrome_options.add_argument("--headless=new")
 chrome_options.add_argument("--hide-scrollbars")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--no-sandbox")
+# evitar problemas de sandbox em alguns ambientes
+chrome_options.add_argument("--disable-dev-shm-usage")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 wait = WebDriverWait(driver, 15)
@@ -242,29 +736,23 @@ TIMEFRAME_XPATHS = {
 
 # ---------- Helpers ----------
 def click_timeframe(xpath, timeout=8):
-    """Clica no botão timeframe via JS e tenta aguardar indicação de seleção (se houver)."""
+    \"\"\"Clica no botão timeframe via JS e tenta aguardar indicação de seleção (se houver).\"\"\"
     try:
         el = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
         driver.execute_script("arguments[0].click();", el)
-        # tentativa de esperar classe 'active' ou 'selected' aparecer — se não, seguimos após sleep
         try:
             WebDriverWait(driver, 3).until(
                 lambda d: ('active' in el.get_attribute("class") or 'selected' in el.get_attribute("class") or el.is_displayed())
             )
         except Exception:
             pass
-        time.sleep(1.5)  # garante que a página/JS atualizem
+        time.sleep(1.5)
         return True
     except Exception as e:
         print(f"[click_timeframe] falha ao clicar {xpath}: {e}")
         return False
 
 def save_full_screenshot_tradingview(filename, width=1888, max_height=20000):
-    """
-    Salva screenshot full-page forçando largura 'width' para páginas TradingView (dados técnicos).
-    Retorna caminho do arquivo salvo.
-    """
-    # calcula dimensões reais
     page_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
     page_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
     use_w = max(width, page_w)
@@ -277,7 +765,6 @@ def save_full_screenshot_tradingview(filename, width=1888, max_height=20000):
     return path
 
 def save_full_screenshot_overview(url, filename, target_width=4950, max_height=12000, wait_after_load=4):
-    """Navega URL e salva screenshot forçando largura target_width."""
     driver.get(url)
     time.sleep(wait_after_load)
     page_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
@@ -295,7 +782,7 @@ def create_pdf_from_images_list(image_paths, pdf_name):
     pdf_path = os.path.join(output_folder, pdf_name)
     if os.path.exists(pdf_path):
         os.remove(pdf_path)
-    pdf = FPDF(unit="pt", format="A4")
+    pdf = FPDF(unit=\"pt\", format=\"A4\")
     page_w, page_h = pdf.w_pt, pdf.h_pt
     for image_path in image_paths:
         img = Image.open(image_path)
@@ -307,111 +794,143 @@ def create_pdf_from_images_list(image_paths, pdf_name):
         pdf.add_page()
         pdf.image(image_path, x, y, new_w, new_h)
     pdf.output(pdf_path)
-    print(f"[PDF] Gerado: {pdf_path}")
+    print(f\"[PDF] Gerado: {pdf_path}\")
     return pdf_path
 
 def safe_remove(path):
     try:
         if os.path.exists(path):
             os.remove(path)
-            print(f"[Removido] {path}")
+            print(f\"[Removido] {path}\")
     except Exception as e:
-        print(f"[Erro ao remover {path}]: {e}")
+        print(f\"[Erro ao remover {path}]: {e}\")
+`;
+  }
+
+  // Python main block (uses symbols variable)
+  function getPythonMainBlock(){
+    return `
 
 # ---------- Fluxo principal para símbolos (1D,1W,1M) ----------
 def generate_tradeview_symbol_pdfs(symbols):
-    """
-    symbols: lista de tuples (symbol, url, output_pdf_name)
-    Para cada símbolo gera 3 screenshots (1D,1W,1M) e um PDF com 3 páginas.
-    Retorna lista de todos os caminhos de imagens geradas.
-    """
     all_images = []
     for symbol, url, pdf_name in symbols:
-        print(f"\n[Processando símbolo] {symbol} -> {url}")
+        print(f"\\n[Processando símbolo] {symbol} -> {url}")
         imgs = []
-        # abrir a página inicialmente
-        driver.get(url)
-        time.sleep(3)  # aguarda carregamento
+        try:
+            driver.get(url)
+            time.sleep(3)
+        except Exception as e:
+            print(f"[Erro] Não foi possível carregar {url}: {e}")
+            continue
+
         for tf, xpath in TIMEFRAME_XPATHS.items():
-            # tenta clicar no timeframe (às vezes já está selecionado)
-            clicked = click_timeframe(xpath)
-            # dá um pequeno tempo para TradingView atualizar o painel
+            ok = click_timeframe(xpath)
             time.sleep(1.2)
-            # salva screenshot full (usa current page)
             img_filename = f"{symbol}_{tf}.png"
-            img_path = save_full_screenshot_tradingview(img_filename, width=1888, max_height=20000)
-            imgs.append(img_path)
-            all_images.append(img_path)
-        # cria o PDF com as 3 imagens (ordem: 1D,1W,1M)
-        create_pdf_from_images_list(imgs, pdf_name)
+            try:
+                img_path = save_full_screenshot_tradingview(img_filename, width=1888, max_height=20000)
+                imgs.append(img_path)
+                all_images.append(img_path)
+            except Exception as e:
+                print(f\"[Erro screenshot] {symbol} {tf}: {e}\")
+
+        # gerar PDF por símbolo
+        try:
+            create_pdf_from_images_list(imgs, pdf_name)
+        except Exception as e:
+            print(f\"[Erro PDF] {symbol}: {e}\")
+
     return all_images
 
-# ---------- Execução ----------
 if __name__ == "__main__":
     try:
-        # lista de símbolos (adicione/remova conforme quiser)
-        symbols = [
-            ("ETH", "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE", "ETH - Sinais 1D-1W-1M.pdf"),
-            ("SOL", "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE", "SOL - Sinais 1D-1W-1M.pdf"),
-            ("LINK", "https://br.tradingview.com/symbols/LINKUSDT/technicals/?exchange=BINANCE", "LINK - Sinais 1D-1W-1M.pdf"),
-            ("APT", "https://br.tradingview.com/symbols/APTUSDT/technicals/?exchange=BINANCE", "APT - Sinais 1D-1W-1M.pdf"),
-            ("AAPL34", "https://br.tradingview.com/symbols/BMFBOVESPA-AAPL34/technicals/", "AAPL34 - Sinais 1D-1W-1M.pdf"),
-            ("MELI34", "https://br.tradingview.com/symbols/BMFBOVESPA-MELI34/technicals/", "MELI34 - Sinais 1D-1W-1M.pdf"),
-            ("BABA34", "https://br.tradingview.com/symbols/BMFBOVESPA-BABA34/technicals/", "BABA34 - Sinais 1D-1W-1M.pdf"),
-            ("TSMC34", "https://br.tradingview.com/symbols/BMFBOVESPA-TSMC34/technicals/", "TSMC34 - Sinais 1D-1W-1M.pdf")
-        ]
+        # symbols should be defined above (generated dynamically)
+        try:
+            symbols  # noqa
+        except NameError:
+            symbols = []
 
-        # 1) Gera PDFs técnicos (cada PDF com 3 páginas)
-        technical_images = generate_tradeview_symbol_pdfs(symbols)
+        if len(symbols) > 0:
+            technical_images = generate_tradeview_symbol_pdfs(symbols)
+        else:
+            print("Nenhum símbolo para processar.")
 
-        # 2) Gera screenshots do cenário geral (CoinMarketCap + TradingView Companies) e um PDF único
         overview_pages = [
             ("https://coinmarketcap.com/pt-br/", "CoinMarketCap_full_4950.png"),
             ("https://br.tradingview.com/markets/world-stocks/worlds-largest-companies/", "TradingView_Companies_full_4950.png")
         ]
         overview_images = []
         for url, fname in overview_pages:
-            print(f"\n[Processando visão geral] {url}")
-            img = save_full_screenshot_overview(url, fname, target_width=4950, max_height=12000, wait_after_load=4)
-            overview_images.append(img)
+            print(f"\\n[Processando visão geral] {url}")
+            try:
+                img = save_full_screenshot_overview(url, fname, target_width=4950, max_height=12000, wait_after_load=4)
+                overview_images.append(img)
+            except Exception as e:
+                print(f\"[Erro overview] {url}: {e}\")
 
-        create_pdf_from_images_list(overview_images, "Relatorio_Cripto_Mercado.pdf")
+        if overview_images:
+            create_pdf_from_images_list(overview_images, "Relatorio_Cripto_Mercado.pdf")
 
-        # 3) Limpeza: remove todas as imagens geradas (técnicas + overview)
-        print("\n[Limpeza] removendo imagens temporárias...")
-        for p in technical_images + overview_images:
+        print("\\n[Limpeza] removendo imagens temporárias...")
+        for p in (technical_images if 'technical_images' in locals() else []) + overview_images:
             safe_remove(p)
 
-        print("\nTudo pronto — PDFs gerados em:", output_folder)
+        print("\\nTudo pronto — PDFs gerados em:", output_folder)
 
     finally:
-        driver.quit()
+        try:
+            driver.quit()
+        except Exception:
+            pass
         print("Concluído. Driver encerrado.")
+`;
+  }
 
+  // ===== UI actions =====
+  document.addEventListener('click', (e)=>{
+    if(e.target && e.target.id==='selectAll'){
+      // check all priority + main
+      document.querySelectorAll('#priorityContainer input, #assetsContainer input').forEach(i=>i.checked=true);
+      updateAllBlocks();
+    }
+    if(e.target && e.target.id==='clearAll'){
+      document.querySelectorAll('#priorityContainer input, #assetsContainer input').forEach(i=>i.checked=false);
+      updateAllBlocks();
+    }
+    if(e.target && e.target.id==='saveBtn'){
+      const sel = Array.from(document.querySelectorAll('#priorityContainer input:checked, #assetsContainer input:checked')).map(c=>c.dataset.sym);
+      saveSelection(sel);
+      localStorage.setItem(TEMPLATE_KEY_G, document.getElementById('geminiTemplate').value || '');
+      localStorage.setItem(TEMPLATE_KEY_C, document.getElementById('chatTemplate').value || '');
+      _showToast('Seleção e templates salvos');
+    }
+    if(e.target && e.target.id==='copyGemini'){
+      _copyString(window._generatedGemini || '');
+    }
+    if(e.target && e.target.id==='copyChat'){
+      _copyString(window._generatedChat || '');
+    }
+    if(e.target && e.target.id==='toggleGeminiTemplate'){
+      const ta = document.getElementById('geminiTemplate'); ta.style.display = (ta.style.display==='none')? 'block':'none';
+    }
+    if(e.target && e.target.id==='toggleChatTemplate'){
+      const ta = document.getElementById('chatTemplate'); ta.style.display = (ta.style.display==='none')? 'block':'none';
+    }
+    if(e.target && e.target.id==='copyScriptBtn'){
+      _copyString(window.webScriptText || '');
+    }
+  });
 
-      </div>
-      <div style="margin-top:8px;text-align:center"><button class="btn" onclick="copyText(event, webScriptText)">Copiar script Python</button></div>
-    </div>
-
-    <footer>
-      <p style="font-family:Garamond,serif;margin-top:8px;">O sucesso não é um acidente. É uma escolha que você faz, todos os dias.</p>
-    </footer>
-
-  </div>
-
-  <div id="toast" style="position:fixed;right:18px;bottom:18px;background:#06b6d4;color:#042023;padding:10px 14px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.5);transform:translateY(12px);opacity:0;pointer-events:none;transition:all .28s ease">Copiado!</div>
-
-<script>
-  // script guardado para copiar
-  const webScriptText = `# Script Python original... (coloque aqui o conteúdo completo se quiser)`;
-
-  function copyText(ev, text) {
+  // copy helpers
+  function copyText(ev, text){
     if (ev) ev.stopPropagation();
     _copyString(text);
   }
 
+  // delegate click-to-copy for text blocks
   document.querySelectorAll('[data-copy]').forEach(el=>{
-    el.addEventListener('click', ()=>_copyString(el.innerText.trim()));
+    el.addEventListener('click', ()=>_copyString(el.textContent.trim()));
   });
 
   function _copyString(text){
@@ -447,6 +966,12 @@ if __name__ == "__main__":
     t.style.pointerEvents = 'auto';
     setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(12px)';t.style.pointerEvents='none';}, 1600);
   }
+
+  // initial render + load
+  renderAssets();
+  // small delay to ensure elements exist before binding
+  setTimeout(loadSelection, 120);
+}); // DOMContentLoaded end
 </script>
 </body>
 </html>
