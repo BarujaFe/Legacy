@@ -21,7 +21,10 @@
     background:var(--bg);
     color:var(--white);
   }
-  .wrap{max-width:1200px;margin:0 auto}
+  .wrap{
+    max-width:1760px;   /* ajustado pra caber 2 gráficos + gap */
+    margin:0 auto;
+  }
   .top-actions{display:flex;flex-direction:column;gap:8px;align-items:center;margin-bottom:18px;text-align:center}
   .greeting{font-size:32px;font-weight:700;}
   .links{display:flex;justify-content:center;gap:8px}
@@ -30,12 +33,18 @@
   .btn{padding:6px 10px;background:#111;border:1px solid #222;color:var(--white);border-radius:8px;cursor:pointer}
   .small{font-size:14px;color:var(--muted)}
 
-  /* charts - responsive */
-  .chart-row{display:flex;gap:16px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+  /* charts - lado a lado fixos */
+  .chart-row{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:flex-start;
+    flex-wrap:nowrap; /* não quebra em telas grandes */
+    margin-bottom:18px;
+  }
   .chart-card{
-    flex:1 1 520px;
-    min-width:600px;
-    height:600px;
+    width:1000px;   /* largura ajustada */
+    height:610px;  /* altura fixa */
     border-radius:8px;
     overflow:hidden;
     border:1px solid rgba(255,255,255,0.06);
@@ -43,9 +52,10 @@
     display:flex;
     flex-direction:column;
     align-items:center;
+    box-sizing:border-box;
   }
-  .chart-card h2{margin:8px 0;color:var(--white);text-align:center;font-size:18px}
-  .chart-iframe{width:100%;height:100%;border:0}
+  .chart-card h2{margin:8px 0;color:var(--white);text-align:center;font-size:18px;padding:0 8px}
+  .chart-iframe{width:100%;height:100%;border:0;display:block}
 
   /* assets selector */
   .card{background:transparent;border-radius:12px;padding:8px}
@@ -69,8 +79,13 @@
 
   .hint{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
 
-  @media (max-width:980px){
-    .chart-card{width:92vw;height:46vw}
+  /* Responsivo: em telas pequenas escala mantendo proporção */
+  @media (max-width:1920=px){
+    .chart-row{flex-wrap:wrap;} /* se não couber, quebra embaixo */
+    .chart-card{
+      width:92vw;
+      height:calc(92vw * 610 / 1000); /* mantém proporção exata */
+    }
     .asset-item{min-width:48%}
     .side-by-side{flex-direction:column}
     .priority-item{min-width:45%}
@@ -92,17 +107,17 @@
 
     <!-- Charts (top) -->
     <div class="chart-row" aria-hidden="false">
-      <div class="chart-card" role="region" aria-label="Conta Corrente">
-        <h2>Conta Corrente</h2>
-        <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=2083055028&format=interactive" loading="lazy"></iframe>
+      <div class="chart-card" role="region" aria-label="Gráfico de Pizza">
+        <h2>Gráfico de Pizza</h2>
+        <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=111637926&format=interactive" loading="lazy"></iframe>
       </div>
 
-      <div class="chart-card" role="region" aria-label="Investimentos">
-        <h2>Investimentos</h2>
+      <div class="chart-card" role="region" aria-label="Acompanhamento Diário">
+        <h2>Acompanhamento Diário</h2>
         <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive" loading="lazy"></iframe>
       </div>
     </div>
-
+    
     <!-- Assets selector -->
     <div class="card" style="margin-bottom:18px;">
       <h2 style="text-align:center">Selecionar ativos para análise</h2>
