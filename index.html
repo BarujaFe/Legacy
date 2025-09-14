@@ -574,14 +574,14 @@ PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)
 Ativos:
 ${assetsForPrompt}
 
-**PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)**
-Olá — vou colar abaixo dois blocos: (1) saída/relatório do Gemini (análise feita pelo Gemini) e (2) meu Resumo do Investimento com posições atuais. Use ambos como insumos principais. Além disso, integre notícias e dados atuais (últimas 48–72 horas) e checks on-chain/dev (últimos 90 dias) quando relevante. Cite todas as fontes com link + data.
+**PROMPT DIÁRIO — Análise Matinal (usar saída Gemini +as informações de nossa conversa até aqui)**
+Olá — vou colar abaixo dois blocos: (1) saída/relatório do Gemini (análise feita pelo Gemini) e (2) meu Resumo do Investimento com posições atuais. Use ambos como insumos principais. Além disso, integre notícias e dados atuais (últimas 48–72 horas) e checks on-chain/dev (últimos 90 dias) quando relevante, se você já citou alguma delas, só cite novamente se for muito importante. Cite todas as fontes com link + data.
 **IMPORTANTE — regras de conduta:**
 Trate tudo como tático/operacional; não proponha mudanças estratégicas permanentes sem pedido explícito.
 
 Se faltar dado crítico (preço, unlock %), diga “DADO FALTANTE — pedir ao Gemini” e liste o que pedir.
 
-Seja direto, objetivo e claro — pronto para eu executar ordens. Use humor leve e sagaz só se couber (uma linha no máximo).
+Seja direto, objetivo, claro e didático — pronto para eu executar ordens. Use humor leve e sagaz só se couber (uma linha no máximo).
 
 ---
 
@@ -590,7 +590,7 @@ Seja direto, objetivo e claro — pronto para eu executar ordens. Use humor leve
 **A. Saída do Gemini (análise feita pelo Gemini):**
 [COLE AQUI A SAÍDA DO GEMINI]
 
-**B. Meu Resumo do Investimento (cole abaixo):**
+**B. Meu Resumo do Investimento, incluindo as transações já feitas (atente-se a fato de eu já ter o ativo ou se eu ainda estou observando pra comprar) (cole abaixo):**
 [COLE AQUI O RESUMO DO INVESTIMENTO — exemplo abaixo para formato padrão]
 
 ---
@@ -643,7 +643,7 @@ Resumo técnico (PRIORIDADE: Gemini → realtime):
 * 1S: [Compra / Venda / Neutro] — 1 frase
 * 1M: [Compra / Venda / Neutro] — 1 frase
 Observações críticas (1–2 bullets):
-* divergências (Gemini vs realtime), unlocks (datas + %), falhas de rede, earnings/regulação
+* divergências (Gemini vs realtime), notícias, recomendação de atualização ou não dos Preços estratégicos de referência, unlocks (datas + %), falhas de rede, earnings/regulação
 Ação prática (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop% sugerido
 Confiança: [Alta / Média / Baixa]
 Fonte(s) (máx 3): [link / “Gemini análise”]
@@ -655,30 +655,22 @@ Fonte(s) (máx 3): [link / “Gemini análise”]
 
 ---
 
-**E. SUBSTITUIÇÃO/ALTERNATIVAS (tático)**
-* Indique alternativas táticas SUGERIDAS (SUI, RNDR) com:
-* Range de entrada sugerido (USD) — justificativa técnica curta
-* Stop % sugerido e TPs (curto/médio)
-* 3 opções de alocação caso eu queira substituir um ativo de alto risco (Conservadora / Balanceada / Agressiva) mantendo natureza tática.
-
 **F. INSIGHTS & NOTÍCIAS (últimas 48–72h)**
-* Resuma 3 notícias mais relevantes que afetam meus ativos com link + data e rápido impacto (positivo/negativo/neutro).
+* Resuma 5 notícias mais relevantes que afetam meus ativos com link + data e rápido (como numa newsletter) impacto (positivo/negativo/neutro). uma vez que ela já tenha sido citada em nossa conversa, só a retome se for estritamente necessário.
 * Se não houver notícias relevantes, escreva “sem notícias fundamentais nas últimas 72h”.
 
-**G. ON-CHAIN / DEV CHECKS (quando aplicável)**
+**G. ON-CHAIN / DEV CHECKS (quando aplicável) (explique de forma bastante didática)**
 * Próximos unlocks relevantes (datas + %), TVL movimentos relevantes, dev_commits_90d (variação %), grandes transfers >US$1M (últimas 72h). Cite fonte.
 
-**H. LIQUIDEZ / EXECUÇÃO (quando sugerir compra)**
+**H. LIQUIDEZ / EXECUÇÃO (quando sugerir compra) (explique de forma bastante didática)**
 * Para cada ordem sugerida, estime slippage para ordem de ~0.5% do marketcap nas 2 maiores exchanges (bid/ask depth) e proponha ordem-limit em vez de market se slippage >0.5%.
 
-**I. RISCOS & ALERTS (listagem pronta)**
+**I. RISCOS & ALERTS (listagem pronta) (explique de forma bastante didática)**
 * Lista dos eventos que precisam de alert (unlocks >1% nos próximos 90 dias; auditoria falha; investigação regulatória) com flags Notify 30/7/1 dias.
 
 **J. AÇÕES IMEDIATAS (3 linhas — para eu executar agora)**
 * Ex.: “1) Colocar limit BABA34 R$XX; 2) DCA ETH 25% agora, 75% abaixo de US$X; 3) Colocar stop móvel 7% em BABA restante.”
 
-**K. CONFIDENCE & JSON**
-* Confidence geral (Alta/Média/Baixa) + JSON com schema mínimo (symbol, price, target, pct_vs_target, action, stop, confidence). Inclua o JSON ao final da resposta.
 
 `;
 
