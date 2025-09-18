@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Bom dia, Felipe! — Painel</title>
 
-<!-- Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -14,6 +13,8 @@
     --muted:#94a3b8;
     --bg:#000;
     --card:#031424;
+    --input-bg: #021319;
+    --border-color: #10323a;
   }
   body{
     font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
@@ -22,7 +23,7 @@
     color:var(--white);
   }
   .wrap{
-    max-width:1760px;   /* ajustado pra caber 2 gráficos + gap */
+    max-width:1880px;
     margin:0 auto;
   }
   .top-actions{display:flex;flex-direction:column;gap:8px;align-items:center;margin-bottom:18px;text-align:center}
@@ -43,8 +44,8 @@
     margin-bottom:18px;
   }
   .chart-card{
-    width:1000px;   /* largura ajustada */
-    height:610px;  /* altura fixa */
+    width:920px;
+    height:503px;
     border-radius:8px;
     overflow:hidden;
     border:1px solid rgba(255,255,255,0.06);
@@ -53,21 +54,94 @@
     flex-direction:column;
     align-items:center;
     box-sizing:border-box;
+    flex-shrink: 0;
   }
   .chart-card h2{margin:8px 0;color:var(--white);text-align:center;font-size:18px;padding:0 8px}
   .chart-iframe{width:100%;height:100%;border:0;display:block}
 
   /* assets selector */
   .card{background:transparent;border-radius:12px;padding:8px}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;justify-content:center}
-  .assets{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center}
-  .asset-item{background:#061821;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);min-width:240px;box-sizing:border-box}
-  .asset-item label{display:flex;gap:8px;align-items:center;cursor:pointer}
+  .asset-selector-container {
+      background: var(--card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+  }
+  .asset-selector-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+      justify-content: center;
+  }
+  #assetSearch {
+      flex-grow: 1;
+      min-width: 250px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--white);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 15px;
+  }
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
   .smallbtn{padding:6px 10px;background:#111;border:1px solid #222;color:var(--white);border-radius:6px;cursor:pointer;font-size:13px}
+  .asset-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+  }
+  .asset-category details {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+  }
+  .asset-category summary {
+      background: #041826;
+      padding: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 18px;
+  }
+  .asset-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+  }
+  .asset-item{
+      background:#061821;
+      padding: 8px;
+      border-radius:6px;
+      border:1px solid rgba(255,255,255,0.03);
+      min-width:240px;
+      box-sizing:border-box;
+      flex-grow: 1;
+  }
+  .asset-item label{display:flex;gap:8px;align-items:center;cursor:pointer}
+  .br-stocks-controls {
+      padding: 0 12px 12px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+  #sectorSelector {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--white);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 15px;
+      flex-grow: 1;
+  }
 
-  /* priority section */
-  .priority-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
-  .priority-item{background:#08303a;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);min-width:180px;display:flex;align-items:center;gap:8px}
+
+  /* priority section (removed from display, logic kept) */
+  #priorityContainer{display:none;}
+
 
   /* blocks */
   .side-by-side{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
@@ -79,16 +153,19 @@
 
   .hint{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
 
-  /* Responsivo: em telas pequenas escala mantendo proporção */
-  @media (max-width:1920=px){
-    .chart-row{flex-wrap:wrap;} /* se não couber, quebra embaixo */
+  /* Responsivo */
+  @media (max-width:1880px){
+    .chart-row{flex-wrap:wrap;}
     .chart-card{
       width:92vw;
-      height:calc(92vw * 610 / 1000); /* mantém proporção exata */
+      height:calc(92vw * 503 / 920); /* mantém proporção */
     }
-    .asset-item{min-width:48%}
+  }
+  @media (max-width: 768px){
+    .asset-item{min-width:100%}
     .side-by-side{flex-direction:column}
-    .priority-item{min-width:45%}
+    .greeting{font-size:24px;}
+    .asset-selector-header { flex-direction: column; }
   }
 </style>
 </head>
@@ -105,7 +182,6 @@
       <div class="small">Clique em qualquer bloco de texto ou botão de copiar. Links abrem em nova guia.</div>
     </div>
 
-    <!-- Charts (top) -->
     <div class="chart-row" aria-hidden="false">
       <div class="chart-card" role="region" aria-label="Gráfico de Pizza">
         <h2>Gráfico de Pizza</h2>
@@ -118,24 +194,25 @@
       </div>
     </div>
     
-    <!-- Assets selector -->
     <div class="card" style="margin-bottom:18px;">
-      <h2 style="text-align:center">Selecionar ativos para análise</h2>
-      <div class="controls">
-        <button class="smallbtn" id="selectAll">Selecionar todos</button>
-        <button class="smallbtn" id="clearAll">Limpar tudo</button>
-        <button class="smallbtn" id="saveBtn">Salvar seleção</button>
-      </div>
-
-      <!-- PRIORITY: user-requested assets (rendered first) -->
-      <div id="priorityContainer" class="priority-list" aria-live="polite"></div>
-
-      <!-- remaining assets -->
-      <div id="assetsContainer" class="assets" aria-live="polite"></div>
-      <p class="hint">Ao alterar seleção, os blocos do Gemini, ChatGPT e o script serão atualizados automaticamente. A última seleção é salva no navegador.</p>
+        <h2 style="text-align:center">Selecionar ativos para análise</h2>
+        <div class="asset-selector-container">
+            <div class="asset-selector-header">
+                <input type="text" id="assetSearch" placeholder="🔎 Pesquisar por sigla ou nome...">
+                <div class="controls">
+                    <button class="smallbtn" id="selectAll">Selecionar todos</button>
+                    <button class="smallbtn" id="clearAll">Limpar tudo</button>
+                    <button class="smallbtn" id="saveBtn">Salvar seleção</button>
+                </div>
+            </div>
+            <div class="asset-categories" id="assetsContainer">
+                </div>
+        </div>
+        <p class="hint">Ao alterar seleção, os blocos do Gemini, ChatGPT e o script serão atualizados automaticamente. A última seleção é salva no navegador.</p>
     </div>
 
-    <!-- Gemini and ChatGPT side-by-side -->
+    <div id="priorityContainer"></div>
+
     <div class="side-by-side" style="margin-bottom:12px;">
       <div class="block card">
         <h2>1. Ao Gemini</h2>
@@ -168,7 +245,6 @@
       </div>
     </div>
 
-    <!-- WebScraping block -->
     <div class="card" style="margin-top:6px;">
       <h2 style="text-align:center">3. WebScraping (Python)</h2>
       <div id="scriptBlock" class="text-block" tabindex="0" title="Clique para copiar" data-copy>
@@ -187,220 +263,999 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ===== config / data =====
-  // PRIORITY assets (user requested) - shown ABOVE the main list
-  const PRIORITY_URLS = [
-    { sym: "AAPL34", name: "Apple 🍎", url: "https://br.tradingview.com/symbols/NASDAQ-AAPL/technicals/" },
-    { sym: "ETH", name: "Ethereum ✨", url: "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE" },
-    { sym: "SOL", name: "Solana ☀️", url: "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE" },
-    { sym: "BABA34", name: "Alibaba 🛍️", url: "https://br.tradingview.com/symbols/NYSE-BABA/technicals/" },
-    { sym: "LINK", name: "Chainlink ⛓️", url: "https://br.tradingview.com/symbols/LINKUSD/technicals/?exchange=BINANCE" },
-    { sym: "SUI", name: "Sui 🌊", url: "https://br.tradingview.com/symbols/SUIUSD/technicals/?exchange=BINANCE" },
-    { sym: "RENDER", name: "Render 🎨", url: "https://br.tradingview.com/symbols/RENDERUSD/technicals/?exchange=BINANCE" },
-    { sym: "MELI34", name: "MercadoLibre 🛒", url: "https://br.tradingview.com/symbols/NASDAQ-MELI/technicals/" }
-  ];
-
-  // Main (long) list copied from your provided list (subset included here; you can paste entire list if desired)
-  const URL_LIST = [
-    "https://br.tradingview.com/symbols/BTCUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ETHUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/XRPUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/TUSDUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/BNBUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/SOLUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/USDCUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/STETHUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/DOGEUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ADAUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/TRXUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/HBARUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/SUIUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/BCHUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/AVAXUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/LTCUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/LINKUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/DOTUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/UNIUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/AAVEUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ENAUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ETCUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/TAOUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/NEARUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/APTUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ONDOUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ARBUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ICPUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/POLUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ALGOUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/VETUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/ATOMUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/SHIBUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/PEPEUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/CROUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/TONUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/HYPERUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/WBTCUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/WSTETHUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/WBEETHUSD/technicals/?exchange=BINANCE",
-    "https://br.tradingview.com/symbols/NASDAQ-NVDA/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-MSFT/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-AAPL/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-GOOGL/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-AMZN/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-META/technicals/",
-    "https://br.tradingview.com/symbols/TADAWUL-2222/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-AVGO/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-TSLA/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-TSM/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-JPM/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-WMT/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-TMO/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-LLY/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-PG/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-ORCL/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-MA/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-NFLX/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-BABA/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-DIS/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-XOM/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-HD/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-PFE/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-BAC/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-KO/technicals/",
-    "https://br.tradingview.com/symbols/SSE-601398/technicals/",
-    "https://br.tradingview.com/symbols/SSE-601288/technicals/",
-    "https://br.tradingview.com/symbols/KRX-005930/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-CVX/technicals/",
-    "https://br.tradingview.com/symbols/XETR-SAP/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-BHP/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-HSBC/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-ASML/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-GE/technicals/",
-    "https://br.tradingview.com/symbols/USOTC-LVMUY/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-SMCI/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-CRM/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-CSCO/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-AMD/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-WFC/technicals/",
-    "https://br.tradingview.com/symbols/HKEX-0268/technicals/",
-    "https://br.tradingview.com/symbols/SSE-600519/technicals/",
-    "https://br.tradingview.com/symbols/SSE-601997/technicals/",
-    "https://br.tradingview.com/symbols/HKEX-1810/technicals/",
-    "https://br.tradingview.com/symbols/HKEX-1299/technicals/",
-    "https://br.tradingview.com/symbols/HKEX-0001/technicals/",
-    "https://br.tradingview.com/symbols/TSE-7203/technicals/",
-    "https://br.tradingview.com/symbols/SSE-600000/technicals/",
-    "https://br.tradingview.com/symbols/EURONEXT-KER/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-AZN/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-UL/technicals/",
-    "https://br.tradingview.com/symbols/TSE-7267/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-RY/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-BIDU/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-MS/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-KMB/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-ABT/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-AXP/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-VIV/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-CGC/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-BA/technicals/",
-    "https://br.tradingview.com/symbols/NYSE-CVS/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-ADBE/technicals/",
-    "https://br.tradingview.com/symbols/NASDAQ-CMCSA/technicals/"
-  ];
-
-  const STORAGE_KEY = 'ativosSelecionados_v2';
+  const STORAGE_KEY = 'ativosSelecionados_v3';
   const TEMPLATE_KEY_G = 'template_gemini_v1';
   const TEMPLATE_KEY_C = 'template_chat_v1';
+  
   const assetsContainer = document.getElementById('assetsContainer');
-  const priorityContainer = document.getElementById('priorityContainer');
-
-  // friendly name maps (complete enough for common symbols)
-  const NAME_MAP = {
-    BTC: 'Bitcoin 🟠', ETH: 'Ethereum ✨', XRP: 'XRP 💧', TUSD: 'TrueUSD ✅', BNB: 'BNB 💰', SOL: 'Solana ☀️',
-    CUSD: 'Celo Dollar 🌳', STETH: 'Lido Staked ETH 🧊', DOGE: 'Dogecoin 🐕', ADA: 'Cardano ₳', TRX: 'TRON 🌐',
-    HBAR: 'Hedera 🌿', SUI: 'Sui 🌊', BCH: 'Bitcoin Cash 💚', AVAX: 'Avalanche 🏔️', LTC: 'Litecoin ⚪',
-    LINK: 'Chainlink ⛓️', DOT: 'Polkadot 🔴', UNI: 'Uniswap 🦄', AAVE: 'Aave 👻', ENA: 'Ethena 💲',
-    ETC: 'Ethereum Classic 🗿', TAO: 'Bittensor 🧠', NEAR: 'NEAR Protocol 🇳', APT: 'Aptos ⚛️', ONDO: 'Ondo 🏦',
-    AR: 'Arweave 💾', ICP: 'Internet Computer 🖥️', POL: 'Polygon 🔺', ALGO: 'Algorand ♾️', VET: 'VeChain ⛓️',
-    ATOM: 'Cosmos ⚛️', SHIB: 'Shiba Inu 🐕', PEPE: 'Pepe 🐸', CRO: 'Cronos ⚛️', TON: 'The Open Network 💎',
-    HYPER: 'Hyper ⚡', WBTC: 'Wrapped Bitcoin 🌯', WSTETH: 'Wrapped Staked ETH 🎁', WBEETH: 'Wrapped BETH 🎀',
-    USDT: 'Tether ₮', USDC: 'USD Coin 💲'
+  const assetSearch = document.getElementById('assetSearch');
+  
+  const SECTOR_EMOJIS = {
+      'Financeiro': '🏦',
+      'Servicos Publicos': '💡',
+      'Minerais Nao-Energeticos': '⛏️',
+      'Servicos de Saude': '⚕️',
+      'Consumo de Nao Duraveis': '🛍️',
+      'Transportes': '🚚',
+      'Industrias de Processamento': '🏭',
+      'Produtor Manufatureiro': '🔩',
+      'Comercio de Varejo': '🛒',
+      'Consumo Duraveis': '💎',
+      'Servicos de Tecnologia': '💻',
+      'Minerais Energeticos': '⛽',
+      'Servicos Comerciais': '📈',
+      'Comunicacoes': '📡',
+      'Tecnologia em Saude': '💊',
+      'Servicos Industriais': '🛠️',
+      'Consumo de Servicos': '👨‍🏫',
+      'Miscelanea': '🎲',
+      'Tecnologia Eletronica': '🔌',
+      'Servicos de Distribuicao': '📦',
+      'Outros': '⭐',
+      'Default': '⭐'
   };
-
-  const NAME_MAP_STOCKS = {
-    NVDA: 'NVIDIA 🟩', MSFT: 'Microsoft 🪟', AAPL: 'Apple 🍎', AAPL34: 'Apple BDR 🍎', GOOGL: 'Alphabet 🔍',
-    AMZN: 'Amazon 📦', META: 'Meta Platforms ♾️', '2222': 'Aramco 🇸🇦', AVGO: 'Broadcom 📡', TSLA: 'Tesla 🚘',
-    TSM: 'Taiwan Semiconductor 🇹🇼', JPM: 'JPMorgan 🏦', WMT: 'Walmart 🛒', TMO: 'Thermo Fisher 🔬',
-    LLY: 'Eli Lilly 💊', PG: 'Procter & Gamble ✨', ORCL: 'Oracle 💻', MA: 'Mastercard 💳', NFLX: 'Netflix 🍿',
-    BABA: 'Alibaba 🛍️', BABA34: 'Alibaba BDR 🛍️', MELI: 'MercadoLibre 🛒', MELI34: 'MercadoLibre BDR 🛒'
-  };
-
-  // helper: extract symbol from tradingview url
-  function extractSymbol(url){
-    try {
-      const m = url.match(/symbols\/([^\/]+)/i);
-      if(!m) return url;
-      let raw = m[1];
-      // If contains exchange prefix like NASDAQ-NVDA -> take latter part
-      if(raw.includes('-')) raw = raw.split('-').pop();
-      // remove common fiat/ticker suffixes
-      raw = raw.replace(/(USD|USDT|BUSD|USDC|BTC|ETH)$/i,'');
-      return raw.toUpperCase();
-    } catch (e){
-      return url;
-    }
+  
+  function getUrlForAsset(asset) {
+      const sym = asset.sym;
+      if (asset.type === 'Cripto') {
+          return `https://br.tradingview.com/symbols/${sym}USD/technicals/?exchange=BINANCE`;
+      } else if (asset.type === 'Ação Brasileira') {
+          return `https://br.tradingview.com/symbols/BVMF-${sym}/technicals/`;
+      } else { // Ação Global - requires more logic
+          const exchangeMap = {
+              'AAPL': 'NASDAQ', 'MSFT': 'NASDAQ', 'GOOGL': 'NASDAQ', 'AMZN': 'NASDAQ', 'META': 'NASDAQ', 'AVGO': 'NASDAQ', 'TSLA': 'NASDAQ', 'NFLX': 'NASDAQ', 'ASML': 'NASDAQ', 'SMCI': 'NASDAQ', 'CSCO': 'NASDAQ', 'AMD': 'NASDAQ', 'BIDU': 'NASDAQ', 'ADBE': 'NASDAQ', 'CMCSA': 'NASDAQ', 'SNPS': 'NASDAQ', 'AZN': 'NASDAQ', 'CGC': 'NASDAQ', 'PYPL': 'NASDAQ', 'FTNT': 'NASDAQ', 'NXPI': 'NASDAQ', 'MRVL': 'NASDAQ', 'INTC': 'NASDAQ', 'QCOM': 'NASDAQ', 'HDAIQ': 'NASDAQ',
+              'TSM': 'NYSE', 'CRM': 'NYSE', 'ORCL': 'NYSE', 'VIV': 'NYSE', 'JPM': 'NYSE', 'MA': 'NYSE', 'BAC': 'NYSE', 'WFC': 'NYSE', 'MS': 'NYSE', 'AXP': 'NYSE', 'RY': 'NYSE', 'HSBC': 'NYSE', 'WMT': 'NYSE', 'PG': 'NYSE', 'BABA': 'NYSE', 'DIS': 'NYSE', 'HD': 'NYSE', 'KO': 'NYSE', 'UL': 'NYSE', 'KMB': 'NYSE', 'TMO': 'NYSE', 'LLY': 'NYSE', 'PFE': 'NYSE', 'ABT': 'NYSE', 'CVS': 'NYSE', 'BSX': 'NYSE', 'XOM': 'NYSE', 'CVX': 'NYSE', 'BHP': 'NYSE', 'GE': 'NYSE', 'BA': 'NYSE', 'F': 'NYSE', 'GM': 'NYSE',
+              'SAP': 'XETR', 'DBK': 'XETR', 'BMW': 'XETR', 'MWG': 'XETR', 'IFX': 'XETR', 'SHL': 'XETR', 'DB1': 'XETR', 'EON': 'XETR',
+              '1810': 'HKEX', '1299': 'HKEX', '0268': 'HKEX', '0001': 'HKEX', '2328': 'HKEX', '2388': 'HKEX', '9961': 'HKEX',
+              '601398': 'SSE', '601288': 'SSE', '601997': 'SSE', '600000': 'SSE', '600519': 'SSE', '600276': 'SSE', '601166': 'SSE', '600030': 'SSE', '601998': 'SSE', '601319': 'SSE',
+              '005930': 'KRX', '373220': 'KRX', '207940': 'KRX',
+              '2222': 'TADAWUL', '1211': 'TADAWUL', '7010': 'TADAWUL',
+              '7203': 'TSE', '7267': 'TSE', '8031': 'TSE', '4063': 'TSE', '2914': 'TSE', '6503': 'TSE', '4502': 'TSE',
+              'LVMUY': 'USOTC',
+              'KER': 'EURONEXT', 'HO': 'EURONEXT', 'BN': 'EURONEXT', 'ACA': 'EURONEXT', 'ENGI': 'EURONEXT',
+              'ITUB': 'NYSE', // Already ITUB3 for BVMF, just a fallback
+          };
+          const exchange = exchangeMap[sym] || 'NYSE'; // Default to NYSE for unknowns
+          return `https://br.tradingview.com/symbols/${exchange}-${sym}/technicals/`;
+      }
   }
 
-  function detectType(url){
-    const stockMarkers = ['NASDAQ','NYSE','TSE','SSE','HKEX','KRX','TADAWUL','EURONEXT','USOTC','XETR'];
-    const U = url.toUpperCase();
-    for(const m of stockMarkers) if(U.includes(m)) return 'Ação';
-    return 'Cripto';
+  const ALL_ASSETS = [
+    // === CRIPTOMOEDAS ===
+    { sym: "BTC", name: "Bitcoin", emoji: "🟠", type: "Cripto" },
+    { sym: "ETH", name: "Ethereum", emoji: "✨", type: "Cripto" },
+    { sym: "USDC", name: "USD Coin", emoji: "💲", type: "Cripto" },
+    { sym: "USDT", name: "Tether USDT", emoji: "₮", type: "Cripto" },
+    { sym: "BNB", name: "BNB", emoji: "💰", type: "Cripto" },
+    { sym: "SOL", name: "Solana", emoji: "☀️", type: "Cripto" },
+    { sym: "XRP", name: "XRP", emoji: "💧", type: "Cripto" },
+    { sym: "DOGE", name: "Dogecoin", emoji: "🐕", type: "Cripto" },
+    { sym: "ADA", name: "Cardano", emoji: "₳", type: "Cripto" },
+    { sym: "TRX", name: "Tron", emoji: "🌐", type: "Cripto" },
+    { sym: "HYX", name: "Hyperliquid", emoji: "⚡", type: "Cripto" },
+    { sym: "LINK", name: "Chainlink", emoji: "⛓️", type: "Cripto" },
+    { sym: "AVAX", name: "Avalanche", emoji: "🏔️", type: "Cripto" },
+    { sym: "SUI", name: "Sui", emoji: "🌊", type: "Cripto" },
+    { sym: "USDE", name: "Ethena USDe", emoji: "💲", type: "Cripto" },
+    { sym: "BEM", name: "Bemo", emoji: "⚫", type: "Cripto" },
+    { sym: "BCH", name: "Bitcoin Cash", emoji: "💚", type: "Cripto" },
+    { sym: "HBAR", name: "Hedera", emoji: "🌿", type: "Cripto" },
+    { sym: "LTC", name: "Litecoin", emoji: "⚪", type: "Cripto" },
+    { sym: "LEO", name: "UNUS SED LEO", emoji: "🦁", type: "Cripto" },
+    { sym: "ENA", name: "Ethena", emoji: "💲", type: "Cripto" },
+    { sym: "TON", name: "Toncoin", emoji: "💎", type: "Cripto" },
+    { sym: "SHIB", name: "Shiba Inu", emoji: "🐕", type: "Cripto" },
+    { sym: "DOT", name: "Polkadot", emoji: "🔴", type: "Cripto" },
+    { sym: "UNI", name: "Uniswap", emoji: "🦄", type: "Cripto" },
+    { sym: "AXL", name: "Axelar", emoji: "🔗", type: "Cripto" },
+    { sym: "XMR", name: "Monero", emoji: "🔒", type: "Cripto" },
+    { sym: "WFL", name: "World Liberty Financial", emoji: "🌎", type: "Cripto" },
+    { sym: "DAI", name: "Dai", emoji: "🏦", type: "Cripto" },
+    { sym: "PEPE", name: "Pepe", emoji: "🐸", type: "Cripto" },
+    { sym: "AAVE", name: "Aave", emoji: "👻", type: "Cripto" },
+    { sym: "OKB", name: "OKB", emoji: "🟢", type: "Cripto" },
+    { sym: "NEAR", name: "NEAR Protocol", emoji: "🇳", type: "Cripto" },
+    { sym: "LBR", name: "Little Token", emoji: "🤏", type: "Cripto" },
+    { sym: "ORDO", name: "Ordo", emoji: "🔢", type: "Cripto" },
+    { sym: "APT", name: "Aptos", emoji: "⚛️", type: "Cripto" },
+    { sym: "WLD", name: "Worldcoin", emoji: "🌍", type: "Cripto" },
+    { sym: "ETC", name: "Ethereum Classic", emoji: "🗿", type: "Cripto" },
+    { sym: "IP", name: "Story", emoji: "📖", type: "Cripto" },
+    { sym: "MYX", name: "MYX Finance", emoji: "🔄", type: "Cripto" },
+    { sym: "PI", name: "PI", emoji: "🥧", type: "Cripto" },
+    { sym: "PDG", name: "pump.fun", emoji: "🚀", type: "Cripto" },
+    { sym: "UNR", name: "Urbitan", emoji: "🌆", type: "Cripto" },
+    { sym: "POL", name: "Pol (prev MATIC)", emoji: "🔺", type: "Cripto" },
+    { sym: "MEME", name: "MemeCore", emoji: "😂", type: "Cripto" },
+    { sym: "USD1", name: "World Liberty Financial USD", emoji: "💵", type: "Cripto" },
+    { sym: "ICP", name: "Internet Computer", emoji: "🖥️", type: "Cripto" },
+    { sym: "KAS", name: "Kaspa", emoji: "⛏️", type: "Cripto" },
+    { sym: "VET", name: "VeChain", emoji: "⛓️", type: "Cripto" },
+    { sym: "ALGO", name: "Algorand", emoji: "♾️", type: "Cripto" },
+    { sym: "AIOZ", name: "AIOZ Network", emoji: "☁️", type: "Cripto" },
+    { sym: "RENDER", name: "Render", emoji: "🎨", type: "Cripto" },
+    { sym: "SEI", name: "Sei", emoji: "🌊", type: "Cripto" },
+    { sym: "BONK", name: "Bonk", emoji: "🐶", type: "Cripto" },
+    { sym: "KCT", name: "KoinCoin Token", emoji: "🪙", type: "Cripto" },
+    { sym: "ILV", name: "Ilv", emoji: "👾", type: "Cripto" },
+    { sym: "FIL", name: "Filecoin", emoji: "💾", type: "Cripto" },
+    { sym: "FLARE", name: "FLARE", emoji: "🔥", type: "Cripto" },
+    { sym: "JUP", name: "Jupiter", emoji: "🪐", type: "Cripto" },
+    { sym: "TRUMP", name: "OFFICIAL TRUMP", emoji: "🇺🇸", type: "Cripto" },
+    { sym: "IMX", name: "Immutable", emoji: "🎮", type: "Cripto" },
+    { sym: "FET", name: "Artificial Superintelligence Alliance", emoji: "🤖", type: "Cripto" },
+    { sym: "OP", name: "Optimism", emoji: "✨", type: "Cripto" },
+    { sym: "INJ", name: "Injective", emoji: "📈", type: "Cripto" },
+    { sym: "GT", name: "Gitcoin", emoji: "🔑", type: "Cripto" },
+    { sym: "GTO", name: "GateToken", emoji: "🚪", type: "Cripto" },
+    { sym: "XDC", name: "XDC Network", emoji: "🌐", type: "Cripto" },
+    { sym: "SPX", name: "SPX6900", emoji: "💹", type: "Cripto" },
+    { sym: "PYUSD", name: "PayPal USD", emoji: "💸", type: "Cripto" },
+    { sym: "UXL", name: "UXL", emoji: "🔗", type: "Cripto" },
+    { sym: "QNT", name: "Quant", emoji: "🔢", type: "Cripto" },
+    { sym: "LDO", name: "Lido DAO", emoji: "🌊", type: "Cripto" },
+    { sym: "AERO", name: "Aerodrome Finance", emoji: "✈️", type: "Cripto" },
+    { sym: "FDD", name: "Frontier Digital USD", emoji: "💲", type: "Cripto" },
+    { sym: "PAXG", name: "PAX Gold", emoji: "🪙", type: "Cripto" },
+    { sym: "GRT", name: "The Graph", emoji: "📊", type: "Cripto" },
+    { sym: "PYTH", name: "Pyth Network", emoji: "🐍", type: "Cripto" },
+    { sym: "PAYA", name: "Paya", emoji: "💳", type: "Cripto" },
+    { sym: "FLOKI", name: "FLOKI", emoji: "🐕‍🦺", type: "Cripto" },
+    { sym: "CFX", name: "Conflux", emoji: "🌳", type: "Cripto" },
+    { sym: "WIF", name: "dogwifhat", emoji: "🐕", type: "Cripto" },
+    { sym: "CAKE", name: "Pancakeswap", emoji: "🥞", type: "Cripto" },
+    { sym: "FAI", name: "Fai", emoji: "🤖", type: "Cripto" },
+    { sym: "EHS", name: "Ethereum Name Service", emoji: "🌐", type: "Cripto" },
+    { sym: "RAY", name: "Raydium", emoji: "☀️", type: "Cripto" },
+    { sym: "S", name: "Sonic", emoji: "🎵", type: "Cripto" },
+    { sym: "VRTS", name: "Virtus Protocol", emoji: "🛡️", type: "Cripto" },
+    { sym: "ZAFE", name: "Tether Gold", emoji: "🪙", type: "Cripto" },
+    { sym: "PENDLE", name: "Pendle", emoji: "⏳", type: "Cripto" },
+    { sym: "THETA", name: "Theta Network", emoji: "🎬", type: "Cripto" },
+    { sym: "GALA", name: "Gala", emoji: "🎉", type: "Cripto" },
+    { sym: "ETHFI", name: "Ether.fi", emoji: "💧", type: "Cripto" },
+    { sym: "XTZ", name: "Tezos", emoji: "🧩", type: "Cripto" },
+    { sym: "NEXO", name: "Nexo", emoji: "🔗", type: "Cripto" },
+    { sym: "ZEC", name: "Zcash", emoji: "🦓", type: "Cripto" },
+    { sym: "SAND", name: "The Sandbox", emoji: "🏞️", type: "Cripto" },
+    { sym: "ICTA", name: "ICTA", emoji: "📜", type: "Cripto" },
+    { sym: "MORPHO", name: "Morpho", emoji: "🦋", type: "Cripto" },
+    { sym: "ATH", name: "Aethir", emoji: "🌬️", type: "Cripto" },
+    { sym: "JTO", name: "Jito", emoji: "🌊", type: "Cripto" },
+    { sym: "V", name: "Vaulte", emoji: "🔐", type: "Cripto" },
+    { sym: "JRRY", name: "JarJarYCoin", emoji: "🐸", type: "Cripto" },
+    { sym: "FORM", name: "Four", emoji: "4️⃣", type: "Cripto" },
+    { sym: "BLUSD", name: "Ripple USD", emoji: "💧", type: "Cripto" },
+    { sym: "MANA", name: "Decentraland", emoji: "👓", type: "Cripto" },
+    { sym: "FLOW", name: "Flow", emoji: "🌊", type: "Cripto" },
+    { sym: "AB", name: "AB", emoji: "🅰️", type: "Cripto" },
+    { sym: "EIGEN", name: "EigenLayer", emoji: "LAYER", type: "Cripto" },
+    { sym: "DEX", name: "Dexe", emoji: "🔄", type: "Cripto" },
+    { sym: "WAL", name: "Walrus", emoji: "🐋", type: "Cripto" },
+    { sym: "BTT", name: "Bit Torrent New", emoji: "💾", type: "Cripto" },
+    { sym: "W", name: "Wormhole", emoji: "웜홀", type: "Cripto" },
+    { sym: "BRETT", name: "Brett (Based)", emoji: "🐸", type: "Cripto" },
+    { sym: "STBRK", name: "Starknot", emoji: "⭐", type: "Cripto" },
+    { sym: "SYRUP", name: "Maple Finance", emoji: "🍁", type: "Cripto" },
+    { sym: "EYES", name: "EYES", emoji: "👁️", type: "Cripto" },
+    { sym: "BSV", name: "Bitcoin SV", emoji: "👑", type: "Cripto" },
+    { sym: "USDD", name: "USDD", emoji: "💲", type: "Cripto" },
+    { sym: "DEEP", name: "LayerZero", emoji: "LAYER", type: "Cripto" },
+    { sym: "B-B", name: "Deepbook Protocol", emoji: "📖", type: "Cripto" },
+    { sym: "HNT", name: "Helium", emoji: "🎈", type: "Cripto" },
+    { sym: "TUSD", name: "TrueUSD", emoji: "✅", type: "Cripto" },
+    { sym: "SUN", name: "Sun (New)", emoji: "☀️", type: "Cripto" },
+    { sym: "HDO", name: "HDO", emoji: "💧", type: "Cripto" },
+    { sym: "AR", name: "Arweave", emoji: "💾", type: "Cripto" },
+    { sym: "RUNE", name: "THORChain", emoji: "🔨", type: "Cripto" },
+    { sym: "ZK", name: "zkSync", emoji: "🔄", type: "Cripto" },
+    { sym: "RSR", name: "Reserve Rights", emoji: "🛡️", type: "Cripto" },
+    { sym: "CORE", name: "Core", emoji: "❤️", type: "Cripto" },
+    { sym: "APX", name: "ApxCoin", emoji: "🔼", type: "Cripto" },
+    { sym: "XCN", name: "Onyxcoin", emoji: "🖤", type: "Cripto" },
+    { sym: "COMP", name: "Compound", emoji: "🧪", type: "Cripto" },
+    { sym: "CHZ", name: "Chiliz", emoji: "🌶️", type: "Cripto" },
+    { sym: "AXS", name: "Axie Infinity", emoji: "👾", type: "Cripto" },
+    { sym: "EGLD", name: "MultiversX", emoji: "🌌", type: "Cripto" },
+    { sym: "LINEA", name: "Linea", emoji: "📏", type: "Cripto" },
+    { sym: "TWI", name: "Trust Wallet Token", emoji: "🛡️", type: "Cripto" },
+    { sym: "BEAM", name: "Beam", emoji: "빔", type: "Cripto" },
+    { sym: "GNO", name: "Gnosis", emoji: "🦉", type: "Cripto" },
+    { sym: "MCR", name: "MicroCoin", emoji: "🔬", type: "Cripto" },
+    { sym: "SUPER", name: "Superverse", emoji: "🦸", type: "Cripto" },
+    { sym: "1INCH", name: "1inch", emoji: "🦄", type: "Cripto" },
+    { sym: "ZBCH", name: "Zebee Network", emoji: "🐝", type: "Cripto" },
+    { sym: "JVS", name: "Convex Finance", emoji: "🔄", type: "Cripto" },
+    { sym: "MOVEMENT", name: "Movement", emoji: "🏃", type: "Cripto" },
+    { sym: "KAVA", name: "Kava", emoji: "☕", type: "Cripto" },
+    { sym: "TOSHI", name: "Toshi", emoji: "😺", type: "Cripto" },
+    { sym: "RON", name: "Ronin", emoji: "⚔️", type: "Cripto" },
+    { sym: "LUNC", name: "Terra Classic", emoji: "🌙", type: "Cripto" },
+    { sym: "DRIFT", name: "Drift", emoji: "🚗", type: "Cripto" },
+    { sym: "WEMIX", name: "WEMIX", emoji: "🎮", type: "Cripto" },
+    { sym: "JUST", name: "JUST", emoji: "⚖️", type: "Cripto" },
+    { sym: "LPT", name: "Livepeer", emoji: "🎥", type: "Cripto" },
+    { sym: "BERA", name: "Berachain", emoji: "🐻", type: "Cripto" },
+    { sym: "PLUME", name: "Plume", emoji: "🪶", type: "Cripto" },
+    { sym: "TURBO", name: "Turbo", emoji: "🐌", type: "Cripto" },
+    { sym: "FTT", name: "FTT Token", emoji: " FTX", type: "Cripto" },
+    { sym: "DASH", name: "Dash", emoji: "💨", type: "Cripto" },
+    { sym: "MEW", name: "Cat in a dogs world", emoji: "😺", type: "Cripto" },
+    { sym: "BID", name: "BID Protocol", emoji: "🤝", type: "Cripto" },
+    { sym: "GR", name: "GR", emoji: "🇬🇷", type: "Cripto" },
+    { sym: "DCR", name: "Decred", emoji: "📜", type: "Cripto" },
+    { sym: "AKT", name: "Akash Network", emoji: "☁️", type: "Cripto" },
+    { sym: "AVNT", name: "Avantis", emoji: "🛡️", type: "Cripto" },
+    { sym: "DGCAL", name: "Digical (SOL)", emoji: "🔢", type: "Cripto" },
+    { sym: "KAI", name: "KAI", emoji: "🐱", type: "Cripto" },
+    { sym: "KAHO", name: "Kamino Finance", emoji: "🛡️", type: "Cripto" },
+    { sym: "VELO", name: "Velo", emoji: "🚴", type: "Cripto" },
+    { sym: "SAFE", name: "Safe", emoji: "🛡️", type: "Cripto" },
+    { sym: "KENA", name: "Kenama", emoji: "⚫", type: "Cripto" },
+    { sym: "QTUM", name: "Qtum", emoji: "퀀텀", type: "Cripto" },
+    { sym: "PNUT", name: "Peanut the Squirrel", emoji: "🐿️", type: "Cripto" },
+    { sym: "MOCA", name: "Moca Network", emoji: "☕", type: "Cripto" },
+    { sym: "MX", name: "MX TOKEN", emoji: "Ⓜ️", type: "Cripto" },
+    { sym: "BURGER", name: "Burger", emoji: "🍔", type: "Cripto" },
+    { sym: "IOTX", name: "Iotex", emoji: "🔗", type: "Cripto" },
+    { sym: "DOG", name: "Dog (Bitcoin)", emoji: "🐕", type: "Cripto" },
+    { sym: "Golem", name: "Golem", emoji: "🗿", type: "Cripto" },
+    { sym: "FZ", name: "Free (prev. FZS)", emoji: "🆓", type: "Cripto" },
+    { sym: "FCR", name: "Recycle Network", emoji: "♻️", type: "Cripto" },
+    { sym: "TFuel", name: "Theta Fuel", emoji: "🔥", type: "Cripto" },
+    { sym: "SNX", name: "Synthetix", emoji: " синтетикс", type: "Cripto" },
+    { sym: "BAT", name: "Basic Attention Token", emoji: "🦇", type: "Cripto" },
+    { sym: "MNA", name: "MNA", emoji: "🇲", type: "Cripto" },
+    { sym: "EFX", name: "Efx", emoji: "✨", type: "Cripto" },
+    { sym: "USELESS", name: "Useless Coin", emoji: "🗑️", type: "Cripto" },
+    { sym: "ZORA", name: "ZORA", emoji: "🎨", type: "Cripto" },
+    { sym: "VRT", name: "VRT Classic", emoji: "VR", type: "Cripto" },
+    { sym: "SMART", name: "Smart", emoji: "💡", type: "Cripto" },
+    { sym: "STETH", name: "Lido Staked ETH", emoji: "🧊", type: "Cripto" },
+    { sym: "WSTETH", name: "Lido wstETH", emoji: "🎁", type: "Cripto" },
+    { sym: "WETH", name: "Wrapped Beacon ETH", emoji: "🎀", type: "Cripto" },
+    { sym: "WBTC", name: "Wrapped Bitcoin", emoji: "🌯", type: "Cripto" },
+    { sym: "UGOLD", name: "UGOLD Inc.", emoji: "🥇", type: "Cripto" },
+    { sym: "AETHWETH", name: "Aave Ethereum WETH", emoji: "👻", type: "Cripto" },
+    { sym: "USDs", name: "USDs", emoji: "💲", type: "Cripto" },
+    { sym: "CBBTC", name: "Coinbase Wrapped BTC", emoji: "🔵", type: "Cripto" },
+    { sym: "ZETRIX", name: "Zetrix", emoji: "🇿", type: "Cripto" },
+    { sym: "PL45", name: "Lexus One X", emoji: "🚗", type: "Cripto" },
+    { sym: "ZBU", name: "ZEEBU", emoji: "⚡", type: "Cripto" },
+    { sym: "WBT", name: "WhiteBIT Coin", emoji: "⚪", type: "Cripto" },
+    { sym: "JITOSOL", name: "Jito Staked SOL", emoji: "💧", type: "Cripto" },
+    { sym: "BIT", name: "BITDAO", emoji: "⚫", type: "Cripto" },
+    { sym: "BITSOL", name: "Binance Staked SOL", emoji: "☀️", type: "Cripto" },
+    { sym: "HTX", name: "HTX", emoji: "🔥", type: "Cripto" },
+    { sym: "RETH", name: "Rocket Pool ETH", emoji: "🚀", type: "Cripto" },
+    { sym: "ZIK", name: "Zik", emoji: "🇿", type: "Cripto" },
+    { sym: "FSTTN", name: "Fasttoken", emoji: "⚡", type: "Cripto" },
+    { sym: "USDB", name: "Ethena Labs (USDB)", emoji: "💲", type: "Cripto" },
+    { sym: "USDLF", name: "Fatcoin USD", emoji: "🍔", type: "Cripto" },
+    { sym: "USDY", name: "Yieldly USD", emoji: "💲", type: "Cripto" },
+    { sym: "BYO", name: "BYO", emoji: "⚫", type: "Cripto" },
+    { sym: "BFUSD", name: "BFUSD", emoji: "💲", type: "Cripto" },
+    { sym: "MKR", name: "Maker", emoji: "👑", type: "Cripto" },
+    { sym: "EBTTC", name: "ether.fi Staked BTC", emoji: "💧", type: "Cripto" },
+    { sym: "TRBL", name: "Trabzonspor", emoji: "⚽", type: "Cripto" },
+    { sym: "SDAI", name: "Savings Dai", emoji: "🏦", type: "Cripto" },
+    { sym: "METH", name: "Mantle Staked Ether", emoji: "🏙️", type: "Cripto" },
+    { sym: "MSOL", name: "Marinade Staked SOL", emoji: "☀️", type: "Cripto" },
+    { sym: "SAROS", name: "Saros", emoji: "⚫", type: "Cripto" },
+    { sym: "Q", name: "Q", emoji: "⚫", type: "Cripto" },
+    { sym: "EOS", name: "EOS", emoji: "eos", type: "Cripto" },
+    { sym: "IBTC", name: "IBTC", emoji: "⚫", type: "Cripto" },
+    { sym: "USDFY", name: "Ondo US Dollar Yield", emoji: "💲", type: "Cripto" },
+    { sym: "BUSD", name: "BUSD", emoji: "💲", type: "Cripto" },
+    { sym: "CBETH", name: "Coinbase Wrapped Staked ETH", emoji: "🔵", type: "Cripto" },
+    { sym: "BZR", name: "Bazaars", emoji: "⚫", type: "Cripto" },
+    { sym: "BDX", name: "Beldex", emoji: "⚫", type: "Cripto" },
+    { sym: "KLAY", name: "Klaytn", emoji: "⚫", type: "Cripto" },
+    { sym: "BLR", name: "Blurred Lions", emoji: "🦁", type: "Cripto" },
+    { sym: "VSN", name: "Vision", emoji: "👁️", type: "Cripto" },
+    { sym: "TBC", name: "TuringBitCoin", emoji: "⚫", type: "Cripto" },
+    { sym: "MLNK", name: "Malinka", emoji: "🍓", type: "Cripto" },
+    { sym: "BETH", name: "Beacon ETH", emoji: "⚫", type: "Cripto" },
+    { sym: "SFIEXETH", name: "Frax Staked Ether", emoji: "⚫", type: "Cripto" },
+    { sym: "TEL", name: "Telcoin", emoji: "⚫", type: "Cripto" },
+    { sym: "YQC", name: "YQC CHAIN", emoji: "⚫", type: "Cripto" },
+    { sym: "LUCK", name: "Luckify", emoji: "🍀", type: "Cripto" },
+    { sym: "FLUID", name: "Fluid", emoji: "💧", type: "Cripto" },
+    { sym: "BORG", name: "Swissborg", emoji: "⚫", type: "Cripto" },
+    { sym: "KBC", name: "Kibho Coin", emoji: "⚫", type: "Cripto" },
+    { sym: "OHM", name: "Olympus V2", emoji: "⚫", type: "Cripto" },
+    { sym: "OMG", name: "OMG", emoji: "⚫", type: "Cripto" },
+    { sym: "LEAF", name: "LEAF", emoji: "🍃", type: "Cripto" },
+    { sym: "INF", name: "SANCTUM INFINITY", emoji: "⚫", type: "Cripto" },
+    { sym: "KTA", name: "Keeta", emoji: "⚫", type: "Cripto" },
+    { sym: "KULA", name: "Kula", emoji: "⚫", type: "Cripto" },
+    { sym: "TXC", name: "TEXTIcoin", emoji: "⚫", type: "Cripto" },
+    { sym: "USR", name: "Resolv USR", emoji: "⚫", type: "Cripto" },
+    { sym: "DORA", name: "Dora", emoji: "⚫", type: "Cripto" },
+    { sym: "G-E", name: "G-E", emoji: "⚫", type: "Cripto" },
+    { sym: "BSSOL", name: "BlazeStake Staked SOL", emoji: "🔥", type: "Cripto" },
+    { sym: "TRIBE", name: "Tribe", emoji: "⚫", type: "Cripto" },
+    { sym: "SVTS", name: "Syncvault", emoji: "⚫", type: "Cripto" },
+    { sym: "MPLX", name: "Metaplex", emoji: "⚫", type: "Cripto" },
+    { sym: "WHTE", name: "Whiterock", emoji: "⚫", type: "Cripto" },
+    { sym: "AICE", name: "Aicean", emoji: "⚫", type: "Cripto" },
+    { sym: "QUBIC", name: "QUBIC", emoji: "⚫", type: "Cripto" },
+    { sym: "ULTIMA", name: "Ultima", emoji: "⚫", type: "Cripto" },
+    { sym: "SHC", name: "Stringbit Coin", emoji: "⚫", type: "Cripto" },
+    { sym: "AGENTFUN", name: "AgentFun.AI", emoji: "🤖", type: "Cripto" },
+    { sym: "FRXETH", name: "Frax Finance - Frax Ether", emoji: "⚫", type: "Cripto" },
+    { sym: "ZIL", name: "Zilliqa", emoji: "⚫", type: "Cripto" },
+    { sym: "CHEEMS", name: "Cheems", emoji: "🐕", type: "Cripto" },
+    { sym: "BZBDOGE", name: "Baby Doge Coin", emoji: "🐕", type: "Cripto" },
+    { sym: "SUSHI", name: "Sushiswap", emoji: "🍣", type: "Cripto" },
+    { sym: "OM", name: "MANTRA", emoji: "⚫", type: "Cripto" },
+    { sym: "ZRX", name: "0x Protocol", emoji: "⚫", type: "Cripto" },
+    { sym: "TIBIR", name: "Ribbita by Virtuals", emoji: "🐸", type: "Cripto" },
+    { sym: "VVS", name: "VVS Finance", emoji: "⚫", type: "Cripto" },
+    { sym: "ROSE", name: "Oasis", emoji: "⚫", type: "Cripto" },
+    { sym: "REKT", name: "Rekt", emoji: "⚫", type: "Cripto" },
+    { sym: "BPC", name: "BPC", emoji: "⚫", type: "Cripto" },
+    { sym: "HASH", name: "Hash", emoji: "#️⃣", type: "Cripto" },
+    { sym: "BLUR", name: "Blur", emoji: "⚫", type: "Cripto" },
+    { sym: "ORDI", name: "ORDI", emoji: "⚫", type: "Cripto" },
+    { sym: "JASMY", name: "JasmyCoin", emoji: "🤖", type: "Cripto" },
+    // === AÇÕES GLOBAIS ===
+    { sym: "NVDA", name: "NVIDIA", emoji: "🟩", type: "Ação Global" },
+    { sym: "MSFT", name: "Microsoft", emoji: "🪟", type: "Ação Global" },
+    { sym: "AAPL", name: "Apple", emoji: "🍎", type: "Ação Global" },
+    { sym: "GOOGL", name: "Alphabet", emoji: "🔍", type: "Ação Global" },
+    { sym: "AMZN", name: "Amazon", emoji: "📦", type: "Ação Global" },
+    { sym: "META", name: "Meta Platforms", emoji: "♾️", type: "Ação Global" },
+    { sym: "AVGO", name: "Broadcom", emoji: "📡", type: "Ação Global" },
+    { sym: "TSLA", name: "Tesla", emoji: "🚘", type: "Ação Global" },
+    { sym: "TSM", name: "Taiwan Semiconductor", emoji: "🇹🇼", type: "Ação Global" },
+    { sym: "NFLX", name: "Netflix", emoji: "🍿", type: "Ação Global" },
+    { sym: "SAP", name: "SAP", emoji: "🟦", type: "Ação Global" },
+    { sym: "ASML", name: "ASML Holding", emoji: "🇳🇱", type: "Ação Global" },
+    { sym: "SMCI", name: "Super Micro Computer", emoji: "💻", type: "Ação Global" },
+    { sym: "CRM", name: "Salesforce", emoji: "☁️", type: "Ação Global" },
+    { sym: "CSCO", name: "Cisco Systems", emoji: "🌐", type: "Ação Global" },
+    { sym: "AMD", name: "Advanced Micro Devices", emoji: "⚛️", type: "Ação Global" },
+    { sym: "BIDU", name: "Baidu", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "ADBE", name: "Adobe", emoji: "🎨", type: "Ação Global" },
+    { sym: "CMCSA", name: "Comcast", emoji: "📺", type: "Ação Global" },
+    { sym: "1810", name: "Xiaomi", emoji: "🤳", type: "Ação Global" },
+    { sym: "1299", name: "AIA Group Limited", emoji: "🛡️", type: "Ação Global" },
+    { sym: "SNPS", name: "Synopsys, Inc.", emoji: "💻", type: "Ação Global" },
+    { sym: "005930", name: "Samsung Electronics", emoji: "📱", type: "Ação Global" },
+    { sym: "ORCL", name: "Oracle", emoji: "💻", type: "Ação Global" },
+    { sym: "JPM", name: "JPMorgan", emoji: "🏦", type: "Ação Global" },
+    { sym: "MA", name: "Mastercard", emoji: "💳", type: "Ação Global" },
+    { sym: "BAC", name: "Bank of America", emoji: "🦅", type: "Ação Global" },
+    { sym: "WFC", name: "Wells Fargo", emoji: "🐎", type: "Ação Global" },
+    { sym: "MS", name: "Morgan Stanley", emoji: "📈", type: "Ação Global" },
+    { sym: "AXP", name: "American Express", emoji: "💳", type: "Ação Global" },
+    { sym: "601398", name: "Industrial and Commercial Bank of China", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "601288", name: "Agricultural Bank of China", emoji: "🌾", type: "Ação Global" },
+    { sym: "601997", name: "China Minsheng Banking", emoji: "🏦", type: "Ação Global" },
+    { sym: "600000", name: "Shanghai Pudong Development Bank", emoji: "🏦", type: "Ação Global" },
+    { sym: "RY", name: "Royal Bank of Canada", emoji: "🍁", type: "Ação Global" },
+    { sym: "HSBC", name: "HSBC Holdings", emoji: "🦁", type: "Ação Global" },
+    { sym: "WMT", name: "Walmart", emoji: "🛒", type: "Ação Global" },
+    { sym: "PG", name: "Procter & Gamble", emoji: "✨", type: "Ação Global" },
+    { sym: "BABA", name: "Alibaba", emoji: "🛍️", type: "Ação Global" },
+    { sym: "MELI", name: "MercadoLibre", emoji: "🛒", type: "Ação Global" },
+    { sym: "DIS", name: "Disney", emoji: "🏰", type: "Ação Global" },
+    { sym: "HD", name: "Home Depot", emoji: "🛠️", type: "Ação Global" },
+    { sym: "KO", name: "Coca-Cola", emoji: "🥤", type: "Ação Global" },
+    { sym: "LVMUY", name: "LVMH", emoji: "👜", type: "Ação Global" },
+    { sym: "0268", name: "Kweichow Moutai", emoji: "🍶", type: "Ação Global" },
+    { sym: "600519", name: "Kweichow Moutai", emoji: "🍶", type: "Ação Global" },
+    { sym: "KER", name: "Kering", emoji: "🐆", type: "Ação Global" },
+    { sym: "UL", name: "Unilever", emoji: "💧", type: "Ação Global" },
+    { sym: "KMB", name: "Kimberly-Clark", emoji: "🧻", type: "Ação Global" },
+    { sym: "TMO", name: "Thermo Fisher", emoji: "🔬", type: "Ação Global" },
+    { sym: "LLY", name: "Eli Lilly", emoji: "💊", type: "Ação Global" },
+    { sym: "PFE", name: "Pfizer", emoji: "🧬", type: "Ação Global" },
+    { sym: "AZN", name: "AstraZeneca", emoji: "💉", type: "Ação Global" },
+    { sym: "ABT", name: "Abbott Laboratories", emoji: "🔬", type: "Ação Global" },
+    { sym: "CVS", name: "CVS Health", emoji: "⚕️", type: "Ação Global" },
+    { sym: "CGC", name: "Canopy Growth", emoji: "🌿", type: "Ação Global" },
+    { sym: "BSX", name: "Boston Scientific Corporation", emoji: "🩺", type: "Ação Global" },
+    { sym: "2222", name: "Aramco", emoji: "🇸🇦", type: "Ação Global" },
+    { sym: "XOM", name: "Exxon Mobil", emoji: "⛽", type: "Ação Global" },
+    { sym: "CVX", name: "Chevron", emoji: "⛽", type: "Ação Global" },
+    { sym: "BHP", name: "BHP Group", emoji: "⚒️", type: "Ação Global" },
+    { sym: "GE", name: "General Electric", emoji: "💡", type: "Ação Global" },
+    { sym: "7203", name: "Toyota Motor", emoji: "🚗", type: "Ação Global" },
+    { sym: "7267", name: "Honda Motor", emoji: "🏍️", type: "Ação Global" },
+    { sym: "BA", name: "Boeing", emoji: "✈️", type: "Ação Global" },
+    { sym: "0001", name: "CK Hutchison Holdings", emoji: "📦", type: "Ação Global" },
+    { sym: "INC", name: "IGC Group Inc.", emoji: "🏢", type: "Ação Global" },
+    { sym: "ECI", name: "Ecolab Inc.", emoji: "🧼", type: "Ação Global" },
+    { sym: "F-CI", name: "Chugal Pharmaceutical Co., Ltd.", emoji: "💊", type: "Ação Global" },
+    { sym: "CM", name: "Canadian Imperial Bank of Commerce", emoji: "🏦", type: "Ação Global" },
+    { sym: "SNOW", name: "Snowflake Inc.", emoji: "❄️", type: "Ação Global" },
+    { sym: "X", name: "Hong Kong Exchanges & Clearing Limited", emoji: "🇭🇰", type: "Ação Global" },
+    { sym: "9413", name: "Softbank Corp.", emoji: "📱", type: "Ação Global" },
+    { sym: "EMR", name: "Emerson Electric Company", emoji: "💡", type: "Ação Global" },
+    { sym: "WMB", name: "Williams Companies, Inc. (The)", emoji: "管道", type: "Ação Global" },
+    { sym: "601658", name: "Postal Savings Bank of China Co. Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "BREN", name: "PT Barito Renewables Energy Tbk", emoji: "🇮🇩", type: "Ação Global" },
+    { sym: "FI", name: "Fiserv, Inc.", emoji: "💳", type: "Ação Global" },
+    { sym: "BARC", name: "Barclays PLC", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "VST", name: "Vistra Corp.", emoji: "⚡", type: "Ação Global" },
+    { sym: "2308", name: "Delta Electronics, Inc.", emoji: "🔌", type: "Ação Global" },
+    { sym: "TDG", name: "Transdigm Group Inc.", emoji: "✈️", type: "Ação Global" },
+    { sym: "INFY", name: "Infosys Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "CABK", name: "CaixaBank SA", emoji: "🇪🇸", type: "Ação Global" },
+    { sym: "MAR", name: "Marriott International", emoji: "🏨", type: "Ação Global" },
+    { sym: "UPS", name: "United Parcel Service, Inc.", emoji: "📦", type: "Ação Global" },
+    { sym: "JCI", name: "Johnson Controls International PLC", emoji: "🏭", type: "Ação Global" },
+    { sym: "ADNOGAS", name: "ADNOC Gas plc", emoji: "🇦🇪", type: "Ação Global" },
+    { sym: "BAJFINANCE", name: "Bajaj Finance Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "RSG", name: "Republic Services, Inc.", emoji: "🗑️", type: "Ação Global" },
+    { sym: "8031", name: "Mitsui & Co.,Ltd.", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "DBK", name: "Deutsche Bank Aktiengesellschaft", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "ELV", name: "Elevance Health, Inc.", emoji: "⚕️", type: "Ação Global" },
+    { sym: "NG", name: "National Grid plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "AZO", name: "AutoZone, Inc.", emoji: "🚗", type: "Ação Global" },
+    { sym: "WES", name: "Wesfarmers Limited", emoji: "🇦🇺", type: "Ação Global" },
+    { sym: "CP", name: "Canadian Pacific Kansas City Limited", emoji: "🚂", type: "Ação Global" },
+    { sym: "6857", name: "Advantest Corp.", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "EPD", name: "Enterprise Products Partners L.P.", emoji: "管道", type: "Ação Global" },
+    { sym: "ADSK", name: "Autodesk, Inc.", emoji: "📐", type: "Ação Global" },
+    { sym: "858", name: "Wuliangye Yibin Co., Ltd. Class A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "HINDUNILVR", name: "Hindustan Unilever Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "CNQ", name: "Canadian Natural Resource Limited", emoji: "🍁", type: "Ação Global" },
+    { sym: "GLW", name: "Corning Incorporated", emoji: "🔬", type: "Ação Global" },
+    { sym: "LLOY", name: "Lloyds Banking Group plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "CL", name: "Colgate-Palmolive Company", emoji: "😁", type: "Ação Global" },
+    { sym: "CSU", name: "Constellation Software Inc.", emoji: "🌟", type: "Ação Global" },
+    { sym: "PYPL", name: "PayPal Holdings, Inc.", emoji: "🅿️", type: "Ação Global" },
+    { sym: "ZTS", name: "Zoetis Inc.", emoji: "🐾", type: "Ação Global" },
+    { sym: "600276", name: "Jiangsu Hengrui Pharmace...", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "APD", name: "Air Products and Chemicals, Inc.", emoji: "💨", type: "Ação Global" },
+    { sym: "FCX", name: "Freeport-McMoRan, Inc.", emoji: "⛏️", type: "Ação Global" },
+    { sym: "KDDL", name: "KDDL Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "EOG", name: "EOG Resources, Inc.", emoji: "⛽", type: "Ação Global" },
+    { sym: "MRVL", name: "Marvell Technology, Inc.", emoji: "칩", type: "Ação Global" },
+    { sym: "TEL", name: "TE Connectivity plc", emoji: "🔌", type: "Ação Global" },
+    { sym: "MNST", name: "Monster Beverage Corporation", emoji: "🥤", type: "Ação Global" },
+    { sym: "DELTA", name: "Delta Electronics (Thailand) Public Company Limited", emoji: "🇹🇭", type: "Ação Global" },
+    { sym: "LICI", name: "Life Insurance Corp. of India", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "300308", name: "Zhongji Innolight Co., Ltd. A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "NSC", name: "Norfolk Southern Corporation", emoji: "🚂", type: "Ação Global" },
+    { sym: "REGN", name: "Regeneron Pharmaceuticals, Inc.", emoji: "💊", type: "Ação Global" },
+    { sym: "HLT", name: "Hilton Worldwide Holdings Inc.", emoji: "🏨", type: "Ação Global" },
+    { sym: "300059", name: "East Money Information Co., Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "TRV", name: "The Travelers Companies, Inc.", emoji: "☂️", type: "Ação Global" },
+    { sym: "AMX/A", name: "America Movil SAB de CV Class A", emoji: "🇲🇽", type: "Ação Global" },
+    { sym: "EQNR", name: "Eqiunor ASA", emoji: "🇳🇴", type: "Ação Global" },
+    { sym: "SHL", name: "Siemens Healthineers AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "WDAY", name: "Workday, Inc.", emoji: "📅", type: "Ação Global" },
+    { sym: "CSI", name: "CSI Corporation", emoji: "🚚", type: "Ação Global" },
+    { sym: "FTNT", name: "Fortinet, Inc.", emoji: "🔒", type: "Ação Global" },
+    { sym: "KMI", name: "Kinder Morgan, Inc.", emoji: "管道", type: "Ação Global" },
+    { sym: "HO", name: "Thales SA", emoji: "🇫🇷", type: "Ação Global" },
+    { sym: "601166", name: "Industrial Bank Co., Ltd. Class A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "CPNG", name: "Coupang, Inc.", emoji: "🇰🇷", type: "Ação Global" },
+    { sym: "URI", name: "United Rentals, Inc.", emoji: "🏗️", type: "Ação Global" },
+    { sym: "4063", name: "Shin-Etsu Chemical Co Ltd", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "LSE.L", name: "London Stock Exchange Group plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "ET", name: "Energy Transfer LP", emoji: "管道", type: "Ação Global" },
+    { sym: "AXON", name: "Axon Enterprise, Inc.", emoji: "⚡", type: "Ação Global" },
+    { sym: "VOLV.A", name: "Volvo AB Class A", emoji: "🇸🇪", type: "Ação Global" },
+    { sym: "G", name: "Assicurazioni Generali S.p.A.", emoji: "🇮🇹", type: "Ação Global" },
+    { sym: "600030", name: "CITIC Securities Co. Ltd. Class A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "SPG", name: "Simon Property Group, Inc.", emoji: "🛍️", type: "Ação Global" },
+    { sym: "TFC", name: "Truist Financial Corporation", emoji: "🏦", type: "Ação Global" },
+    { sym: "VOW", name: "Volkswagen AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "BBCA", name: "PT Bank Central Asia Tbk", emoji: "🇮🇩", type: "Ação Global" },
+    { sym: "CNR", name: "Canadian National Railway Co.", emoji: "🚂", type: "Ação Global" },
+    { sym: "CRWV", name: "CoreWeave, Inc.", emoji: "☁️", type: "Ação Global" },
+    { sym: "ALNY", name: "Alnylam Pharmaceuticals, Inc.", emoji: "💊", type: "Ação Global" },
+    { sym: "373220", name: "LG Energy Solution Ltd.", emoji: "🇰🇷", type: "Ação Global" },
+    { sym: "CMI", name: "Cummins Inc.", emoji: "🏭", type: "Ação Global" },
+    { sym: "CPG", name: "Compass Group PLC", emoji: "🍽️", type: "Ação Global" },
+    { sym: "39", name: "Oversea-Chinese Banking Corp.", emoji: "🇸🇬", type: "Ação Global" },
+    { sym: "DLR", name: "Digital Realty Trust, Inc.", emoji: "💾", type: "Ação Global" },
+    { sym: "ACA", name: "Credit Agricole SA", emoji: "🇫🇷", type: "Ação Global" },
+    { sym: "ITC", name: "ITC Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "AFL", name: "AFLAC Incorporated", emoji: "🦆", type: "Ação Global" },
+    { sym: "BMW", name: "Bayerische Motoren Werke AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "1211", name: "Saudi Arabian Mining Co.", emoji: "🇸🇦", type: "Ação Global" },
+    { sym: "MWG", name: "Mercedes-Benz Group AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "PWR", name: "Quanta Services, Inc.", emoji: "⚡", type: "Ação Global" },
+    { sym: "LT", name: "Larsen B. Toubro Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "NWG", name: "NatWest Group Plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "GMEXICO/B", name: "Grupo Mexico S.A.B. de C.V.", emoji: "🇲🇽", type: "Ação Global" },
+    { sym: "2914", name: "Japan Tobacco Inc.", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "AEP", name: "American Electric Power Co. Inc.", emoji: "⚡", type: "Ação Global" },
+    { sym: "601998", name: "China CITIC Bank Corporation Limited Class H", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "NXPI", name: "NXP Semiconductors N.V.", emoji: "칩", type: "Ação Global" },
+    { sym: "MARUTI", name: "Maruti Suzuki India Limited", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "GM", name: "General Motors Company", emoji: "🚗", type: "Ação Global" },
+    { sym: "BN", name: "Danone SA", emoji: "🇫🇷", type: "Ação Global" },
+    { sym: "Z74", name: "Singapore Telecommunications Limited", emoji: "🇸🇬", type: "Ação Global" },
+    { sym: "COR", name: "Cencora, Inc.", emoji: "💊", type: "Ação Global" },
+    { sym: "7010", name: "Saudi Telecom Co.", emoji: "🇸🇦", type: "Ação Global" },
+    { sym: "HDA.FI", name: "Nordea Bank Abp.", emoji: "🇫🇮", type: "Ação Global" },
+    { sym: "688041", name: "Hyson Information Technology Co., Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "MPC", name: "Marathon Petroleum Corp.", emoji: "⛽", type: "Ação Global" },
+    { sym: "DGE", name: "Diageo plc", emoji: "🥃", type: "Ação Global" },
+    { sym: "ROSN", name: "Rosneft", emoji: "🇷🇺", type: "Ação Global" },
+    { sym: "2714", name: "Muyuan Foods Co., Ltd. Class A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "MRK", name: "Merck KGaA", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "RAPP", name: "Rapper Technologies, Inc.", emoji: "🎤", type: "Ação Global" },
+    { sym: "REIT", name: "Getty Income Corporation", emoji: "🏢", type: "Ação Global" },
+    { sym: "ALL", name: "ALLSTATE Corporation (The)", emoji: "👐", type: "Ação Global" },
+    { sym: "FAST", name: "Fastenal Company", emoji: "🔩", type: "Ação Global" },
+    { sym: "TRP", name: "T-C Energy Corporation", emoji: "管道", type: "Ação Global" },
+    { sym: "SNB", name: "Saudi National Bank", emoji: "🇸🇦", type: "Ação Global" },
+    { sym: "MQG", name: "Macquarie Group, Ltd.", emoji: "🇦🇺", type: "Ação Global" },
+    { sym: "SGO", name: "Compagnie de Saint-Gobain", emoji: "🇫🇷", type: "Ação Global" },
+    { sym: "WALMEX", name: "Wal-Mart de Mexico SAB de CV", emoji: "🇲🇽", type: "Ação Global" },
+    { sym: "BDX", name: "Becton, Dickinson and Company", emoji: "💉", type: "Ação Global" },
+    { sym: "VRT", name: "Vertiv Holdings, LLC", emoji: "🔌", type: "Ação Global" },
+    { sym: "SRE", name: "DBA Sempera", emoji: "⚡", type: "Ação Global" },
+    { sym: "NPN", name: "Naspers Limited Class N", emoji: "🇿🇦", type: "Ação Global" },
+    { sym: "6503", name: "Mitsubishi Electric Corp.", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "FDX", name: "FedEx Corporation", emoji: "📦", type: "Ação Global" },
+    { sym: "ENI", name: "ENI S.p.A.", emoji: "🇮🇹", type: "Ação Global" },
+    { sym: "CMG", name: "Chipotle Mexican Grill, Inc.", emoji: "🌯", type: "Ação Global" },
+    { sym: "2475", name: "Luxshare Precision Industry Co., Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "PCAR", name: "PACCAR Inc.", emoji: "🚚", type: "Ação Global" },
+    { sym: "PSX", name: "Phillips 66", emoji: "⛽", type: "Ação Global" },
+    { sym: "LHX", name: "L3Harris Technologies, Inc.", emoji: "🛰️", type: "Ação Global" },
+    { sym: "UMG", name: "Universal Music Group N.V.", emoji: "🎶", type: "Ação Global" },
+    { sym: "MET", name: "MetLife, Inc.", emoji: "☂️", type: "Ação Global" },
+    { sym: "RKT", name: "Reckitt Benckiser Group plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "MFC", name: "Manulife Financial Corporation", emoji: "🇨🇦", type: "Ação Global" },
+    { sym: "IDXX", name: "IDEXX Laboratories, Inc.", emoji: "🐾", type: "Ação Global" },
+    { sym: "LKOH", name: "Lukoil", emoji: "🇷🇺", type: "Ação Global" },
+    { sym: "207940", name: "Samsung BIOLOGICS Co., Ltd.", emoji: "🇰🇷", type: "Ação Global" },
+    { sym: "RDDT", name: "Reddit, Inc.", emoji: "🤖", type: "Ação Global" },
+    { sym: "DHL", name: "Deutsche Post AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "HDAIQ", name: "Nasdaq, Inc.", emoji: "📈", type: "Ação Global" },
+    { sym: "CARR", name: "Carrier Global Corporation", emoji: "❄️", type: "Ação Global" },
+    { sym: "SUN", name: "Suncor Energy Inc.", emoji: "☀️", type: "Ação Global" },
+    { sym: "MPLX", name: "MPLX LP", emoji: "管道", type: "Ação Global" },
+    { sym: "DSSA", name: "PT Dian Swastatika Sentosa Tbk", emoji: "🇮🇩", type: "Ação Global" },
+    { sym: "LNG", name: "Cheniere Energy, Inc.", emoji: "🔥", type: "Ação Global" },
+    { sym: "SLB", name: "Schlumberger N.V.", emoji: "💧", type: "Ação Global" },
+    { sym: "2328", name: "PICC Property & Casualty Co. Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "9961", name: "Trip.com Group Ltd.", emoji: "✈️", type: "Ação Global" },
+    { sym: "MBM", name: "Mahindra & Mahindra Ltd.", emoji: "🇮🇳", type: "Ação Global" },
+    { sym: "2388", name: "BOC Hong Kong (Holdings) Ltd.", emoji: "🇭🇰", type: "Ação Global" },
+    { sym: "D", name: "Dominion Energy, Inc.", emoji: "⚡", type: "Ação Global" },
+    { sym: "ADYEN", name: "Adyen NV", emoji: "🇳🇱", type: "Ação Global" },
+    { sym: "DSV", name: "DSV A/S", emoji: "🇩🇰", type: "Ação Global" },
+    { sym: "ENGI", name: "ENGIE S.A.", emoji: "🇫🇷", type: "Ação Global" },
+    { sym: "DHI", name: "D.R. Horton, Inc.", emoji: "🏠", type: "Ação Global" },
+    { sym: "VLO", name: "Valero Energy Corporation", emoji: "⛽", type: "Ação Global" },
+    { sym: "JD", name: "JD.com, Inc. Sponsored ADS Class A", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "III", name: "3i Group plc", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "ABX", name: "Barrick Mining Corporation", emoji: "⛏️", type: "Ação Global" },
+    { sym: "IFX", name: "Infineon Technologies AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "PSA", name: "Public Storage", emoji: "📦", type: "Ação Global" },
+    { sym: "ATD", name: "Atidimentation Couche - tard I...", emoji: "🏪", type: "Ação Global" },
+    { sym: "DB1", name: "Deutsche Boerse AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "KBC", name: "KBC Group N.V.", emoji: "🇧🇪", type: "Ação Global" },
+    { sym: "FLUT", name: "Flutter Entertainment plc", emoji: "🇮🇪", type: "Ação Global" },
+    { sym: "CBRE", name: "CBRE Group Inc", emoji: "🏢", type: "Ação Global" },
+    { sym: "GLEN", name: "Glencore plc", emoji: "🇨🇭", type: "Ação Global" },
+    { sym: "FAB", name: "First Abu Dhabi Bank", emoji: "🇦🇪", type: "Ação Global" },
+    { sym: "300502", name: "Eopallink Technology Inc., Ltd.", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "GWW", name: "W.W. Grainger, Inc.", emoji: "🔩", type: "Ação Global" },
+    { sym: "EON", name: "E.ON SE", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "CTXR", name: "Cortexus, Inc.", emoji: "💊", type: "Ação Global" },
+    { sym: "QNBK", name: "Qatar National Bank QPSC", emoji: "🇶🇦", type: "Ação Global" },
+    { sym: "KFH", name: "Kuwait Finance House K.S.C.", emoji: "🇰🇼", type: "Ação Global" },
+    { sym: "IMO", name: "Imperial Oil Limited", emoji: "🇨🇦", type: "Ação Global" },
+    { sym: "601319", name: "People's Insurance Co. (Group) of China Ltd. Class H", emoji: "🇨🇳", type: "Ação Global" },
+    { sym: "SREN", name: "Swiss Re AG", emoji: "🇨🇭", type: "Ação Global" },
+    { sym: "4502", name: "Takeda Pharmaceutical Co., Ltd.", emoji: "🇯🇵", type: "Ação Global" },
+    { sym: "WPM", name: "Wheaton Precious Metals Corp.", emoji: "⛏️", type: "Ação Global" },
+    { sym: "XYZ", name: "Block, Inc.", emoji: "⬜", type: "Ação Global" },
+    { sym: "2010", name: "Saudi Basic Industries Corp.", emoji: "🇸🇦", type: "Ação Global" },
+    { sym: "PAYX", name: "Paychex, Inc.", emoji: "💼", type: "Ação Global" },
+    { sym: "ROST", name: "Ross Stores, Inc.", emoji: "🛍️", type: "Ação Global" },
+    { sym: "LONN", name: "Lonza Group AG", emoji: "🇨🇭", type: "Ação Global" },
+    { sym: "DDOG", name: "Datadog, Inc.", emoji: "🐶", type: "Ação Global" },
+    { sym: "P911", name: "Porsche AG", emoji: "🇩🇪", type: "Ação Global" },
+    { sym: "EXPN", name: "Experian PLC", emoji: "🇬🇧", type: "Ação Global" },
+    { sym: "LCL", name: "Loblaw Companies Limited", emoji: "🇨🇦", type: "Ação Global" },
+    { sym: "F", name: "Ford Motor Company", emoji: "🚗", type: "Ação Global" },
+    { sym: "HOLN", name: "Holcim Ltd", emoji: "🇨🇭", type: "Ação Global" },
+    { sym: "TTWO", name: "Take-Two Interactive Software, Inc.", emoji: "🎮", type: "Ação Global" },
+    { sym: "STX", name: "Seagate Technology Holdings PLC", emoji: "💾", type: "Ação Global" },
+    { sym: "AMP", name: "Ameriprise Financial, Inc.", emoji: "💼", type: "Ação Global" },
+    { sym: "OKE", name: "ONEOK, Inc.", emoji: "管道", type: "Ação Global" },
+    { sym: "KOTAKBANK", name: "Kotak Mahindra Bank Limited", emoji: "🇮🇳", type: "Ação Global" },
+    // === AÇÕES BRASILEIRAS ===
+    { sym: "AAPL34", name: "Apple BDR", emoji: "🍎", type: "Ação Brasileira", sector: 'Financeiro' },
+    { sym: "BABA34", name: "Alibaba BDR", emoji: "🛍️", type: "Ação Brasileira", sector: 'Comercio de Varejo' },
+    { sym: "MELI34", name: "MercadoLibre BDR", emoji: "🛒", type: "Ação Brasileira", sector: 'Comercio de Varejo' },
+    { sym: "ITUB3", name: "Itaú Unibanco", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BBDC3", name: "Banco Bradesco", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BPAC3", name: "Banco BTG Pactual", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "ITSA3", name: "Itaúsa", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BBAS3", name: "Banco do Brasil", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "SANB3", name: "Banco Santander (Brasil)", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "B3SA3", name: "B3", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BBSE3", name: "BB Seguridade", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CXSE3", name: "Caixa Seguridade", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "RENT3", name: "Localiza", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "PSSA3", name: "Porto Seguro", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "ALOS3", name: "Allos", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CYRE3", name: "Cyrela", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CURY3", name: "Cury", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BNBR3", name: "Banco do Nordeste do Brasil", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "DIRR3", name: "Direcional Engenharia", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BRAP3", name: "Bradespar", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MULT3", name: "Multiplan", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "PETR3", name: "Petrobras", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "VALE3", name: "Vale", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "PRIO3", name: "Prio", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "VBBR3", name: "Vibra Energia", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "GGBR3", name: "Gerdau", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "CMIN3", name: "CSN Mineração", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "KLBN3", name: "Klabin", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "CSNA3", name: "Companhia Siderúrgica Nacional", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "GOAU3", name: "Metalúrgica Gerdau", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "USIM3", name: "Usiminas", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "CMIG3", name: "Cemig", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CSAN3", name: "Cosan", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "BRAV3", name: "Brava Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ENEV3", name: "Eneva", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "SBSP3", name: "Sabesp", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "EQTL3", name: "Equatorial", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CPFE3", name: "CPFL Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "NEOE3", name: "Neoenergia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CPLE3", name: "Copel", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "EGIE3", name: "Engie Brasil Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ENGI3", name: "Energisa", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CEEB3", name: "Coelba", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "SAPR3", name: "Sanepar", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ALUP3", name: "Alupar", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "TAEE3", name: "Taesa", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "AURE3", name: "Auren Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ENMT3", name: "Energisa Mato Grosso", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "EQPA3", name: "Equatorial Pará", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "EQMA3B", name: "Equatorial Maranhão", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ORVR3", name: "Orizon", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "SRNA3", name: "Serena Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CSMG3", name: "Copasa", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "REDE3", name: "Rede Energia", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ABEV3", name: "Ambev", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "RADL3", name: "Raia Drogasil", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "LREN3", name: "Lojas Renner", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "ASAI3", name: "Assaí", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "MGLU3", name: "Magazine Luiza", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "CEAB3", name: "C&A Modas", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "NATU3", name: "Natura", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "VULC3", name: "Vulcabras", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "MDIA3", name: "M. Dias Branco", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "ALPA3", name: "Alpargatas", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "VIVA3", name: "Vivara", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "GMAT3", name: "Grupo Mateus", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "WHRL3", name: "Whirlpool", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "RDOR3", name: "Rede D'Or", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "HAPV3", name: "Hapvida", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "FLRY3", name: "Fleury", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "ODPV3", name: "Odontoprev", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "HYPE3", name: "Hypera", type: "Ação Brasileira", sector: "Tecnologia em Saude" },
+    { sym: "SMFT3", name: "Smartfit", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "WEGE3", name: "WEG", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "SUZB3", name: "Suzano", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "EMBR3", name: "Embraer", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "FRAS3", name: "Fras-Le", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "UNIP3", name: "Unipar Carbocloro", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "POMO3", name: "Marcopolo", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "BRKM3", name: "Braskem", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "SLCE3", name: "SLC Agrícola", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "MOTV3", name: "Motiva", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "RAIL3", name: "Rumo", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "STBP3", name: "Santos Brasil", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "MRSA3B", name: "MRS Logística", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "ECOR3", name: "EcoRodovias", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "PORT3", name: "Wilson Sons", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "BRFS3", name: "BRF", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "BEEF3", name: "Minerva", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "MRFG3", name: "Marfrig", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "COGN3", name: "Cogna", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "UGPA3", name: "Ultrapar", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "GGPS3", name: "GPS", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "TTEN3", name: "Três Tentos", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "AMBP3", name: "Ambipar", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "AZZA3", name: "Azzas 2154", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "VIVT3", name: "Telefônica Brasil", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "TIMS3", name: "TIM", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "ARZZ3", name: "Arezzo&Co SA", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "BNB3", name: "Banco do Nordeste do Brasil SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "ELET3", name: "Eletrobras SA", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "MRSB3", name: "MRS Logistica S.A.", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "AGRO3", name: "BRASIL AGRO S.A.", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "WSON3", name: "Wilson Sons Holdings Brasil", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "AMEI3", name: "AMEI Participacoes S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "VIVR3", name: "Vivara Participacoes S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "WHSL3", name: "Whirlpool S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "ELET6", name: "Companhia de Eletricidade do Acre S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "SMTD3", name: "Sao Martinho S.A.", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "ABCB4", name: "Banco ABC Brasil SA Conv. - DR", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CBA3", name: "CBA ASA", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "ORIG3", name: "Origem Valorizacao de Residuos SA", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "EQMA3", name: "Equatorial Maranhao Distribuidora de Energia S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "GUAR3", name: "Guararapes Confeccoes S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "BRSR6", name: "Banco do Estado do Rio Grande do Sul SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BPAN3", name: "Banco Pan S.A. PRD SRB", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "GRND3", name: "Grendene S.A.", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "DXCO3", name: "Dexco S.A.", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "BSLI3", name: "BRB Banco de Brasilia SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BCCB3", name: "BCG Bocardel do Brasil SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "TIFF3", name: "Tifanny do Rio de Janeiro SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "MRVE3", name: "MRV Engenharia e Participacoes S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "BAZA3", name: "Banco da Amazonia S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "VAMO3", name: "Vamos Locacao de Caminhoes, Maquinas e Equipamentos S.A.", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "INTB3", name: "Intelbras SA Industria de Telecomunicacao", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "JUPM3", name: "Jupema Energia e Servicos S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "JHSF3", name: "JHSF Participacoes S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CLSC3", name: "Centrais Eletricas de Santa Catarina S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "RECV3", name: "Petrorecconcavo SA", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "BBRB3", name: "BBRB SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "TZC3", name: "TC ZC Empreendimentos e Participacoes Ltda.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "PLPL3", name: "Plano 8 Plano Desenvolvimentos SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "VRUR3", name: "VRUR3 Participacoes SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "RFRL3", name: "Rio Flores Floricultura Ltda", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "SBFG3", name: "Grupo SBF SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "TEND3", name: "Construtora Tenda SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MODI3", name: "Modis Participacoes SA", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "AVAV3", name: "AVAV Cromosendimentos Imobilarios SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "COCE3", name: "Companhia Energetica do Ceara", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "FESA3", name: "Cia de Ferro Ligas da Bahia", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "BLES3", name: "Banestes S.A. - Banco do Estado do Espirito Santo", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BLAN3", name: "Blanes SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "LOJA3", name: "Loja-10 Logistica Internacional SA", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "BLAU3", name: "Blalu Farmaceutica SA", type: "Ação Brasileira", sector: "Tecnologia em Saude" },
+    { sym: "LWSA3", name: "LWSA SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "TGMA3", name: "Traga B Field CG SA Participacoes", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "MDNE3", name: "Moura Dubeux Engenharia SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "PGMN3", name: "Empreendimentos Pague Menos S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "RAPT4", name: "Randoncorp SA", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "LIGT3", name: "Light S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "MYPK3", name: "Iochpe Maxion S.A.", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "CBPI3", name: "Companhia Brasileira de Petroleo Ipiranga", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "IRANI3", name: "Irani Papel e Embalagem SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "TUPY3", name: "Tupy S.A.", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "LOGG3", name: "Log Commercial Properties S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CRDE3", name: "Cruzeiro do Sul Educacional S.A.", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "PANP3", name: "Panvel S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "PLCE3", name: "Pet Center Comercio e Participacoes S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "BMOB3", name: "Bemobi Mobile Tech SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "ONCO3", name: "Oncoclínicas do Brasil Servicos de Saude S.A.", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "CAMI3", name: "Camil Alimentos SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "JSLG3", name: "JSL S.A.", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "EUCA3", name: "Eucatex S.A. Industria e Comercio", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "DASA3", name: "Diagnosticos da America S.A.", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "VALID3", name: "Valid Solucoes SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "UNIQ3", name: "Unique Telecomunicacoes", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "CERJ3", name: "Companhia Energetica do Rio de Janeiro SA", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "AMER3", name: "Americanas SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "EVEN3", name: "Even Construtora e Incorporadora S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "VTRU3", name: "Vitru Brasil Empreendimentos e Participacoes S.A.", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "GTNT3", name: "Getnet Servicos de Arrimacao SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "HOSP3", name: "Hospital Amer Serv SA", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "SOJA3", name: "Boa Safra Sementes SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "DIMD3", name: "Dimed S.A. Distribuidora de Produtos Hospitalares", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "ANIM3", name: "Animal Holding SA", type: "Ação Brasileira", sector: "Miscelanea" },
+    { sym: "KEPL3", name: "Kepler Weber S.A.", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "SEER3", name: "Grupo Ser Educacional SA", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "ARML3", name: "Armac Locacao Logistica e Servicos SA", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "TRIS3", name: "Trisul S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "MTR3", name: "Monterro Santo S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "WIZC3", name: "WIZ Solucoes e Corretagem de Seguros S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BRST3", name: "Brisanet Servicos de Telecomunicacoes S.A.", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "OISA3", name: "Ourofino S.A.", type: "Ação Brasileira", sector: "Tecnologia em Saude" },
+    { sym: "CEP3", name: "Cia Ceifg de Participacoes - CNPJ 26117398", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "VVAR3", name: "Viva Varejo Empreendimentos", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "BIOM3", name: "Biomm S.A.", type: "Ação Brasileira", sector: "Tecnologia em Saude" },
+    { sym: "PATI3", name: "Pantanalnet S.A.", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "CVCB3", name: "CVC Brasil Operadora e Agencia de Viagens S.A.", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "TEBR3", name: "Telecomunicacoes Brasileiras SA", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "AALR3", name: "Alliansa Saude e Participacoes SA", type: "Ação Brasileira", sector: "Servicos de Saude" },
+    { sym: "DESK3", name: "Desktop SA", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "PRNR3", name: "Priner Servicos Industriais SA", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "MTRS3", name: "MTRS S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MLAS3", name: "Multi Group S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "JALL3", name: "Jalles Machado SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "PFRM3", name: "Profarma Distribuidora de Produtos Farmaceuticos SA", type: "Ação Brasileira", sector: "Servicos de Distribuicao" },
+    { sym: "RLRE3", name: "Recca Longa Empr e Ad Re LTDA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "WLM3", name: "WLM Tecnologia SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "WLM4", name: "WLM Participacoes e Comercio de Pneus SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "ROMI3", name: "Romi SA", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "VITT3", name: "Vitta SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "ADTE3", name: "Atende Desenvolvimentos S.A.", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "CSUD3", name: "CSU Digital SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "TASA3", name: "Taurus Armas S.A.", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "BGIP3", name: "Banco do Estado de Sergipe SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "APAP3", name: "Alparck Empreendimentos Part. S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MADE3", name: "Madei Lojas S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "POSI3", name: "Positivo Tecnologia SA", type: "Ação Brasileira", sector: "Tecnologia Eletronica" },
+    { sym: "VSTE3", name: "Veste S.A. Estilo", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "QUAL3", name: "Qualicorp Consultoria e Corretora de Seguros S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "LQQL3", name: "Lojas Quero Quero S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "GRAZ3", name: "Grazifaria S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "PTBL3", name: "PBG S.A.Registered Shs", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "HCTB11", name: "Fundo de Investimento Imobiliario", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "AMOB3", name: "Amob3 Participacoes S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "HTPA3", name: "HTP Realty Empreendimentos SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MARI3", name: "Marite SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "HBOR3", name: "Helbor Empreendimentos S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "AFLT3", name: "Afluente Transmissao de Energia Eletrica", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "ALFA3", name: "Alfa Holdings S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "MRM3", name: "MRM Corretora S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "RNEW3", name: "Renova Energia S.A.", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "CAMB3", name: "Cambre SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "MTRE3", name: "Mitre Realty Empreendimentos e Participacoes S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "TECN3", name: "Technos S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "MEAL3", name: "International Meal Company S.A.", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "REAG3", name: "REAG Investimentos SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CMHG3", name: "CM Hospitalar SA", type: "Ação Brasileira", sector: "Servicos de Distribuicao" },
+    { sym: "ALVL3", name: "Alphaville SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "ENVL3", name: "Envol SA", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "MMSP3", name: "Monteiro Mentis SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "MSP3", name: "Cia Melhoramentos de Sao Paulo", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "PTNT3", name: "Pettenati S.A. Industria Textil", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "AZTV3", name: "Azevedo B Tavassos SA", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "HERE3", name: "Heres SA", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "AERO3", name: "AERO Industria e Comercio de Pecas Aeronaves", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "D1003", name: "D1000 Varejo Farma Participacoes SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "LVTC3", name: "Livetech da Bahia Industria e Comercio de Pecas", type: "Ação Brasileira", sector: "Servicos de Distribuicao" },
+    { sym: "FHGE3", name: "Fertilizantes Heringer S.A.", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "JOPA3", name: "Josapar Joaquim Oliveira SA", type: "Ação Brasileira", sector: "Industrias de Processamento" },
+    { sym: "TSAD3", name: "TC S.A.", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "LPSB3", name: "LPS Brasil-Consultoria de Imoveis S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "PFRL3", name: "Perfil Rio Petroleos Manuais SA", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "ENJO3", name: "Enjoei SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "BMKS3", name: "Bicicletas Monark S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "OIBR3", name: "Oi S.A.", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "NGRD3", name: "Neogrid Participacoes SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "BALM3", name: "Baumer SA", type: "Ação Brasileira", sector: "Tecnologia em Saude" },
+    { sym: "MNDL3", name: "Mundial S.A. - Produtos de Consumo", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "TPIS3", name: "TPI - Triunfo Participacoes e Investimentos", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "CEDO3", name: "Cia. de Flacao e Tecidos Cedro Cachoeira", type: "Ação Brasileira", sector: "Consumo de Nao Duraveis" },
+    { sym: "PMAM3", name: "Paranapanema S.A.", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "GFSA3", name: "Gafisa S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "TOKY3", name: "Grupo Toky SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "TCSA3", name: "Tecnisa S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CALI3", name: "Construtora Adolpho Lindenberg S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "G2DI33", name: "G2DI Investments, Ltd. Shares", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "DOTZ3", name: "Dotz S.A.", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "BMIN3", name: "Banco Mercantil de Investimentos S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "RDNI3", name: "Rodobens Negocios Imobiliarios S.A.", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "BIED3", name: "Bioma Educacao SA", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "SEQL3", name: "Sequoia Logistica e Transportes", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "UCAS3", name: "Unicasa Industria de Moveis S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "PDTC3", name: "Padtec Holding SA", type: "Ação Brasileira", sector: "Tecnologia Eletronica" },
+    { sym: "AGXY3", name: "AgrogalaXY Participacoes SA", type: "Ação Brasileira", sector: "Servicos de Distribuicao" },
+    { sym: "INEP3", name: "Inepar SA Industria e Construcoes", type: "Ação Brasileira", sector: "Servicos Industriais" },
+    { sym: "FICT3", name: "Fictor Alimentos SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "IFCM3", name: "Infracommerce CXAAS SA", type: "Ação Brasileira", sector: "Servicos de Distribuicao" },
+    { sym: "EPAR3", name: "Embpar Participacoes SA", type: "Ação Brasileira", sector: "Produtor Manufatureiro" },
+    { sym: "PLAS3", name: "Plascar Participacoes Industriais S.A.", type: "Ação Brasileira", sector: "Consumo Duraveis" },
+    { sym: "WEST3", name: "Westwing Comercio Varejo S.A.", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "PETR4", name: "Petrobras SA", type: "Ação Brasileira", sector: "Minerais Energeticos" },
+    { sym: "BBSA3", name: "BB SA - Brasil, Bolsa, Balcao", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "CBD3", name: "Companhia Brasileira de Distribuicao", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "PSSG3", name: "Porto Seguro SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "GZRD3", name: "Gerdau SA", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "ADMA3", name: "Cia Admincacao SA", type: "Ação Brasileira", sector: "Minerais Nao-Energeticos" },
+    { sym: "TOTV3", name: "TOTVS SA", type: "Ação Brasileira", sector: "Servicos de Tecnologia" },
+    { sym: "VBRR3", name: "VBRR Energia SA", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "FLXP3", name: "Fluxo de Participacoes SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "RENN3", name: "Lojas Renner SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "CGAS3", name: "Companhia de Gas de Sao Paulo", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "SMIF3", name: "Smarfit Academia de Ginastica SA", type: "Ação Brasileira", sector: "Consumo de Servicos" },
+    { sym: "EGN3", name: "Egenai SA", type: "Ação Brasileira", sector: "Comunicacoes" },
+    { sym: "SND3", name: "Sendas Distribuidora SA", type: "Ação Brasileira", sector: "Comercio de Varejo" },
+    { sym: "ALOG3", name: "Apolo Log, Trans e Com Perc P SA", type: "Ação Brasileira", sector: "Transportes" },
+    { sym: "ALTS3", name: "Altos SA", type: "Ação Brasileira", sector: "Financeiro" },
+    { sym: "EGMG3", name: "EGMG Participacoes SA", type: "Ação Brasileira", sector: "Servicos Publicos" },
+    { sym: "GPSP3", name: "Gps Participacoes e Empreendimentos SA", type: "Ação Brasileira", sector: "Servicos Comerciais" },
+    { sym: "LUCRO3", name: "Lucro Logistica", type: "Ação Brasileira", sector: "Servicos Industriais" },
+  ];
+
+  function getUniqueAssets(assets) {
+      const seen = new Set();
+      return assets.filter(asset => {
+          const duplicate = seen.has(asset.sym);
+          seen.add(asset.sym);
+          return !duplicate;
+      });
   }
+  
+  const UNIQUE_ASSETS = getUniqueAssets(ALL_ASSETS.map(asset => {
+      // Auto-assign emoji and URL
+      const sectorEmoji = SECTOR_EMOJIS[asset.sector] || SECTOR_EMOJIS.Default;
+      return {
+          ...asset,
+          emoji: asset.emoji || sectorEmoji,
+          url: asset.url || getUrlForAsset(asset),
+      };
+  }));
 
-  // render a single asset checkbox element
-  function makeAssetElement(sym, name, url, indexPrefix){
-    const id = `${indexPrefix}_${sym}`;
-    const div = document.createElement('div');
-    div.className = 'asset-item';
-    div.innerHTML = `<label for="${id}"><input id="${id}" type="checkbox" data-url="${url}" data-sym="${sym}"> <div><div style="font-weight:700">${sym}: ${name}</div><div style="opacity:.7;font-size:12px;margin-top:4px">(${detectType(url)})</div></div></label>`;
-    return div;
-  }
+  function renderAssets(filter = '', sector = 'Todos') {
+    const assetsByType = {
+        'Cripto': UNIQUE_ASSETS.filter(a => a.type === 'Cripto'),
+        'Ação Global': UNIQUE_ASSETS.filter(a => a.type === 'Ação Global'),
+        'Ação Brasileira': UNIQUE_ASSETS.filter(a => a.type === 'Ação Brasileira'),
+    };
 
-  // render assets checkboxes: priority first, then main list
-  function renderAssets(){
-    priorityContainer.innerHTML = '';
-    assetsContainer.innerHTML = '';
+    const lowerCaseFilter = filter.toLowerCase();
 
-    // render priority list
-    PRIORITY_URLS.forEach((o,i)=>{
-      const prettyName = o.name || (NAME_MAP[o.sym] || NAME_MAP_STOCKS[o.sym] || o.sym);
-      const item = document.createElement('div');
-      item.className = 'priority-item';
-      item.innerHTML = `<label style="cursor:pointer"><input type="checkbox" data-url="${o.url}" data-sym="${o.sym}"> <div style="font-weight:700">${o.sym}: ${prettyName}</div></label>`;
-      priorityContainer.appendChild(item);
+    const filteredAssets = (assets) => {
+        if (!lowerCaseFilter) return assets;
+        return assets.filter(a =>
+            a.sym.toLowerCase().includes(lowerCaseFilter) ||
+            a.name.toLowerCase().includes(lowerCaseFilter)
+        );
+    };
+    
+    const brSectors = ['Todos', ...new Set(assetsByType['Ação Brasileira'].map(a => a.sector || 'Outros'))].sort();
+
+    let html = `
+      <div class="asset-category">
+        <details open>
+          <summary>🪙 Criptomoedas</summary>
+          <div class="asset-list" id="crypto-list">
+            ${filteredAssets(assetsByType['Cripto']).map(makeAssetElement).join('')}
+          </div>
+        </details>
+      </div>
+      <div class="asset-category">
+        <details open>
+          <summary>🌎 Ações Globais</summary>
+          <div class="asset-list" id="global-stocks-list">
+            ${filteredAssets(assetsByType['Ação Global']).map(makeAssetElement).join('')}
+          </div>
+        </details>
+      </div>
+      <div class="asset-category">
+        <details open>
+          <summary>🇧🇷 Ações Brasileiras</summary>
+          <div class="br-stocks-controls">
+             <label for="sectorSelector" class="small">Filtrar por setor:</label>
+             <select id="sectorSelector">
+                ${brSectors.map(s => `<option value="${s}" ${s === sector ? 'selected' : ''}>${s}</option>`).join('')}
+             </select>
+          </div>
+          <div class="asset-list" id="br-stocks-list">
+            ${filteredAssets(assetsByType['Ação Brasileira'].filter(a => sector === 'Todos' || a.sector === sector)).map(makeAssetElement).join('')}
+          </div>
+        </details>
+      </div>
+    `;
+    assetsContainer.innerHTML = html;
+
+    // Re-attach listeners for the new elements
+    document.getElementById('sectorSelector').addEventListener('change', (e) => {
+        renderAssets(assetSearch.value, e.target.value);
+        loadSelection(); // re-apply checked status after re-render
     });
-
-    // render main list (skipping duplicates based on sym)
-    const seen = new Set(PRIORITY_URLS.map(x=>x.sym));
-    URL_LIST.forEach((u,i)=>{
-      const sym = extractSymbol(u);
-      if(seen.has(sym)) return; // skip if already in priority
-      const type = detectType(u);
-      const name = (type==='Cripto' ? (NAME_MAP[sym] || sym) : (NAME_MAP_STOCKS[sym] || sym));
-      const el = makeAssetElement(sym, name, u, 'asset');
-      assetsContainer.appendChild(el);
-    });
+  }
+  
+  function makeAssetElement(asset){
+    const id = `asset_${asset.sym}`;
+    return `
+      <div class="asset-item">
+        <label for="${id}">
+          <input id="${id}" type="checkbox" data-url="${asset.url}" data-sym="${asset.sym}"> 
+          <div>
+            <div style="font-weight:700">${asset.emoji} ${asset.sym}: ${asset.name}</div>
+            <div style="opacity:.7;font-size:12px;margin-top:4px">(${asset.type === 'Ação Brasileira' ? asset.sector : asset.type})</div>
+          </div>
+        </label>
+      </div>`;
   }
 
-  // load saved selection + templates
   function loadSelection(){
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    // attach listeners to priority items and main list after render
-    document.querySelectorAll('#priorityContainer input[type=checkbox]').forEach(chk=>{
-      chk.checked = saved.includes(chk.dataset.sym);
-      chk.addEventListener('change', onSelectionChange);
-    });
     document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(chk=>{
       chk.checked = saved.includes(chk.dataset.sym);
       chk.addEventListener('change', onSelectionChange);
@@ -421,25 +1276,30 @@ document.addEventListener('DOMContentLoaded', () => {
   function onSelectionChange(){ updateAllBlocks(); }
 
   function getSelected(){
-    const selects = Array.from(document.querySelectorAll('#priorityContainer input:checked, #assetsContainer input:checked'));
-    return selects.map(c=>({
-      sym:c.dataset.sym,
-      url:c.dataset.url,
-      type: detectType(c.dataset.url),
-      name: getPrettyName(c.dataset.sym, c.dataset.url)
-    }));
-  }
+    const selectedAssets = [];
+    const seenSymbols = new Set();
 
-  function getPrettyName(sym,url){
-    const type = detectType(url);
-    return (NAME_MAP[sym] || NAME_MAP_STOCKS[sym] || sym);
+    document.querySelectorAll('#assetsContainer input:checked').forEach(c => {
+        if (!seenSymbols.has(c.dataset.sym)) {
+            const assetData = UNIQUE_ASSETS.find(a => a.sym === c.dataset.sym);
+            if(assetData) {
+                selectedAssets.push({
+                    sym: assetData.sym,
+                    url: assetData.url,
+                    type: assetData.type,
+                    name: `${assetData.emoji} ${assetData.name}`
+                });
+                seenSymbols.add(c.dataset.sym);
+            }
+        }
+    });
+    return selectedAssets;
   }
 
   // build outputs
   function updateAllBlocks(){
     const selected = getSelected();
 
-    // --- header + common functions for templates ---
     function getCurrentDateTime() {
         const now = new Date();
         const pad = (n) => n.toString().padStart(2, '0');
@@ -505,14 +1365,14 @@ Preço atual (valor — fonte — timestamp)
 Preço estratégico de referência (do usuário)
 Distância até o alvo (%)
 Resumo técnico (PRIORIDADE: PDF → realtime):
-  - 1D: [Compra / Venda / Neutro] — 1 frase com o sinal principal extraído do PDF
-  - 1S: [Compra / Venda / Neutro] — 1 frase
-  - 1M: [Compra / Venda / Neutro] — 1 frase
+  - 1D: [Compra / Venda / Neutro] — 1 frase com o sinal principal extraído do PDF
+  - 1S: [Compra / Venda / Neutro] — 1 frase
+  - 1M: [Compra / Venda / Neutro] — 1 frase
 Observações críticas:
-  - Divergências (PDF vs realtime)
-  - Suportes / Resistências chave (preços)
-  - Eventos on-chain / unlocks (datas + %)
-  - Notas do PDF (arquivo e página)
+  - Divergências (PDF vs realtime)
+  - Suportes / Resistências chave (preços)
+  - Eventos on-chain / unlocks (datas + %)
+  - Notas do PDF (arquivo e página)
 Ação recomendada (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop % sugerido
 Confiança: [Alta / Média / Baixa]
 Principais fontes (máx 4): [PDF_nome_página, CoinGecko link, DefiLlama, GitHub]
@@ -550,9 +1410,9 @@ Para cada sugestão de compra, estimate slippage: calcule book depth nas 2 maior
 
 8) Follow-ups automáticos (pré-criados)
 Se o briefing identificar eventos críticos (unlock >3% nos próximos 30 dias; falha de rede; investigação regulatória), gere automaticamente estes 3 arquivos:
- A) CSV com symbol,date,pct_unlock,source (High Risk)
- B) Orderbook snapshot (Binance/Coinbase) para calibração de slippage
- C) Feed de notícias + tweets oficiais (últimos 30 dias) — links + datas
+ A) CSV com symbol,date,pct_unlock,source (High Risk)
+ B) Orderbook snapshot (Binance/Coinbase) para calibração de slippage
+ C) Feed de notícias + tweets oficiais (últimos 30 dias) — links + datas
 
 9) Regras / limitações do usuário
 Não proponha mudanças permanentes de tese no briefing diário. Sinalize opções/alternativas apenas; decisões estratégicas principais serão pedidas em relatórios separados.
@@ -636,8 +1496,8 @@ Use estes alvos e tese como referência — a alocação atual aproximada (mutá
 Ativo: [NOME] — [TICKER]
 Preço atual (fonte + timestamp): [valor]
 Preço-alvo do usuário: [valor]
-% em relação ao alvo: [+X% / -Y%]  <-- calcule automaticamente
-Status: [🚨 oportunidade próxima / Próximo / Ainda distante]  <-- regras abaixo
+% em relação ao alvo: [+X% / -Y%]  <-- calcule automaticamente
+Status: [🚨 oportunidade próxima / Próximo / Ainda distante]  <-- regras abaixo
 Resumo técnico (PRIORIDADE: Gemini → realtime):
 * 1D: [Compra / Venda / Neutro] — 1 frase (indicador-chave da análise)
 * 1S: [Compra / Venda / Neutro] — 1 frase
@@ -676,11 +1536,9 @@ Fonte(s) (máx 3): [link / “Gemini análise”]
 
     const chatText = header + chatTpl;
 
-    // update visible blocks (title/content placeholder as requested)
     document.getElementById('geminiBlock').textContent = gemText || "💬 Instruções para o Gemini – (cole o template ao editar)";
     document.getElementById('chatgptBlock').textContent = chatText || "💬 Mensagem de início de conversa para o ChatGPT — (cole o template ao editar)";
 
-    // build Python script dynamic part: symbols list (use selection)
     const scriptEl = document.getElementById('scriptBlock');
     let pythonScript = getPythonHeader();
 
@@ -695,16 +1553,13 @@ Fonte(s) (máx 3): [link / “Gemini análise”]
     pythonScript += getPythonMainBlock();
     scriptEl.textContent = pythonScript;
 
-    // store generated payload for copy
     window._generatedGemini = gemText;
     window._generatedChat = chatText;
     window.webScriptText = pythonScript;
 
-    // save selection automatically (store symbols only)
     saveSelection(selected.map(s=>s.sym));
   }
 
-  // === helper returning Python header (imports + helpers) ===
   function getPythonHeader(){
     return `import os
 import time
@@ -743,7 +1598,7 @@ TIMEFRAME_XPATHS = {
 
 # ---------- Helpers ----------
 def click_timeframe(xpath, timeout=8):
-    \"\"\"Clica no botão timeframe via JS e tenta aguardar indicação de seleção (se houver).\"\"\"
+    """Clica no botão timeframe via JS e tenta aguardar indicação de seleção (se houver)."""
     try:
         el = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
         driver.execute_script("arguments[0].click();", el)
@@ -789,7 +1644,7 @@ def create_pdf_from_images_list(image_paths, pdf_name):
     pdf_path = os.path.join(output_folder, pdf_name)
     if os.path.exists(pdf_path):
         os.remove(pdf_path)
-    pdf = FPDF(unit=\"pt\", format=\"A4\")
+    pdf = FPDF(unit="pt", format="A4")
     page_w, page_h = pdf.w_pt, pdf.h_pt
     for image_path in image_paths:
         img = Image.open(image_path)
@@ -801,20 +1656,19 @@ def create_pdf_from_images_list(image_paths, pdf_name):
         pdf.add_page()
         pdf.image(image_path, x, y, new_w, new_h)
     pdf.output(pdf_path)
-    print(f\"[PDF] Gerado: {pdf_path}\")
+    print(f"[PDF] Gerado: {pdf_path}")
     return pdf_path
 
 def safe_remove(path):
     try:
         if os.path.exists(path):
             os.remove(path)
-            print(f\"[Removido] {path}\")
+            print(f"[Removido] {path}")
     except Exception as e:
-        print(f\"[Erro ao remover {path}]: {e}\")
+        print(f"[Erro ao remover {path}]: {e}")
 `;
   }
 
-  // Python main block (uses symbols variable)
   function getPythonMainBlock(){
     return `
 
@@ -840,13 +1694,13 @@ def generate_tradeview_symbol_pdfs(symbols):
                 imgs.append(img_path)
                 all_images.append(img_path)
             except Exception as e:
-                print(f\"[Erro screenshot] {symbol} {tf}: {e}\")
+                print(f"[Erro screenshot] {symbol} {tf}: {e}")
 
         # gerar PDF por símbolo
         try:
             create_pdf_from_images_list(imgs, pdf_name)
         except Exception as e:
-            print(f\"[Erro PDF] {symbol}: {e}\")
+            print(f"[Erro PDF] {symbol}: {e}")
 
     return all_images
 
@@ -874,7 +1728,7 @@ if __name__ == "__main__":
                 img = save_full_screenshot_overview(url, fname, target_width=4950, max_height=12000, wait_after_load=4)
                 overview_images.append(img)
             except Exception as e:
-                print(f\"[Erro overview] {url}: {e}\")
+                print(f"[Erro overview] {url}: {e}")
 
         if overview_images:
             create_pdf_from_images_list(overview_images, "Relatorio_Cripto_Mercado.pdf")
@@ -895,53 +1749,56 @@ if __name__ == "__main__":
   }
 
   // ===== UI actions =====
-  document.addEventListener('click', (e)=>{
-    if(e.target && e.target.id==='selectAll'){
-      // check all priority + main
-      document.querySelectorAll('#priorityContainer input, #assetsContainer input').forEach(i=>i.checked=true);
-      updateAllBlocks();
-    }
-    if(e.target && e.target.id==='clearAll'){
-      document.querySelectorAll('#priorityContainer input, #assetsContainer input').forEach(i=>i.checked=false);
-      updateAllBlocks();
-    }
-    if(e.target && e.target.id==='saveBtn'){
-      const sel = Array.from(document.querySelectorAll('#priorityContainer input:checked, #assetsContainer input:checked')).map(c=>c.dataset.sym);
-      saveSelection(sel);
-      localStorage.setItem(TEMPLATE_KEY_G, document.getElementById('geminiTemplate').value || '');
-      localStorage.setItem(TEMPLATE_KEY_C, document.getElementById('chatTemplate').value || '');
-      _showToast('Seleção e templates salvos');
-    }
-    if(e.target && e.target.id==='copyGemini'){
-      _copyString(window._generatedGemini || '');
-    }
-    if(e.target && e.target.id==='copyChat'){
-      _copyString(window._generatedChat || '');
-    }
-    if(e.target && e.target.id==='toggleGeminiTemplate'){
-      const ta = document.getElementById('geminiTemplate'); ta.style.display = (ta.style.display==='none')? 'block':'none';
-    }
-    if(e.target && e.target.id==='toggleChatTemplate'){
-      const ta = document.getElementById('chatTemplate'); ta.style.display = (ta.style.display==='none')? 'block':'none';
-    }
-    if(e.target && e.target.id==='copyScriptBtn'){
-      _copyString(window.webScriptText || '');
-    }
+  document.getElementById('selectAll').addEventListener('click', () => {
+    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(i=>i.checked=true);
+    updateAllBlocks();
+  });
+  
+  document.getElementById('clearAll').addEventListener('click', () => {
+    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(i=>i.checked=false);
+    updateAllBlocks();
+  });
+  
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const sel = Array.from(document.querySelectorAll('#assetsContainer input:checked')).map(c=>c.dataset.sym);
+    saveSelection(sel);
+    localStorage.setItem(TEMPLATE_KEY_G, document.getElementById('geminiTemplate').value || '');
+    localStorage.setItem(TEMPLATE_KEY_C, document.getElementById('chatTemplate').value || '');
+    _showToast('Seleção e templates salvos');
   });
 
-  // copy helpers
+  document.getElementById('copyGemini').addEventListener('click', () => _copyString(window._generatedGemini || ''));
+  document.getElementById('copyChat').addEventListener('click', () => _copyString(window._generatedChat || ''));
+  document.getElementById('copyScriptBtn').addEventListener('click', () => _copyString(window.webScriptText || ''));
+
+  document.getElementById('toggleGeminiTemplate').addEventListener('click', () => {
+    const ta = document.getElementById('geminiTemplate');
+    ta.style.display = (ta.style.display==='none')? 'block':'none';
+  });
+  
+  document.getElementById('toggleChatTemplate').addEventListener('click', () => {
+    const ta = document.getElementById('chatTemplate');
+    ta.style.display = (ta.style.display==='none')? 'block':'none';
+  });
+
+  assetSearch.addEventListener('input', (e) => {
+      const sectorSelector = document.getElementById('sectorSelector');
+      const currentSector = sectorSelector ? sectorSelector.value : 'Todos';
+      renderAssets(e.target.value, currentSector);
+      loadSelection(); // re-apply checked status after re-render
+  });
+
   function copyText(ev, text){
     if (ev) ev.stopPropagation();
     _copyString(text);
   }
 
-  // delegate click-to-copy for text blocks
   document.querySelectorAll('[data-copy]').forEach(el=>{
     el.addEventListener('click', ()=>_copyString(el.textContent.trim()));
   });
 
   function _copyString(text){
-    if(!text) return _showToast('Nada pra copiar');
+    if(!text) return _showToast('Nada para copiar');
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(text).then(()=>_showToast('Copiado!'), ()=>_fallbackCopy(text));
     } else {
@@ -965,20 +1822,21 @@ if __name__ == "__main__":
     }
   }
 
+  let toastTimeout;
   function _showToast(msg){
+    clearTimeout(toastTimeout);
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.style.opacity = '1';
     t.style.transform = 'translateY(0)';
     t.style.pointerEvents = 'auto';
-    setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(12px)';t.style.pointerEvents='none';}, 1600);
+    toastTimeout = setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(12px)';t.style.pointerEvents='none';}, 1600);
   }
 
   // initial render + load
   renderAssets();
-  // small delay to ensure elements exist before binding
-  setTimeout(loadSelection, 120);
-}); // DOMContentLoaded end
+  loadSelection();
+});
 </script>
 </body>
 </html>
