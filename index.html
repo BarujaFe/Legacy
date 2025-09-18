@@ -184,12 +184,12 @@
 
     <div class="chart-row" aria-hidden="false">
       <div class="chart-card" role="region" aria-label="Gráfico de Pizza">
-        <h2>Gráfico de Pizza</h2>
+        <h2>Gráfico de Pizza (920x503 px)</h2>
         <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=111637926&format=interactive" loading="lazy"></iframe>
       </div>
 
       <div class="chart-card" role="region" aria-label="Acompanhamento Diário">
-        <h2>Acompanhamento Diário</h2>
+        <h2>Acompanhamento Diário (920x503 px)</h2>
         <iframe class="chart-iframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRfMop3o2aoueAAq0TJ07xVDBaUVy4pV03Ac4blEnX5sziR9OFv8xXH0jKKBU67QSzo8wRf0uaIXcbG/pubchart?oid=1425520939&format=interactive" loading="lazy"></iframe>
       </div>
     </div>
@@ -208,7 +208,7 @@
             <div class="asset-categories" id="assetsContainer">
                 </div>
         </div>
-        <p class="hint">Ao alterar seleção, os blocos do Gemini, ChatGPT e o script serão atualizados automaticamente. A última seleção é salva no navegador.</p>
+        <p class="hint">A seleção é mantida mesmo ao pesquisar. A última seleção é salva no navegador.</p>
     </div>
 
     <div id="priorityContainer"></div>
@@ -263,13 +263,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  const STORAGE_KEY = 'ativosSelecionados_v3';
+  const STORAGE_KEY = 'ativosSelecionados_v4';
   const TEMPLATE_KEY_G = 'template_gemini_v1';
   const TEMPLATE_KEY_C = 'template_chat_v1';
   
   const assetsContainer = document.getElementById('assetsContainer');
   const assetSearch = document.getElementById('assetSearch');
   
+  let selectedSymbols = new Set();
+  const DEFAULT_SELECTION = ['ETH', 'SOL', 'LINK', 'SUI', 'RENDER', 'AAPL', 'BABA', 'MELI'];
+
   const SECTOR_EMOJIS = {
       'Financeiro': '🏦',
       'Servicos Publicos': '💡',
@@ -301,10 +304,10 @@ document.addEventListener('DOMContentLoaded', () => {
           return `https://br.tradingview.com/symbols/${sym}USD/technicals/?exchange=BINANCE`;
       } else if (asset.type === 'Ação Brasileira') {
           return `https://br.tradingview.com/symbols/BVMF-${sym}/technicals/`;
-      } else { // Ação Global - requires more logic
+      } else { // Ação Global
           const exchangeMap = {
               'AAPL': 'NASDAQ', 'MSFT': 'NASDAQ', 'GOOGL': 'NASDAQ', 'AMZN': 'NASDAQ', 'META': 'NASDAQ', 'AVGO': 'NASDAQ', 'TSLA': 'NASDAQ', 'NFLX': 'NASDAQ', 'ASML': 'NASDAQ', 'SMCI': 'NASDAQ', 'CSCO': 'NASDAQ', 'AMD': 'NASDAQ', 'BIDU': 'NASDAQ', 'ADBE': 'NASDAQ', 'CMCSA': 'NASDAQ', 'SNPS': 'NASDAQ', 'AZN': 'NASDAQ', 'CGC': 'NASDAQ', 'PYPL': 'NASDAQ', 'FTNT': 'NASDAQ', 'NXPI': 'NASDAQ', 'MRVL': 'NASDAQ', 'INTC': 'NASDAQ', 'QCOM': 'NASDAQ', 'HDAIQ': 'NASDAQ',
-              'TSM': 'NYSE', 'CRM': 'NYSE', 'ORCL': 'NYSE', 'VIV': 'NYSE', 'JPM': 'NYSE', 'MA': 'NYSE', 'BAC': 'NYSE', 'WFC': 'NYSE', 'MS': 'NYSE', 'AXP': 'NYSE', 'RY': 'NYSE', 'HSBC': 'NYSE', 'WMT': 'NYSE', 'PG': 'NYSE', 'BABA': 'NYSE', 'DIS': 'NYSE', 'HD': 'NYSE', 'KO': 'NYSE', 'UL': 'NYSE', 'KMB': 'NYSE', 'TMO': 'NYSE', 'LLY': 'NYSE', 'PFE': 'NYSE', 'ABT': 'NYSE', 'CVS': 'NYSE', 'BSX': 'NYSE', 'XOM': 'NYSE', 'CVX': 'NYSE', 'BHP': 'NYSE', 'GE': 'NYSE', 'BA': 'NYSE', 'F': 'NYSE', 'GM': 'NYSE',
+              'TSM': 'NYSE', 'CRM': 'NYSE', 'ORCL': 'NYSE', 'VIV': 'NYSE', 'JPM': 'NYSE', 'MA': 'NYSE', 'BAC': 'NYSE', 'WFC': 'NYSE', 'MS': 'NYSE', 'AXP': 'NYSE', 'RY': 'NYSE', 'HSBC': 'NYSE', 'WMT': 'NYSE', 'PG': 'NYSE', 'BABA': 'NYSE', 'DIS': 'NYSE', 'HD': 'NYSE', 'KO': 'NYSE', 'UL': 'NYSE', 'KMB': 'NYSE', 'TMO': 'NYSE', 'LLY': 'NYSE', 'PFE': 'NYSE', 'ABT': 'NYSE', 'CVS': 'NYSE', 'BSX': 'NYSE', 'XOM': 'NYSE', 'CVX': 'NYSE', 'BHP': 'NYSE', 'GE': 'NYSE', 'BA': 'NYSE', 'F': 'NYSE', 'GM': 'NYSE', 'MELI': 'NYSE',
               'SAP': 'XETR', 'DBK': 'XETR', 'BMW': 'XETR', 'MWG': 'XETR', 'IFX': 'XETR', 'SHL': 'XETR', 'DB1': 'XETR', 'EON': 'XETR',
               '1810': 'HKEX', '1299': 'HKEX', '0268': 'HKEX', '0001': 'HKEX', '2328': 'HKEX', '2388': 'HKEX', '9961': 'HKEX',
               '601398': 'SSE', '601288': 'SSE', '601997': 'SSE', '600000': 'SSE', '600519': 'SSE', '600276': 'SSE', '601166': 'SSE', '600030': 'SSE', '601998': 'SSE', '601319': 'SSE',
@@ -313,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
               '7203': 'TSE', '7267': 'TSE', '8031': 'TSE', '4063': 'TSE', '2914': 'TSE', '6503': 'TSE', '4502': 'TSE',
               'LVMUY': 'USOTC',
               'KER': 'EURONEXT', 'HO': 'EURONEXT', 'BN': 'EURONEXT', 'ACA': 'EURONEXT', 'ENGI': 'EURONEXT',
-              'ITUB': 'NYSE', // Already ITUB3 for BVMF, just a fallback
           };
           const exchange = exchangeMap[sym] || 'NYSE'; // Default to NYSE for unknowns
           return `https://br.tradingview.com/symbols/${exchange}-${sym}/technicals/`;
@@ -1171,7 +1173,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   const UNIQUE_ASSETS = getUniqueAssets(ALL_ASSETS.map(asset => {
-      // Auto-assign emoji and URL
       const sectorEmoji = SECTOR_EMOJIS[asset.sector] || SECTOR_EMOJIS.Default;
       return {
           ...asset,
@@ -1199,21 +1200,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const brSectors = ['Todos', ...new Set(assetsByType['Ação Brasileira'].map(a => a.sector || 'Outros'))].sort();
 
+    const cryptoList = filteredAssets(assetsByType['Cripto']).map(makeAssetElement).join('');
+    const globalStocksList = filteredAssets(assetsByType['Ação Global']).map(makeAssetElement).join('');
+    const brStocksList = filteredAssets(assetsByType['Ação Brasileira'].filter(a => sector === 'Todos' || a.sector === sector)).map(makeAssetElement).join('');
+    
     let html = `
       <div class="asset-category">
         <details open>
           <summary>🪙 Criptomoedas</summary>
-          <div class="asset-list" id="crypto-list">
-            ${filteredAssets(assetsByType['Cripto']).map(makeAssetElement).join('')}
-          </div>
+          <div class="asset-list" id="crypto-list">${cryptoList}</div>
         </details>
       </div>
       <div class="asset-category">
         <details open>
           <summary>🌎 Ações Globais</summary>
-          <div class="asset-list" id="global-stocks-list">
-            ${filteredAssets(assetsByType['Ação Global']).map(makeAssetElement).join('')}
-          </div>
+          <div class="asset-list" id="global-stocks-list">${globalStocksList}</div>
         </details>
       </div>
       <div class="asset-category">
@@ -1225,27 +1226,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${brSectors.map(s => `<option value="${s}" ${s === sector ? 'selected' : ''}>${s}</option>`).join('')}
              </select>
           </div>
-          <div class="asset-list" id="br-stocks-list">
-            ${filteredAssets(assetsByType['Ação Brasileira'].filter(a => sector === 'Todos' || a.sector === sector)).map(makeAssetElement).join('')}
-          </div>
+          <div class="asset-list" id="br-stocks-list">${brStocksList}</div>
         </details>
       </div>
     `;
     assetsContainer.innerHTML = html;
 
-    // Re-attach listeners for the new elements
     document.getElementById('sectorSelector').addEventListener('change', (e) => {
         renderAssets(assetSearch.value, e.target.value);
-        loadSelection(); // re-apply checked status after re-render
     });
   }
   
   function makeAssetElement(asset){
     const id = `asset_${asset.sym}`;
+    const isChecked = selectedSymbols.has(asset.sym);
     return `
       <div class="asset-item">
         <label for="${id}">
-          <input id="${id}" type="checkbox" data-url="${asset.url}" data-sym="${asset.sym}"> 
+          <input id="${id}" type="checkbox" data-url="${asset.url}" data-sym="${asset.sym}" ${isChecked ? 'checked' : ''}> 
           <div>
             <div style="font-weight:700">${asset.emoji} ${asset.sym}: ${asset.name}</div>
             <div style="opacity:.7;font-size:12px;margin-top:4px">(${asset.type === 'Ação Brasileira' ? asset.sector : asset.type})</div>
@@ -1254,49 +1252,43 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>`;
   }
 
-  function loadSelection(){
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(chk=>{
-      chk.checked = saved.includes(chk.dataset.sym);
-      chk.addEventListener('change', onSelectionChange);
-    });
+  function loadInitialState(){
+    const savedSelection = localStorage.getItem(STORAGE_KEY);
+    
+    if (savedSelection !== null) {
+        selectedSymbols = new Set(JSON.parse(savedSelection));
+    } else {
+        selectedSymbols = new Set(DEFAULT_SELECTION);
+    }
 
     const gtpl = localStorage.getItem(TEMPLATE_KEY_G) || '';
     const ctpl = localStorage.getItem(TEMPLATE_KEY_C) || '';
     document.getElementById('geminiTemplate').value = gtpl;
     document.getElementById('chatTemplate').value = ctpl;
 
+    renderAssets();
     updateAllBlocks();
   }
 
-  function saveSelection(vals){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(vals));
+  function saveSelection(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(selectedSymbols)));
   }
-
-  function onSelectionChange(){ updateAllBlocks(); }
 
   function getSelected(){
-    const selectedAssets = [];
-    const seenSymbols = new Set();
-
-    document.querySelectorAll('#assetsContainer input:checked').forEach(c => {
-        if (!seenSymbols.has(c.dataset.sym)) {
-            const assetData = UNIQUE_ASSETS.find(a => a.sym === c.dataset.sym);
-            if(assetData) {
-                selectedAssets.push({
-                    sym: assetData.sym,
-                    url: assetData.url,
-                    type: assetData.type,
-                    name: `${assetData.emoji} ${assetData.name}`
-                });
-                seenSymbols.add(c.dataset.sym);
-            }
+    return Array.from(selectedSymbols).map(sym => {
+        const assetData = UNIQUE_ASSETS.find(a => a.sym === sym);
+        if (assetData) {
+            return {
+                sym: assetData.sym,
+                url: assetData.url,
+                type: assetData.type,
+                name: `${assetData.emoji} ${assetData.name}`
+            };
         }
-    });
-    return selectedAssets;
+        return null;
+    }).filter(Boolean); // Filtra nulos caso um símbolo salvo não seja encontrado
   }
 
-  // build outputs
   function updateAllBlocks(){
     const selected = getSelected();
 
@@ -1313,7 +1305,6 @@ Data/Hora: ${getCurrentDateTime()}
 
     const assetsForPrompt = selected.length > 0 ? selected.map(s => `${s.sym}: ${s.name} — ${s.url}`).join('\n') : '(nenhum ativo selecionado)';
 
-    // Gemini template (uses current selection)
     const gemTpl = `
 INSTRUÇÕES DIÁRIAS — BRIEFING MATINAL (PDFs/imagens + top lists) — RESPOSTA EM PORTUGUÊS
 Ativos para análise:
@@ -1428,7 +1419,6 @@ Indicação “PRIORIDADE” se houver evento que exija ação IMEDIATA.
 
     const gemText = header + gemTpl;
 
-    // ChatGPT template
     const chatTpl = `
 PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)
 Ativos:
@@ -1530,8 +1520,6 @@ Fonte(s) (máx 3): [link / “Gemini análise”]
 
 **J. AÇÕES IMEDIATAS (3 linhas — para eu executar agora)**
 * Ex.: “1) Colocar limit BABA34 R$XX; 2) DCA ETH 25% agora, 75% abaixo de US$X; 3) Colocar stop móvel 7% em BABA restante.”
-
-
 `;
 
     const chatText = header + chatTpl;
@@ -1556,8 +1544,8 @@ Fonte(s) (máx 3): [link / “Gemini análise”]
     window._generatedGemini = gemText;
     window._generatedChat = chatText;
     window.webScriptText = pythonScript;
-
-    saveSelection(selected.map(s=>s.sym));
+    
+    saveSelection();
   }
 
   function getPythonHeader(){
@@ -1583,13 +1571,12 @@ chrome_options.add_argument("--headless=new")
 chrome_options.add_argument("--hide-scrollbars")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--no-sandbox")
-# evitar problemas de sandbox em alguns ambientes
 chrome_options.add_argument("--disable-dev-shm-usage")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 wait = WebDriverWait(driver, 15)
 
-# --- XPaths de timeframe (confirmados por você) ---
+# --- XPaths de timeframe ---
 TIMEFRAME_XPATHS = {
     "1D": '//*[@id="1D"]/span[1]/span',
     "1W": '//*[@id="1W"]/span[1]/span',
@@ -1598,16 +1585,9 @@ TIMEFRAME_XPATHS = {
 
 # ---------- Helpers ----------
 def click_timeframe(xpath, timeout=8):
-    """Clica no botão timeframe via JS e tenta aguardar indicação de seleção (se houver)."""
     try:
         el = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
         driver.execute_script("arguments[0].click();", el)
-        try:
-            WebDriverWait(driver, 3).until(
-                lambda d: ('active' in el.get_attribute("class") or 'selected' in el.get_attribute("class") or el.is_displayed())
-            )
-        except Exception:
-            pass
         time.sleep(1.5)
         return True
     except Exception as e:
@@ -1615,55 +1595,44 @@ def click_timeframe(xpath, timeout=8):
         return False
 
 def save_full_screenshot_tradingview(filename, width=1888, max_height=20000):
-    page_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
-    page_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
-    use_w = max(width, page_w)
-    use_h = min(int(page_h), max_height)
-    driver.set_window_size(use_w, use_h)
+    page_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);")
+    driver.set_window_size(width, min(page_h, max_height))
     time.sleep(0.6)
     path = os.path.join(output_folder, filename)
     driver.save_screenshot(path)
-    print(f"[TradingView screenshot] Salvo: {path} ({use_w}x{use_h})")
-    return path
-
-def save_full_screenshot_overview(url, filename, target_width=4950, max_height=12000, wait_after_load=4):
-    driver.get(url)
-    time.sleep(wait_after_load)
-    page_w = driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);")
-    page_h = driver.execute_script("return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);")
-    use_w = max(target_width, page_w)
-    use_h = min(int(page_h), max_height)
-    driver.set_window_size(use_w, use_h)
-    time.sleep(0.8)
-    path = os.path.join(output_folder, filename)
-    driver.save_screenshot(path)
-    print(f"[Overview screenshot] Salvo: {path} ({use_w}x{use_h})")
+    print(f"[TradingView screenshot] Salvo: {path}")
     return path
 
 def create_pdf_from_images_list(image_paths, pdf_name):
     pdf_path = os.path.join(output_folder, pdf_name)
-    if os.path.exists(pdf_path):
-        os.remove(pdf_path)
+    if not image_paths: return
+    
     pdf = FPDF(unit="pt", format="A4")
     page_w, page_h = pdf.w_pt, pdf.h_pt
     for image_path in image_paths:
-        img = Image.open(image_path)
-        img_w, img_h = img.size
-        ratio = min(page_w / img_w, page_h / img_h)
-        new_w, new_h = img_w * ratio, img_h * ratio
-        x = (page_w - new_w) / 2
-        y = (page_h - new_h) / 2
-        pdf.add_page()
-        pdf.image(image_path, x, y, new_w, new_h)
-    pdf.output(pdf_path)
-    print(f"[PDF] Gerado: {pdf_path}")
-    return pdf_path
+        try:
+            with Image.open(image_path) as img:
+                img_w, img_h = img.size
+                ratio = min(page_w / img_w, page_h / img_h)
+                new_w, new_h = img_w * ratio, img_h * ratio
+                x = (page_w - new_w) / 2
+                y = (page_h - new_h) / 2
+                pdf.add_page()
+                pdf.image(image_path, x, y, new_w, new_h)
+        except Exception as e:
+            print(f"[Erro ao processar imagem {image_path}]: {e}")
+    
+    if len(pdf.pages) > 0:
+        pdf.output(pdf_path)
+        print(f"[PDF] Gerado: {pdf_path}")
+    else:
+        print(f"[PDF] Nenhum PDF gerado para {pdf_name} pois não haviam imagens válidas.")
+
 
 def safe_remove(path):
     try:
         if os.path.exists(path):
             os.remove(path)
-            print(f"[Removido] {path}")
     except Exception as e:
         print(f"[Erro ao remover {path}]: {e}")
 `;
@@ -1674,72 +1643,42 @@ def safe_remove(path):
 
 # ---------- Fluxo principal para símbolos (1D,1W,1M) ----------
 def generate_tradeview_symbol_pdfs(symbols):
-    all_images = []
+    all_images_for_cleanup = []
     for symbol, url, pdf_name in symbols:
         print(f"\\n[Processando símbolo] {symbol} -> {url}")
-        imgs = []
+        images_for_this_symbol = []
         try:
             driver.get(url)
-            time.sleep(3)
+            time.sleep(3) 
         except Exception as e:
             print(f"[Erro] Não foi possível carregar {url}: {e}")
             continue
 
         for tf, xpath in TIMEFRAME_XPATHS.items():
-            ok = click_timeframe(xpath)
-            time.sleep(1.2)
-            img_filename = f"{symbol}_{tf}.png"
-            try:
-                img_path = save_full_screenshot_tradingview(img_filename, width=1888, max_height=20000)
-                imgs.append(img_path)
-                all_images.append(img_path)
-            except Exception as e:
-                print(f"[Erro screenshot] {symbol} {tf}: {e}")
+            if click_timeframe(xpath):
+                img_filename = f"{symbol}_{tf}.png"
+                try:
+                    img_path = save_full_screenshot_tradingview(img_filename)
+                    images_for_this_symbol.append(img_path)
+                    all_images_for_cleanup.append(img_path)
+                except Exception as e:
+                    print(f"[Erro screenshot] {symbol} {tf}: {e}")
+        
+        create_pdf_from_images_list(images_for_this_symbol, pdf_name)
 
-        # gerar PDF por símbolo
-        try:
-            create_pdf_from_images_list(imgs, pdf_name)
-        except Exception as e:
-            print(f"[Erro PDF] {symbol}: {e}")
-
-    return all_images
+    return all_images_for_cleanup
 
 if __name__ == "__main__":
+    generated_files = []
     try:
-        # symbols should be defined above (generated dynamically)
-        try:
-            symbols  # noqa
-        except NameError:
-            symbols = []
-
-        if len(symbols) > 0:
-            technical_images = generate_tradeview_symbol_pdfs(symbols)
+        if 'symbols' in locals() and symbols:
+            generated_files.extend(generate_tradeview_symbol_pdfs(symbols))
         else:
             print("Nenhum símbolo para processar.")
-
-        overview_pages = [
-            ("https://coinmarketcap.com/pt-br/", "CoinMarketCap_full_4950.png"),
-            ("https://br.tradingview.com/markets/world-stocks/worlds-largest-companies/", "TradingView_Companies_full_4950.png")
-        ]
-        overview_images = []
-        for url, fname in overview_pages:
-            print(f"\\n[Processando visão geral] {url}")
-            try:
-                img = save_full_screenshot_overview(url, fname, target_width=4950, max_height=12000, wait_after_load=4)
-                overview_images.append(img)
-            except Exception as e:
-                print(f"[Erro overview] {url}: {e}")
-
-        if overview_images:
-            create_pdf_from_images_list(overview_images, "Relatorio_Cripto_Mercado.pdf")
-
-        print("\\n[Limpeza] removendo imagens temporárias...")
-        for p in (technical_images if 'technical_images' in locals() else []) + overview_images:
-            safe_remove(p)
-
-        print("\\nTudo pronto — PDFs gerados em:", output_folder)
-
     finally:
+        print("\\n[Limpeza] Removendo imagens temporárias...")
+        for f in generated_files:
+            safe_remove(f)
         try:
             driver.quit()
         except Exception:
@@ -1747,24 +1686,47 @@ if __name__ == "__main__":
         print("Concluído. Driver encerrado.")
 `;
   }
-
-  // ===== UI actions =====
+  
+  // ===== UI Event Listeners =====
   document.getElementById('selectAll').addEventListener('click', () => {
-    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(i=>i.checked=true);
+    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(input => {
+        if (!input.checked) {
+            selectedSymbols.add(input.dataset.sym);
+        }
+    });
+    renderAssets(assetSearch.value, document.getElementById('sectorSelector')?.value || 'Todos');
     updateAllBlocks();
   });
   
   document.getElementById('clearAll').addEventListener('click', () => {
-    document.querySelectorAll('#assetsContainer input[type=checkbox]').forEach(i=>i.checked=false);
+    selectedSymbols.clear();
+    renderAssets(assetSearch.value, document.getElementById('sectorSelector')?.value || 'Todos');
     updateAllBlocks();
   });
   
   document.getElementById('saveBtn').addEventListener('click', () => {
-    const sel = Array.from(document.querySelectorAll('#assetsContainer input:checked')).map(c=>c.dataset.sym);
-    saveSelection(sel);
+    saveSelection();
     localStorage.setItem(TEMPLATE_KEY_G, document.getElementById('geminiTemplate').value || '');
     localStorage.setItem(TEMPLATE_KEY_C, document.getElementById('chatTemplate').value || '');
     _showToast('Seleção e templates salvos');
+  });
+
+  assetSearch.addEventListener('input', (e) => {
+      const sectorSelector = document.getElementById('sectorSelector');
+      const currentSector = sectorSelector ? sectorSelector.value : 'Todos';
+      renderAssets(e.target.value, currentSector);
+  });
+  
+  assetsContainer.addEventListener('change', (e) => {
+    if (e.target.type === 'checkbox') {
+        const sym = e.target.dataset.sym;
+        if (e.target.checked) {
+            selectedSymbols.add(sym);
+        } else {
+            selectedSymbols.delete(sym);
+        }
+        updateAllBlocks();
+    }
   });
 
   document.getElementById('copyGemini').addEventListener('click', () => _copyString(window._generatedGemini || ''));
@@ -1780,14 +1742,8 @@ if __name__ == "__main__":
     const ta = document.getElementById('chatTemplate');
     ta.style.display = (ta.style.display==='none')? 'block':'none';
   });
-
-  assetSearch.addEventListener('input', (e) => {
-      const sectorSelector = document.getElementById('sectorSelector');
-      const currentSector = sectorSelector ? sectorSelector.value : 'Todos';
-      renderAssets(e.target.value, currentSector);
-      loadSelection(); // re-apply checked status after re-render
-  });
-
+  
+  // ===== Copy Helpers & Toast =====
   function copyText(ev, text){
     if (ev) ev.stopPropagation();
     _copyString(text);
@@ -1814,9 +1770,9 @@ if __name__ == "__main__":
       ta.style.left = '-9999px';
       document.body.appendChild(ta);
       ta.select();
-      const ok = document.execCommand('copy');
+      document.execCommand('copy');
       document.body.removeChild(ta);
-      _showToast(ok ? 'Copiado!' : 'Falha ao copiar');
+      _showToast('Copiado!');
     } catch (e){
       _showToast('Falha ao copiar');
     }
@@ -1833,9 +1789,8 @@ if __name__ == "__main__":
     toastTimeout = setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(12px)';t.style.pointerEvents='none';}, 1600);
   }
 
-  // initial render + load
-  renderAssets();
-  loadSelection();
+  // ===== Initial Load =====
+  loadInitialState();
 });
 </script>
 </body>
