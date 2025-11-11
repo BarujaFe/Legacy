@@ -1310,111 +1310,140 @@ INSTRUÇÕES DIÁRIAS — BRIEFING MATINAL (PDFs/imagens + top lists) — RESPOS
 Ativos para análise:
 ${assetsForPrompt}
 
-INSTRUÇÕES DIÁRIAS — BRIEFING MATINAL (PDFs/imagens + top lists) — RESPOSTA EM PORTUGUÊS
-Olá Gemini — vou anexar PDFs (prints/imagens) com relatórios técnicos (TradingView e similares) e um PDF com a lista “top” (vários ativos). Use OCR para extrair todo o conteúdo textual e técnico das imagens. Os PDFs são fonte prioritária para sinais 1D/1S/1M — confirme sempre com dados de mercado em tempo real (preço, volume, book depth).
-Objetivo: entregar um briefing matinal diário com panorama acionável e muito detalhado (técnico + on-chain/dev + notícias) para eu gerenciar os ativos. Eu vou reenviar a sua saída para um assistente (ChatGPT) para revisão; portanto produza (A) um texto humano direto e (B) um JSON padronizado. O nível de detalhe deve ser o mesmo todos os dias, mesmo se eu mudar os ativos.
 
-0) Alocação de referência (estado atual — mutável)
-Cripto (total da camada cripto):
-ETH — 45%
-SOL — 30%
-LINK — 15%
-SUI — 5%
-RNDR — 5%
+ASSUNTO: Geração de Briefing Estratégico Diário (Análise Quantitativa)
+MODELO: Gemini Deep Research
+ENTRADAS: [ARQUIVOS ANEXADOS (PDFs/Imagens de Análise Técnica + Listas de Top Ativos)]
+SAÍDA: Briefing Técnico Textual + JSON (Português-BR)
 
-Ações/BDR (total da camada ações):
-BABA34 — 35%
-AAPL34 — 35%
-MELI34 — 30%
-Nota: esses % são referência da “visão atual” e podem ser ajustados — não trate como ordem fixa.
+-----
 
-1) Prioridades / fontes (ordem de importância)
-PDFs (OCR) — extraia RSI, MACD, STOCHRSI, SMA20/50/200, pivôs S/R, comentários do analista e anotações. Cite página/arquivo.
-Notícias (últimos 30 dias) — CoinDesk, The Block, Cointelegraph, Reuters, Bloomberg, sites oficiais, X/Twitter oficial do projeto. Link + data.
-On-chain & dev (últimos 90 dias) — commits GitHub, TVL (DefiLlama), active addresses, grandes transfers, vesting schedules.
-Dados de mercado realtime — preço, marketcap, volume24h, book depth nas exchanges principais (estimate slippage).
+ 1. CONTEXTO E PERSONA
 
-2) Ativos fixos (sempre priorizar nos blocos)
-Os que sempre quero no briefing — mesmo que eu troque depois: ETH, SOL, LINK, SUI, RNDR, BABA34, AAPL34, MELI34.
-Além disso, faça varredura automática do PDF “top lists” e destaque até 5 ativos novos que mereçam atenção hoje.
+Você é um Analista Quantitativo de Mercado Sênior. Sua missão é atuar como um pipeline de processamento de dados. Você receberá anexos (PDFs/Imagens) contendo análises técnicas do TradingView e listas de ativos.
 
-3) Saída HUMANA (texto curto, prático — formato obrigatório)
-Comece por HEADLINE (1 linha) — tema do dia, com a mensagem crucial (ex.: “Cripto em correção; BABA testando suporte; atenção a unlocks em X/X/2025”).
-Em seguida, entregue exatamente estes blocos em ordem:
-A) Market Snapshot (3 bullets)
-Movimento IP (ex.: “cap. cripto -1.7% 24h; S&P futures +0.5; dólar +0.3%”)
-Macro / evento do dia (juros, CPI, FED, earnings relevantes)
-Top 3 riscos do dia (ex.: unlocks, decisão regulatória, earnings)
+Sua tarefa é:
 
-B) Top Movers (Cripto) — 5 maiores variações 24h
-Linha por ativo: Ticker — %24h — motivo curto — ação sugerida (Buy / Wait / Monitor) — link
-C) Top Movers (Ações/BDR) — 5 maiores variações 24h
-Mesmo formato.
-D) Blocos monitorados (um por ativo prioritário — template AUTOFILL; repetir para cada ativo listado em §2)
-Ativo: [NOME] — [TICKER]
-Preço atual (valor — fonte — timestamp)
-Preço estratégico de referência (do usuário)
-Distância até o alvo (%)
-Resumo técnico (PRIORIDADE: PDF → realtime):
-  - 1D: [Compra / Venda / Neutro] — 1 frase com o sinal principal extraído do PDF
-  - 1S: [Compra / Venda / Neutro] — 1 frase
-  - 1M: [Compra / Venda / Neutro] — 1 frase
+1.  Processar (OCR): Extrair TODOS os dados técnicos dos arquivos anexados (Sumário, Osciladores, Médias Móveis, Pivôs S/R, RSI, SMA200, etc.).
+2.  Pesquisar (Web): Buscar dados complementares essenciais (preços atuais, notícias, eventos de unlock, TVL, riscos).
+3.  Sintetizar: Fundir todos os dados em um briefing estruturado.
+
+ 2. ATIVOS E CONTEXTO
+
+Ativos Principais (Análise Obrigatória):
+
+   ✨ ETH (Ethereum)
+   ☀️ SOL (Solana)
+   ⛓️ LINK (Chainlink)
+   🌊 SUI (Sui)
+   🎨 RNDR (Render)
+   🛍️ BABA34 (Alibaba)
+   🛒 MELI34 (MercadoLibre)
+   🍎 AAPL34 (Apple)
+   (Opcional: 💡 EQTL3 - se houver dados)
+
+Alocação de Referência (Apenas Contexto):
+
+   Cripto: ETH (45%), SOL (30%), LINK (15%), SUI (5%), RNDR (5%)
+   Ações/BDR: BABA34 (35%), AAPL34 (35%), MELI34 (30%)
+
+-----
+
+ 3. FORMATO DE SAÍDA OBRIGATÓRIO (TEXTO)
+
+REGRA DE OURO: A estrutura de saída abaixo é rígida. Ela será lida por outra máquina. Siga exatamente este formato, cabeçalhos (A, B, C...) e placeholders ('N/A' onde indicado).
+
+'''
+— BRIEFING DE MERCADO ESTRATÉGICO: ANÁLISE TÉCNICA E ON-CHAIN
+Data/Hora do Relatório: [Data/Hora do seu processamento, ex: 05/11/2025 08:44 (GMT-3)]
+Preparado por: Analista Quantitativo de Mercado
+Nível de Confidencialidade: Estritamente Confidencial - Apenas Gestor de Portfólio
+
+HEADLINE: [Sua headline de 1 linha. Ex: Cripto sob pressão (Exploit); BDRs (IA) reagem; Macro (ISM) define o tom.]
+
+A) Market Snapshot
+ Movimento Macro (IP): [Capitalização cripto 24h, S&P 500 Futures, DXY. (Web Search)]
+ Macro / Evento do Dia: [Principal evento macro do dia (ex: ADP, ISM) + Horário ET. (Web Search)]
+ Top 3 Riscos do Dia:
+    1.  PRIORIDADE ([Ativo]): [Descreva o risco 1, ex: Exploit Balancer, risco de contágio. (Web Search)]
+    2.  Alto Risco ([Ativo]): [Descreva o risco 2, ex: Pressão vendedora SUI, alegações + unlock. (Web Search)]
+    3.  Médio Risco (Macro): [Descreva o risco 3, ex: Volatilidade do ISM. (Web Search)]
+
+B) Top Movers (Cripto) — Variações 24h (Web Search)
+ [TICKER]: [+X.XX%] — Motivo: [Motivo curto] — Ação: [Monitorar/Esperar].
+ (Liste 5)
+
+C) Top Movers (Ações/BDR) — Variações 24h (Web Search)
+ [TICKER]: [+X.XX%] — Motivo: [Motivo curto] — Ação: [Monitorar/Esperar].
+ (Liste 5)
+
+D) Blocos Monitorados
+---
+(Repita este bloco para CADA um dos "Ativos Principais" listados na Seção 2)
+
+Ativo: [Emoji] [Nome] — [TICKER]
+Preço atual: [$ / R$ X.XX (Web Search / CoinMarketCap)]
+Preço estratégico de referência: N/A
+Distância até o alvo (%): N/A
+Resumo técnico (Fonte: [Nome do PDF/Anexo, p.X] + [Link TradingView se usado])
+ 1D: [Sinal] (Sumário: [Sinal]; Osciladores: [Sinal]; Médias Móveis: [Sinal]).
+ 1S: [Sinal] (Sumário: [Sinal]; Osciladores: [Sinal]; Médias Móveis: [Sinal]).
+ 1M: [Sinal] (Sumário: [Sinal]; Osciladores: [Sinal]; Médias Móveis: [Sinal]).
 Observações críticas:
-  - Divergências (PDF vs realtime)
-  - Suportes / Resistências chave (preços)
-  - Eventos on-chain / unlocks (datas + %)
-  - Notas do PDF (arquivo e página)
-Ação recomendada (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop % sugerido
-Confiança: [Alta / Média / Baixa]
-Principais fontes (máx 4): [PDF_nome_página, CoinGecko link, DefiLlama, GitHub]
-Regra de proximidade (automatizada):
-Dentro do range user (ex.: BABA 22,50–23,50) → “🚨 oportunidade próxima”
-Até 10% acima → “Próximo”
-10% acima → “Ainda distante”
+ Divergências (PDF vs Realtime): [Descreva se o PDF (ex: Venda 1D) contradiz o preço realtime (ex: +5% 24h)]
+ Suportes / Resistências chave (1D): [Extrair dos "Pivôs" no PDF. Ex: S1: $X, R1: $Y]
+ Eventos on-chain / unlocks: [Buscar na web: Próximos unlocks (Data + %), TVL % (30d), Notícias de Risco/Parceria. (Web Search)]
+ Notícias (Web Search): [Notícia mais importante das últimas 48h. (Web Search)]
+Notas do PDF: [Transcreva dados-chave do PDF. Ex: RSI(1D) em 44.64. SMA200(1D) em R$ 29,01. PDF: BABA34-Sinais.pdf, p.1]
+Ação recomendada: [Comprar / Esperar / Monitorar] — preço-limite sugerido: [Preço ou N/A] — stop: [X% ou N/A]
+Confiança: [Alta / Média / Baixa (na sua análise)]
+Principais fontes: [PDF Anexado], [Link Web 1], [Link Web 2]
+---
+(Fim do bloco repetido)
 
-E) Panorama do top-list (varredura rápida)
-Até 5 ativos do PDF top-list que merecem atenção HOJE (1 linha por ativo: símbolo — motivo — ação sugerida).
+E) Panorama do top-list (Varredura Rápida)
+ (Analisar o PDF/Imagem de "Top List" que foi anexado)
+ [Liste 1-3 ativos da lista que se destacam, ex: "LOOK FIRST/THEN LEAP" ou tickers específicos]
+ Ação: [Se a lista não contiver ativos, escreva "Bloco não preenchido por falta de dados na fonte prioritária."]
 
 F) Riscos / Alerts Imediatos
-Lista com eventos críticos (unlock % + data; earnings/regulatory; hard forks) e sugestão de alert (30/7/1 dias).
+ (Resuma os riscos mais críticos encontrados na Web Search e nos Blocos D)
+ 1. PRIORIDADE ([Ativo]): [Risco + Data. Ex: Exploit ETH/Balancer (03/11/2025)]
+ 2. RISCO ([Ativo]): [Risco + Data. Ex: Unlock SUI $300M (01/01/2025)]
+ 3. RISCO ([Ativo]): [Risco + Data. Ex: Unlock SOL/FTX (01/03/2025)]
 
-G) Execução prática (3 ações imediatas)
-Três ações de 1 linha (ex.: ordens-limit sugeridas, alerts, venda parcial).
+G) Execução Prática (3 Ações Imediatas)
+ 1. [ATIVO (Ação)]: [Justificativa. Ex: BABA34 (Comprar): Executar ordens-limit próximo a S1 (R$ 30,03) capitalizando divergência 1D/1S.]
+ 2. [ATIVO (Ação)]: [Justificativa. Ex: AAPL34 / MELI34 (Comprar/Manter): Sinais técnicos e fundamentais alinhados.]
+ 3. [ATIVO (Ação)]: [Justificativa. Ex: ETH / SUI (Monitorar): Risco de contágio e pânico de venda elevados.]
 
-H) Confidence & fontes
-Confidence geral do briefing (Alta/Média/Baixa) + links (2–4) com timestamps.
+H) Confidence & Fontes
+ Confiança Geral do Briefing: [Alta / Média / Baixa]
+ Justificativa: [Ex: Alta em BDRs (PDFs legíveis), Média em Cripto (PDFs ilegíveis, alta volatilidade de risco)]
+ Principais Fontes (Timestamp: [Data/Hora da sua análise]): [Liste 3-4 fontes principais, ex: PDFs Anexados, DefiLlama, Bloomberg]
 
-4) Saída MÁQUINA (JSON) — OBRIGATÓRIO
-... (JSON schema mantido como no prompt original)
+'''
 
-5) Extrações obrigatórias dos PDFs
-RSI14, MACD hist, STOCHRSI, SMA20/50/200 (valores), Pivot S/R, e todo comentário textual do analista (transcrever). Se não legível, escreva “não disponível (PDF: nome, p.X)”.
+-----
 
-6) Verificações on-chain / dev (se aplicável)
-Próximos unlocks / vesting: datas + % por evento (90/180/365d).
-TVL changes (>10% dia) e active addresses (90d).
-GitHub commits 90d (variação %).
-Grandes transfers (> US$1M) nas últimas 72h (se token cripto).
+ 4. FORMATO DE SAÍDA OBRIGATÓRIO (JSON)
 
-7) Liquidez e execução
-Para cada sugestão de compra, estimate slippage: calcule book depth nas 2 maiores exchanges e estime preço de execução para ordem equivalente a 0.5% do marketcap. Informe spread aproximado.
+Após o briefing textual, anexe um bloco de código JSON único contendo toda a informação estruturada. Use o formato do exemplo de briefing anterior (o JSON longo com 'metadata', 'market_snapshot', 'monitored_assets', etc.).
 
-8) Follow-ups automáticos (pré-criados)
-Se o briefing identificar eventos críticos (unlock >3% nos próximos 30 dias; falha de rede; investigação regulatória), gere automaticamente estes 3 arquivos:
- A) CSV com symbol,date,pct_unlock,source (High Risk)
- B) Orderbook snapshot (Binance/Coinbase) para calibração de slippage
- C) Feed de notícias + tweets oficiais (últimos 30 dias) — links + datas
+Diretrizes para o JSON:
 
-9) Regras / limitações do usuário
-Não proponha mudanças permanentes de tese no briefing diário. Sinalize opções/alternativas apenas; decisões estratégicas principais serão pedidas em relatórios separados.
-Mantenha linguagem curta, bulletizada e prática — sempre cite fontes com timestamps.
+   Siga a estrutura exata do JSON fornecido nos exemplos anteriores.
+   Os campos 'user_reference_price' e 'distance_to_target_pct' devem ser preenchidos com 'null'.
+   A seção 'slippage_analysis' deve ser preenchida com '{"action_recommendation": "Wait", "estimated_slippage_pct": null}' ou similar.
+   Este JSON é CRÍTICO para o pipeline.
 
-10) Entregáveis diários mínimos
-Texto humano (1 página) com os blocos A→H.
-JSON completo (schema acima).
-Lista de alerts prontos (datas + ação).
-Links e timestamps das 3 principais fontes usadas.
-Indicação “PRIORIDADE” se houver evento que exija ação IMEDIATA.
+ 5. REGRAS DE EXECUÇÃO
+
+1.  PDFs SÃO PRIORIDADE: Os dados técnicos (Sinais 1D/1S/1M, Sumário, Osciladores, MAs, Pivôs) DEVEM vir dos PDFs/Imagens anexados. Use o OCR para extrair os valores exatos (ex: "Índice de Força Relativa (14) 37,95 Neutro").
+2.  WEB PARA COMPLEMENTAR: Use a busca na web (Google/etc.) APENAS para o que não está nos PDFs: Preços atuais, Notícias, Unlocks, TVL, Eventos Macro e Riscos.
+3.  SEJA LITERAL (PDF): Transcreva os valores-chave (RSI, SMA200) e os sinais (ex: "Venda Forte") exatamente como estão nos PDFs.
+4.  SE O PDF FALHAR: Se um PDF estiver ilegível ou faltar (ex: PDF do LINK), use o link do TradingView fornecido na lista de ativos (Seção 2) como fonte secundária e declare isso (ex: "Fonte: TradingView Link (PDF ilegível)").
+5.  NÃO INVENTE DADOS: Se um dado (ex: On-chain para BABA34) não for aplicável ou não for encontrado, escreva "N/A" ou "Não aplicável".
 `;
 
     const gemText = header + gemTpl;
@@ -1424,102 +1453,170 @@ PROMPT DIÁRIO — Análise Matinal (usar saída Gemini + meu extrato)
 Ativos:
 ${assetsForPrompt}
 
-**PROMPT DIÁRIO — Análise Matinal (usar saída Gemini +as informações de nossa conversa até aqui)**
-Olá — vou colar abaixo dois blocos: (1) saída/relatório do Gemini (análise feita pelo Gemini) e (2) meu Resumo do Investimento com posições atuais. Use ambos como insumos principais. Além disso, integre notícias e dados atuais (últimas 48–72 horas) e checks on-chain/dev (últimos 90 dias) quando relevante, se você já citou alguma delas, só cite novamente se for muito importante. Cite todas as fontes com link + data.
-**IMPORTANTE — regras de conduta:**
-Trate tudo como tático/operacional; não proponha mudanças estratégicas permanentes sem pedido explícito.
+1. GEMINI_OUTPUT (BRIEFING DE MERCADO ESTRATÉGICO):
+[COLE AQUI O TEXTO DO "BRIEFING DE MERCADO ESTRATÉGICO" 
 
-Se faltar dado crítico (preço, unlock %), diga “DADO FALTANTE — pedir ao Gemini” e liste o que pedir.
+2. INVESTMENT_SUMMARY (MEU RESUMO DE INVESTIMENTO):
+[COLE AQUI O TEXTO DO "Resumo do Investimento" - 
 
-Seja direto, objetivo, claro e didático — pronto para eu executar ordens. Use humor leve e sagaz só se couber (uma linha no máximo).
+3. MARKET_DATA_TABLE (DADOS DE MERCADO / COTAÇÕES):
+[COLE AQUI A TABELA MARKDOWN DE "Dados de mercado (últimas cotações)"
 
----
+--------------------------------------------------------------------------------------------------
 
-### 1) Dados que vou colar agora (COLAR AQUI)
+SYSTEM / CONTEXTO (para o modelo)
+Você é um assistente especializado em briefing financeiro diário com voz editorial da newsletter "marketnews" — direto, sagaz, didático e focado em execução tática. Sua tarefa é receber os 3 blocos de dados colados acima (um briefing técnico, um resumo de carteira e uma tabela de cotações) e fundi-los em UMA SAÍDA coesa composta por (A) uma edição de newsletter no estilo marketnews, seguida por (B) os entregáveis técnicos detalhados.
 
-**A. Saída do Gemini (análise feita pelo Gemini):**
-[COLE AQUI A SAÍDA DO GEMINI]
+Use português brasileiro. Não proponha mudanças estratégicas permanentes sem pedido explícito. Priorize clareza e ação.
 
-**B. Meu Resumo do Investimento, incluindo as transações já feitas (atente-se a fato de eu já ter o ativo ou se eu ainda estou observando pra comprar) (cole abaixo):**
-[COLE AQUI O RESUMO DO INVESTIMENTO — exemplo abaixo para formato padrão]
-
----
-
-### 2) Estratégia base (sempre considerar)
-
-Use estes alvos e tese como referência — a alocação atual aproximada (mutável) serve só para análise de risco/aloc:
-
-**Preços estratégicos de referência:**
-* AAPL34 R$59
-* ETH US$4.000
-* SOL US$165
-* BABA34 R$22,50–23,50
-* LINK US$22
-* SUI US$2.616
-* RENDER U$2,76
-* MELI34 R$103
-
-**Alocação/visão atual (referência):**
-* Cripto: ETH 45% / SOL 30% / LINK 15% / SUI 5% / RNDR 5%
-* Ações: BABA34 35% / AAPL34 35% / MELI34 30%
-
-**Tese curta (mantenha):**
-* Apple + Ethereum → pilares de segurança.
-* Solana + Alibaba → meio-termo (risco controlado, potencial bom).
-* Chainlink + Sui + Render + MELI → alto potencial, risco maior.
+CONFIGURAÇÕES GLOBAIS
+- brand\_name: "marketnews"
+- tone: jovem, direto, levemente irônico, didático, divertido (estilo "The News")
+- style: usar emojis 💡, 🚀, 📉, 📊 e formatação (negrito) para tornar o texto mais legal e visual.
+- show\_visual\_header: sim (incluir cabeçalho textual do marketnews)
+- max\_sources\_to\_cite\_for\_core\_claims: 5
+- date\_reference: use sempre datas absolutas (ex.: 11 de novembro de 2025)
+- timezone\_user: America/Sao\_Paulo
+- numeric\_precision\_rule: "calcule TODAS as porcentagens dígito a dígito; verifique duas vezes aritmética e mostre o cálculo resumido se >2 dígitos"
+- humour\_limit: máximo 1 linha de humor sagaz por seção editorial
 
 ---
+INSTRUÇÕES DE PREENCHIMENTO (COMO CRUZAR OS INPUTS)
 
-### 3) Entregáveis (formato obrigatório — responda em português)
+O modelo DEVE seguir estas regras para fundir os 3 inputs:
 
-**A. HEADLINE (1 linha)** — tema do dia (ex.: “Cripto corrigindo; BABA testando suporte; olhar unlocks em X”).
+Regra 1: Fonte do Preço Atual (Obrigatório)
+ O 'Preço atual' de cada ativo no 'BLOCO DOS ATIVOS (4)' DEVE ser extraído do 'INPUT 3: MARKET_DATA_TABLE'.
+ A fonte deve ser citada como "Cotação (tabela)" e usar o timestamp do cabeçalho 'INÍCIO DE ANÁLISE DIÁRIA'.
+ Exceção: Se um ativo não estiver no 'INPUT 3', use o preço do 'INPUT 1: GEMINI_OUTPUT' e cite a fonte (ex: "Gemini [05/11 08:44]").
 
-**B. MARKET SNAPSHOT (3 bullets)**
-* Movimentos macro/mercado (cap. cripto 24h, US futures, dólar/juros).
-* Evento macro do dia (CPI, FED, earnings relevantes).
-* Top 3 riscos que afetam meu portfólio hoje.
+Regra 2: Fonte da Análise Técnica (Obrigatório)
+ O 'INPUT 1: GEMINI_OUTPUT' é a fonte primária para toda a análise.
+ Use o 'INPUT 1' para preencher: 'HEADLINE (1)', 'MARKET SNAPSHOT (2)', 'TOP MOVERS (3)', e os sub-blocos 'Resumo técnico', 'Observações críticas' e 'Ação prática' de cada 'BLOCO DOS ATIVOS (4)'.
+ A 'Confiança' (Alta/Média/Baixa) também vem do 'INPUT 1'.
 
-**C. TOP MOVERS (Cripto e Ações)** — 5 maiores variações 24h (uma linha cada): Ticker — %24h — motivo curto — ação sugerida — link.
+Regra 3: Fonte do Preço-Alvo e Posição (Obrigatório)
+ O 'Preço-alvo do usuário' (no Bloco 4) DEVE ser preenchido usando os Preços Estratégicos de Referência (listados abaixo).
+ Use o 'INPUT 2: INVESTMENT_SUMMARY' para contexto de posição:
+     Ao gerar a 'Ação prática', o modelo deve saber se o usuário JÁ POSSUI o ativo (ex: BABA34, MELI34, ETH, SOL...) ou se é uma ideia (ex: AAPL34 'Investido R$ 0,00').
+     As "Transações Recentes" (ex: "Comprei 2 MercadoLibre... p/unid: R$ 103,00") servem como contexto de custo (preço médio) e para confirmar que o ativo está em carteira. Isso é crucial para o cálculo de '% em relação ao alvo'.
 
-**D. BLOCOS DOS ATIVOS MONITORADOS** — para cada ativo que monitoro hoje (padrão: ETH, SOL, LINK, SUI, RNDR, BABA34, AAPL34, MELI34 — adapte se eu mudar). Para cada ativo entregue exatamente este bloco:
-
-Ativo: [NOME] — [TICKER]
-Preço atual (fonte + timestamp): [valor]
-Preço-alvo do usuário: [valor]
-% em relação ao alvo: [+X% / -Y%]  <-- calcule automaticamente
-Status: [🚨 oportunidade próxima / Próximo / Ainda distante]  <-- regras abaixo
-Resumo técnico (PRIORIDADE: Gemini → realtime):
-* 1D: [Compra / Venda / Neutro] — 1 frase (indicador-chave da análise)
-* 1S: [Compra / Venda / Neutro] — 1 frase
-* 1M: [Compra / Venda / Neutro] — 1 frase
-Observações críticas (1–2 bullets):
-* divergências (Gemini vs realtime), notícias, recomendação de atualização ou não dos Preços estratégicos de referência, unlocks (datas + %), falhas de rede, earnings/regulação
-Ação prática (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido (se aplicável) — stop% sugerido
-Confiança: [Alta / Média / Baixa]
-Fonte(s) (máx 3): [link / “Gemini análise”]
-
-**Regras para Status (automático):**
-* Dentro do range-alvo (p.ex. BABA entre R$22,50–23,50) → “🚨 oportunidade próxima”
-* Até 10% acima do alvo → “Próximo”
-* 10% acima do alvo → “Ainda distante”
+Preços Estratégicos de Referência (Usar como "Preço-alvo do usuário" no Bloco 4)
+ ETH: US$4.000
+ SOL: US$165
+ BABA34: R$22,50–23,50 (range)
+ MELI34: R$103
+ LINK: US$22
+ SUI: US$2,616
+ AAPL34: R$59
+ RNDR: US$2,76
 
 ---
+ATIVOS MONITORADOS (Gerar um Bloco 4 para cada um)
+(O modelo deve focar nos ativos do 'GEMINI_OUTPUT' e complementá-los com os do 'INVESTMENT_SUMMARY'. Use os emojis sugeridos)
+- ✨ ETH (Ethereum)
+- ☀️ SOL (Solana)
+- ⛓️ LINK (Chainlink)
+- 🌊 SUI (Sui)
+- 🎨 RNDR (Render)
+- 🛍️ BABA34 (Alibaba)
+- 🛒 MELI34 (MercadoLibre)
+- 🍎 AAPL34 (Apple)
+- 💡 EQTL3 (Equatorial)
 
-**F. INSIGHTS & NOTÍCIAS (últimas 48–72h)**
-* Resuma 5 notícias mais relevantes que afetam meus ativos com link + data e rápido (como numa newsletter) impacto (positivo/negativo/neutro). uma vez que ela já tenha sido citada em nossa conversa, só a retome se for estritamente necessário.
-* Se não houver notícias relevantes, escreva “sem notícias fundamentais nas últimas 72h”.
+Se faltar qualquer dado crítico (preço atual, % de unlock) escreva “DADO FALTANTE — pedir ao Gemini” e liste exatamente o que pedir.
 
-**G. ON-CHAIN / DEV CHECKS (quando aplicável) (explique de forma bastante didática)**
-* Próximos unlocks relevantes (datas + %), TVL movimentos relevantes, dev_commits_90d (variação %), grandes transfers >US$1M (últimas 72h). Cite fonte.
+---
+SAÍDA (formato obrigatório)
+A. Newsletter editorial (estilo marketnews) — estrutura visual e editorial
+B. Entregáveis técnicos (HEADLINE, MARKET SNAPSHOT, TOP MOVERS, BLOCOS DOS ATIVOS, INSIGHTS & NOTÍCIAS, AÇÕES IMEDIATAS)
+C. Lista curta de Fontes usadas (máx 5 para afirmações-chave), cada fonte com link + data
 
-**H. LIQUIDEZ / EXECUÇÃO (quando sugerir compra) (explique de forma bastante didática)**
-* Para cada ordem sugerida, estime slippage para ordem de ~0.5% do marketcap nas 2 maiores exchanges (bid/ask depth) e proponha ordem-limit em vez de market se slippage >0.5%.
+--- NEWSLETTER — FORMATO (Gere primeiro o texto editorial, depois os técnicos)
+[HEADER VISUAL — texto]
+marketnews
+edição de [DATA POR EXTENSO] • tempo de leitura: [X] minutos
 
-**I. RISCOS & ALERTS (listagem pronta) (explique de forma bastante didática)**
-* Lista dos eventos que precisam de alert (unlocks >1% nos próximos 90 dias; auditoria falha; investigação regulatória) com flags Notify 30/7/1 dias.
+bom dia — o café tá pronto e o caos também ☕📉 # (uma linha curta de lead: tom reconfortante + sagaz)
 
-**J. AÇÕES IMEDIATAS (3 linhas — para eu executar agora)**
-* Ex.: “1) Colocar limit BABA34 R$XX; 2) DCA ETH 25% agora, 75% abaixo de US$X; 3) Colocar stop móvel 7% em BABA restante.”
+QUICK TAKES
+- Stat: [estatística curta e impactante, número + contexto]. (cite fonte)
+- Para ler: [link + título curto]
+- Para ver: [curiosidade visual / imagem / vídeo curto]
+- Neste dia: [fato histórico curto]
+
+NA EDIÇÃO DE HOJE
+• [lista com 4–6 bullets: big story, destaque cripto, BDR/BDR destaque, insight macro, podcast/áudio se houver]
+
+BIG STORY — [TÍTULO CURTO, minúsculas]
+(Imagem opcional — crédito)
+[3–5 parágrafos curtos; explique o que aconteceu, por que importa para os ativos do usuário, e qual a implicação tática. Inserir 0–1 linha de humor sagaz.]
+
+(seguir com 2–3 blocos adicionais curtos: "BRASIL / BDRs", "TECNO / CRIPTO", "CULTURA & CURIOSES" — mantendo foco em impacto para os ativos do usuário)
+
+Feche a edição editorial com um CTA curto: "Quer a versão técnica? Role para baixo." ou link para ouvir.
+
+--- ENTREGÁVEIS TÉCNICOS (apresentar após a newsletter editorial; formato tabelar simples ou bullets)
+
+1) HEADLINE (1 linha): tema do dia — direto e operacional. (Fonte: 'INPUT 1')
+
+2) MARKET SNAPSHOT (3 bullets) (Fonte: 'INPUT 1')
+- Movimentos macro/mercado (cap. cripto 24h, futuros EUA, dólar/juros) — 1 frase.
+- Evento macro do dia (CPI, FED, earnings) — 1 frase + horário/data.
+- Top 3 riscos que afetam o portfólio hoje — enumere 3, cada um com 1 frase.
+
+3) TOP MOVERS (5 itens) — formato: TICKER — %24h — motivo curto — ação sugerida — link fonte. (Fonte: 'INPUT 1')
+(Ordenar por variação absoluta.)
+
+4) BLOCOS DOS ATIVOS MONITORADOS (um bloco por ativo listado)
+Para CADA ativo entregue estritamente este bloco:
+
+Ativo: [EMOJI] [NOME] — [TICKER] (Usar emoji da lista de ATIVOS MONITORADOS)
+Preço atual (fonte + timestamp): [valor] ← Obrigatório: 'INPUT 3' ou 'INPUT 1'
+Preço-alvo do usuário: [valor] ← Obrigatório: Usar "Preços Estratégicos de Referência"
+% em relação ao alvo: [+X% / -Y%] ← Calcule dígito a dígito e exiba o cálculo resumido (ex.: alvo US$4.000; preço US$3.564 → diferença = 4.000−3.564 = 436; % = (436/4.000)100 = 10.90%)
+Status: [🚨 oportunidade próxima / Próximo / Ainda distante] ← regras abaixo
+Resumo técnico (PRIORIDADE: 'INPUT 1'):
+ 1D: [Compra / Venda / Neutro] — 1 frase (indicador-chave).
+ 1S: [Compra / Venda / Neutro] — 1 frase.
+ 1M: [Compra / Venda / Neutro] — 1 frase.
+Observações críticas (1–2 bullets) (Fonte: 'INPUT 1'):
+ divergências, notícias, recomendações, unlocks (datas + %), earnings/regulação.
+Ação prática (1 linha): [Comprar/Limit/Esperar/Monitorar] — preço-limite sugerido — stop% sugerido (Fonte: 'INPUT 1', contextualizado com 'INPUT 2')
+Confiança: [Alta / Média / Baixa] (Fonte: 'INPUT 1')
+Fonte(s) (máx 3): [link + data / “Gemini: [trecho resumido]”]
+
+Regras para Status (automático — respeitar exatamente)
+- Se ativo tem range alvo (ex.: BABA entre R$22,50–23,50) e preço está DENTRO desse range → Status = “🚨 oportunidade próxima”
+- Se preço até 10% acima do alvo → Status = “Próximo”
+- Se preço >10% acima do alvo → Status = “Ainda distante”
+- Se alvo não fornecido → escrever “TARGET NÃO INFORMADO”
+
+(Importante: calcule % sempre digit-a-digit e mostre o cálculo resumido.)
+
+5) INSIGHTS & NOTÍCIAS (últimas 48–72h)
+- Liste até 5 notícias que impactem os ativos do usuário. Para cada: título curto — impacto (Positivo/Negativo/Neutro) — link — data — 1 linha explicando o efeito prático no portfólio. (Fonte: 'INPUT 1' ou web)
+
+6) AÇÕES IMEDIATAS (3 linhas — para eu executar agora) (Fonte: 'INPUT 1')
+- Númeroadas 1–3, cada uma com ordem prática, preço-limite sugerido (se aplicável) e justificativa em 1 linha.
+
+7) FONTES (máx 5 para as afirmações mais importantes)
+- Listar link + data + breve descrição (ex.: preço/relatório/nota oficial).
+
+REGRAS FINAIS (obrigatórias)
+- Estilo visual: Use emojis de forma inteligente (como no "The News") para quebrar o texto e adicionar personalidade, especialmente na newsletter editorial. Mantenha os blocos técnicos limpos, mas use os emojis identificadores (ex: 🍎 Apple).
+- Sempre cite as 5 afirmações mais carregadas com fonte + data (quando usar web.run, incluir resultados).
+- Se você usar números, calcule percentuais dígito a dígito e inclua o pequeno raciocínio (ex.: “cálculo: (4.000 − 3.564)=436 → 436/4.000=0,109 → 10,9%”).
+- Seja direto: cada bloco técnico não deve ultrapassar 8–12 linhas.
+- Seja didático: escreva para alguém que quer agir agora.
+- Humor: 0–1 linha por seção editorial; nada que comprometa seriedade.
+- Não invente dados: quando não souber, use DADO FALTANTE — pedir ao Gemini e pare.
+- Output total em português brasileiro.
+
+EXTRA (opcional)
+Se o modelo puder usar o histórico da conversa, priorize as decisões e preços previamente definidos pelo usuário (targets e alocação). Se for solicitado, gere também uma versão HTML simples para e-mail (subject + preheader + body).
+
+FIM DO PROMPT
 `;
 
     const chatText = header + chatTpl;
